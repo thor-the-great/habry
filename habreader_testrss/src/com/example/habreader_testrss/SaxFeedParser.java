@@ -19,6 +19,7 @@ public class SaxFeedParser extends BaseFeedParser {
 	            parser.parse(this.getInputStream(), handler);
 	            return handler.getMessages();
 	        } catch (Exception e) {
+	            Log.e("habreader", "Error getting feeds. Exception is " + e);	
 	            throw new RuntimeException(e);
 	        } 
 	    }
