@@ -27,18 +27,18 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 		BaseFeedParser feederParser = new SaxFeedParser(defaultHabrRssURL);
 		List<Message> listOfHabrMsg = feederParser.parse();
 		Log.d("habreader", "numbr of parsed messages " + (listOfHabrMsg == null ? "NULL" : listOfHabrMsg.size()));
-		for (Message message : listOfHabrMsg) {
-			Log.d("habreader", "message details.");
+		//for (Message message : listOfHabrMsg) {
+			//Log.d("habreader", "message details.");
 			/*Log.d("habreader", "message.getTitle() = " + message.getTitle() );
 			Log.d("habreader", "message.getDescription() = " + message.getDescription());*/
-		}
+		//}
 		return listOfHabrMsg;
 	}
 
 	@Override
 	protected void onPostExecute(List<Message> result) {
 		//int tableMaxWidth = tableLayout.getWidth();
-		for (int i = 1; i < result.size(); i++) {
+		for (int i = 0; i < result.size(); i++) {
 			Message message = result.get(i);
 			
 			ScrollView scrollView = new ScrollView(mainLayout.getContext());

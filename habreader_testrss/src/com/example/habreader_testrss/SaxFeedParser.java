@@ -15,7 +15,7 @@ public class SaxFeedParser extends BaseFeedParser {
 	        SAXParserFactory factory = SAXParserFactory.newInstance();
 	        try {
 	            SAXParser parser = factory.newSAXParser();
-	            RssHandler handler = new RssHandler();
+	            MainHubRssHandler handler = new MainHubRssHandler();
 	            parser.parse(this.getInputStream(), handler);
 	            return handler.getMessages();
 	        } catch (Exception e) {

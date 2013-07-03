@@ -7,7 +7,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class RssHandler extends DefaultHandler {
+public class MainHubRssHandler extends DefaultHandler {
 	
 	private List<Message> messages;
     private Message currentMessage;
@@ -56,6 +56,7 @@ public class RssHandler extends DefaultHandler {
         super.startElement(uri, localName, name, attributes);
         if (localName.equalsIgnoreCase(BaseFeedParser.ITEM)){
             this.currentMessage = new Message();
+            builder.setLength(0);
         }
     }
 }
