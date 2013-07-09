@@ -7,6 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Message implements Comparable<Message>{
+	
+	public Message() {
+		
+	}
+	
+	public Message(String title, String description) {
+		this.title = title;
+		this.description = description;
+	}
+	
     static SimpleDateFormat FORMATTER = 
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
         private String title;

@@ -1,4 +1,4 @@
-package com.example.habreader_testrss;
+package com.example.habreader_testrss.feedprovider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.example.habreader_testrss.Message;
 
 public class MainHubRssHandler extends DefaultHandler {
 	

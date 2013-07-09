@@ -1,7 +1,21 @@
 package com.example.habreader_testrss;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import com.example.habreader_testrss.feedparser_stdandroid.HabrXmlParser;
+import com.example.habreader_testrss.feedprovider.BaseFeedParser;
+import com.example.habreader_testrss.feedprovider.ContentProvider;
+import com.example.habreader_testrss.feedprovider.SaxFeedParser;
+
+import android.app.Activity;
+import android.content.res.XmlResourceParser;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,17 +30,46 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 	int MAX_TITLE_LENGTH = 400;
 	
 	ViewGroup mainLayout;
+	Activity activity;
 	
-	public GetFeedersAsyncTask(ViewGroup mainLayout) {
+	public GetFeedersAsyncTask(ViewGroup mainLayout, Activity activity) {
 		this.mainLayout = mainLayout;
+		this.activity = activity;
 	}
 	
 	@Override
 	protected List<Message> doInBackground(String ... urls) {
-		String defaultHabrRssURL = urls[0];
-		BaseFeedParser feederParser = new SaxFeedParser(defaultHabrRssURL);
-		List<Message> listOfHabrMsg = feederParser.parse();
-		Log.d("habreader", "numbr of parsed messages " + (listOfHabrMsg == null ? "NULL" : listOfHabrMsg.size()));
+		XmlResourceParser xmlParser = activity.getResources().getXml(R.xml.testfeeds);
+		HabrXmlParser parser = new HabrXmlParser();
+		List<Message> listOfHabrMsg = new ArrayList<Message>();
+		try {
+			//listOfHabrMsg = parser.parse(xmlParser, null);
+			String url = "http://habrahabr.ru/rss/hubs/";
+			try {			
+					URL feedUrl = new URL(url);
+					listOfHabrMsg = parser.parse(null, feedUrl.openConnection().getInputStream());
+		        } catch (MalformedURLException e) {
+		        	Log.e("habreader error", e.toString());
+		            throw new RuntimeException(e);
+		        } catch (IOException e) {
+		        	Log.e("habreader error", e.toString());
+		        	throw new RuntimeException(e);
+				}
+	
+			
+		} catch (XmlPullParserException e) {
+			Log.e("habreader", e.toString());
+		} /*catch (IOException e) {
+			Log.e("habreader", e.toString());
+		}*/
+		
+		//String defaultHabrRssURL = urls[0];
+		
+		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, activity.getResources().openRawResource(R.xml.testfeeds));
+		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
+		//BaseFeedParser feederParser = new SaxFeedParser();
+		//List<Message> listOfHabrMsg = feederParser.parse(contentProvider);
+		//Log.d("habreader", "numbr of parsed messages " + (listOfHabrMsg == null ? "NULL" : listOfHabrMsg.size()));
 		//for (Message message : listOfHabrMsg) {
 			//Log.d("habreader", "message details.");
 			/*Log.d("habreader", "message.getTitle() = " + message.getTitle() );
@@ -64,10 +107,11 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 			
 			scrollView.addView(textview);
 			
-			LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-			scrollViewLayoutParams.setMargins(10, 1, 10, 1);
+			LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			scrollViewLayoutParams.setMargins(10, 1, 10, 20);
 			
 			mainLayout.addView(scrollView, scrollViewLayoutParams);
+			//mainLayout.addView(scrollView);
 			
 			/*TableRow tr1 = new TableRow(tableLayout.getContext());
 			
