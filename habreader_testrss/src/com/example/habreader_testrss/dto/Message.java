@@ -13,6 +13,7 @@ public class Message implements Comparable<Message> {
     private Date date;
     private String author;
     
+    //
 	public Message() {
 		
 	}
