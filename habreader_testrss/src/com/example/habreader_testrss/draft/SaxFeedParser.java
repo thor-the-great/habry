@@ -1,4 +1,4 @@
-package com.example.habreader_testrss.feedprovider;
+package com.example.habreader_testrss.draft;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,8 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.example.habreader_testrss.Message;
+import com.example.habreader_testrss.dto.Message;
+import com.example.habreader_testrss.feedprovider.ContentProvider;
 
 import android.util.Log;
 
@@ -24,7 +25,8 @@ public class SaxFeedParser extends BaseFeedParser {
 	    public List<Message> parse(ContentProvider contentProvider) {
 	    	//ContentProvider feedContentProvider = new TestFileContentProvider();
 	    	
-			InputStream is = contentProvider.getContentStream();
+			//InputStream is = contentProvider.getContentStream();
+			InputStream is = null;
 			try {
 				Reader reader = new BufferedReader(new InputStreamReader(is, "UTF8"));
 				

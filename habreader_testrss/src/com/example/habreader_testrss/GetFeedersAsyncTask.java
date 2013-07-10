@@ -1,33 +1,31 @@
 package com.example.habreader_testrss;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.example.habreader_testrss.feedparser_stdandroid.HabrXmlParser;
-import com.example.habreader_testrss.feedprovider.BaseFeedParser;
-import com.example.habreader_testrss.feedprovider.ContentProvider;
-import com.example.habreader_testrss.feedprovider.SaxFeedParser;
-
 import android.app.Activity;
-import android.content.res.XmlResourceParser;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.habreader_testrss.dto.Message;
+import com.example.habreader_testrss.feedparser_stdandroid.HabrXmlParser;
+import com.example.habreader_testrss.feedprovider.ContentProvider;
+
 public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message>> {
 	
-	int MAX_TITLE_LENGTH = 400;
+	int MAX_TITLE_LENGTH = 50;
+	int MAX_DESC_LENGTH = 400;
 	
 	ViewGroup mainLayout;
 	Activity activity;
@@ -39,42 +37,19 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 	
 	@Override
 	protected List<Message> doInBackground(String ... urls) {
-		XmlResourceParser xmlParser = activity.getResources().getXml(R.xml.testfeeds);
+		
+		ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
+		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
+		 
 		HabrXmlParser parser = new HabrXmlParser();
-		List<Message> listOfHabrMsg = new ArrayList<Message>();
-		try {
-			//listOfHabrMsg = parser.parse(xmlParser, null);
-			String url = "http://habrahabr.ru/rss/hubs/";
-			try {			
-					URL feedUrl = new URL(url);
-					listOfHabrMsg = parser.parse(null, feedUrl.openConnection().getInputStream());
-		        } catch (MalformedURLException e) {
-		        	Log.e("habreader error", e.toString());
-		            throw new RuntimeException(e);
-		        } catch (IOException e) {
-		        	Log.e("habreader error", e.toString());
-		        	throw new RuntimeException(e);
-				}
-	
-			
+		List<Message> listOfHabrMsg = new ArrayList<Message>();	
+		try {		
+			listOfHabrMsg = parser.parse(contentProvider);
 		} catch (XmlPullParserException e) {
 			Log.e("habreader", e.toString());
-		} /*catch (IOException e) {
+		} catch (IOException e) {
 			Log.e("habreader", e.toString());
-		}*/
-		
-		//String defaultHabrRssURL = urls[0];
-		
-		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, activity.getResources().openRawResource(R.xml.testfeeds));
-		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
-		//BaseFeedParser feederParser = new SaxFeedParser();
-		//List<Message> listOfHabrMsg = feederParser.parse(contentProvider);
-		//Log.d("habreader", "numbr of parsed messages " + (listOfHabrMsg == null ? "NULL" : listOfHabrMsg.size()));
-		//for (Message message : listOfHabrMsg) {
-			//Log.d("habreader", "message details.");
-			/*Log.d("habreader", "message.getTitle() = " + message.getTitle() );
-			Log.d("habreader", "message.getDescription() = " + message.getDescription());*/
-		//}
+		}		
 		return listOfHabrMsg;
 	}
 
@@ -87,30 +62,55 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 			ScrollView scrollView = new ScrollView(mainLayout.getContext());
 			//LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
 			//scrollView.setLayoutParams(layoutParams);
+			LinearLayout feedElementContainer = new LinearLayout(scrollView.getContext());
+			feedElementContainer.setOrientation(LinearLayout.VERTICAL);
 			
-			TextView textview = new TextView(scrollView.getContext());
+			TextView feedTitleTextview = new TextView(feedElementContainer.getContext());
 			LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-			textview.setLayoutParams(layoutParams);
-			
+			feedTitleTextview.setLayoutParams(layoutParams);			
 			int actualTitleLength = message.getTitle() == null ? 0 : message.getTitle().length();
 			String feedTitle = "";
 			if (actualTitleLength > MAX_TITLE_LENGTH ) {
-			//if (actualTitleLength > tableMaxWidth) {
-				feedTitle = message.getTitle().substring(0, MAX_TITLE_LENGTH);
-				//feedTitle = message.getTitle().substring(0, tableMaxWidth);
+				feedTitle = message.getTitle().substring(0, MAX_TITLE_LENGTH) + "...";
 			} else {
 				feedTitle = message.getTitle();
 			}
-			textview.setText(feedTitle);
-			textview.setTextColor(Color.DKGRAY);
-			//textview.setPadding(10, 1, 10, 0);
+			feedTitleTextview.setText(feedTitle);
+			feedTitleTextview.setTextColor(Color.DKGRAY);
+			feedTitleTextview.setTextSize((float) 16.0);
+			feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
+			feedElementContainer.addView(feedTitleTextview);
 			
-			scrollView.addView(textview);
+			TextView feedDescriptionTextview = new TextView(feedElementContainer.getContext());			
+			feedDescriptionTextview.setLayoutParams(layoutParams);			
+			actualTitleLength = message.getDescription() == null ? 0 : message.getDescription().length();
+			String feedDescription = "";
+			if (actualTitleLength > MAX_DESC_LENGTH ) {
+				feedDescription = message.getDescription().substring(0, MAX_DESC_LENGTH) + "...";
+			} else {
+				feedDescription = message.getDescription();
+			}
+			feedDescriptionTextview.setText(feedDescription);
+			feedDescriptionTextview.setTextColor(Color.DKGRAY);
+			feedDescriptionTextview.setTextSize((float) 12.0);
+			feedElementContainer.addView(feedDescriptionTextview);
+			
+			TextView authorInfo = new TextView(mainLayout.getContext());			
+			authorInfo.setLayoutParams(layoutParams);			
+			
+			authorInfo.setText(message.getAuthor());
+			authorInfo.setTextColor(Color.GREEN);
+			authorInfo.setGravity(Gravity.RIGHT);
+			authorInfo.setTextSize((float) 8.0);
+			//textview.setPadding(10, 1, 10, 0);			
+			//scrollView.addView(authorInfo);
+			feedElementContainer.addView(authorInfo);
 			
 			LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			scrollViewLayoutParams.setMargins(10, 1, 10, 20);
-			
+			scrollView.addView(feedElementContainer);
 			mainLayout.addView(scrollView, scrollViewLayoutParams);
+			//mainLayout.addView(authorInfo);
 			//mainLayout.addView(scrollView);
 			
 			/*TableRow tr1 = new TableRow(tableLayout.getContext());

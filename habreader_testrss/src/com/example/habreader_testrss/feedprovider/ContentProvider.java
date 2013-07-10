@@ -1,17 +1,15 @@
 package com.example.habreader_testrss.feedprovider;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import android.R;
-import android.app.Activity;
-import android.content.res.Resources;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.util.Log;
+import android.util.Xml;
 
 public abstract class ContentProvider {
 	
@@ -23,45 +21,70 @@ public abstract class ContentProvider {
 		if ( NETWORK_CONTENT_PROVIDER.equals(contentProviderStrategy) ) {
 			instance = new NetworkContentProvider();
 		} else if ( TEST_FILE_CONTENT_PROVIDER.equals(contentProviderStrategy) ) {
-			instance = new TestFileContentProvider((InputStream) initObject);
+			instance = new TestFileContentProvider((XmlPullParser) initObject);
 		}
 		return instance;
 	}
 	
-	public abstract InputStream getContentStream();
+	public abstract XmlPullParser getContentParser();
+	
+	public abstract void flashResources();
 	
 }
 
 class NetworkContentProvider extends ContentProvider {		
 	String url = "http://habrahabr.ru/rss/hubs/";
+	InputStream is = null;
 
 	@Override
-	public InputStream getContentStream() {
-		
-		try {			
-			URL feedUrl = new URL(url);
-            return feedUrl.openConnection().getInputStream();
-        } catch (MalformedURLException e) {
-        	Log.e("habreader error", e.toString());
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-        	Log.e("habreader error", e.toString());
-        	throw new RuntimeException(e);
+	public XmlPullParser getContentParser() {		
+		XmlPullParser parser = Xml.newPullParser();
+		try {		
+			URL feedUrl = new URL(url);		
+			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+			InputStream is = feedUrl.openConnection().getInputStream();
+			parser.setInput(is, null);
+			parser.next();
+		} catch (MalformedURLException e) {
+			Log.e("habreader error", e.toString());
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			Log.e("habreader error", e.toString());
+			throw new RuntimeException(e);
+		} catch (XmlPullParserException e) {
+			Log.e("habreader error", e.toString());
+			throw new RuntimeException(e);
+		}
+		return parser;
+	}
+
+	@Override
+	public void flashResources() {
+		if (is != null) {
+			try {
+				is.close();
+			} catch (IOException e) {
+				Log.e("habreader error", e.toString());
+				throw new RuntimeException(e);
+			}
 		}
 	}		
 }
 
 class TestFileContentProvider extends ContentProvider {		
 	
-	InputStream is = null;
+	XmlPullParser parser = null;
 	
-	TestFileContentProvider (InputStream is) {
-		this.is = new BufferedInputStream(is);
+	TestFileContentProvider (XmlPullParser parser) {
+		this.parser = parser;
 	}
 	
-	String TEST_FILE_NAME = "testFeeds.xml";		
+	public XmlPullParser getContentParser() {		
+		return this.parser;
+	}
+
 	@Override
-	public InputStream getContentStream() {
-		return this.is;
-	}		
+	public void flashResources() {
+		
+	}			
 }

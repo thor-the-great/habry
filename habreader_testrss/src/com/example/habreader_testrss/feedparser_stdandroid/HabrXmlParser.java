@@ -1,16 +1,14 @@
 package com.example.habreader_testrss.feedparser_stdandroid;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.example.habreader_testrss.Message;
-
-import android.util.Xml;
+import com.example.habreader_testrss.dto.Message;
+import com.example.habreader_testrss.feedprovider.ContentProvider;
 
 public class HabrXmlParser {
 	// We don't use namespaces
@@ -18,14 +16,9 @@ public class HabrXmlParser {
 
 	//public List<Message> parse(InputStream in) throws XmlPullParserException,
 		//	IOException {
-	public List<Message> parse( XmlPullParser parser, InputStream in ) throws XmlPullParserException, IOException {
-		if (parser == null) {
-			parser = Xml.newPullParser();
-			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-			parser.setInput(in, null);
-			parser.next();
-			//parser.require(XmlPullParser.START_TAG, ns, FeedTags.RSS.toString());
-		} 
+	//public List<Message> parse( XmlPullParser parser, InputStream in ) throws XmlPullParserException, IOException {
+	public List<Message> parse( ContentProvider contentProvider ) throws XmlPullParserException, IOException {
+		XmlPullParser parser = contentProvider.getContentParser();		
 		try {		
 			int eventType = parser.getEventType();
 			List<Message> entries = new ArrayList<Message>();
@@ -41,13 +34,9 @@ public class HabrXmlParser {
 		    	}
 		    	eventType = parser.next();
 		    }
-			//parser.nextTag();
-			
-			//return readFeed(parser);
 		    return entries;
 		} finally {
-			if (in != null)
-			in.close();
+			contentProvider.flashResources();
 		}
 	}
 
@@ -82,6 +71,7 @@ public class HabrXmlParser {
 		String summary = null;
 		String link = null;
 		String description = null;
+		String author = null;
 		while (parser.next() != XmlPullParser.END_TAG) {
 			//if (parser.getEventType() != XmlPullParser.START_TAG) {
 			//	continue;
@@ -91,32 +81,35 @@ public class HabrXmlParser {
 				title = readTitle(parser);
 			} else if (FeedTags.DESCRIPTION.toString().equalsIgnoreCase(name)) {
 				description = readDescription(parser);
+			} else if (FeedTags.AUTHOR.toString().equalsIgnoreCase(name)) {
+				author = readAuthor(parser);
+			} else {
+				skip(parser);
 			}
-			/*
-			 * else if (name.equals("summary")) { summary = readSummary(parser);
-			 * } else if (name.equals("link")) { link = readLink(parser); }
-			 *///else {
-				//skip(parser);
-			//}
 		}
-		return new Message(title, description);
+		return new Message(title, description, author);
 	}
 
 	// Processes title tags in the feed.
 	private String readTitle(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
-		parser.require(XmlPullParser.START_TAG, ns, "title");
-		String title = readText(parser);
-		parser.require(XmlPullParser.END_TAG, ns, "title");
-		return title;
+		return readTextValueOfTag(parser, FeedTags.TITLE);
 	}
 
 	// Processes title tags in the feed.
 	private String readDescription(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
-		parser.require(XmlPullParser.START_TAG, ns, "description");
+		return readTextValueOfTag(parser, FeedTags.DESCRIPTION);
+	}
+	
+	private String readAuthor(XmlPullParser parser) throws IOException,	XmlPullParserException {		
+		return readTextValueOfTag(parser, FeedTags.AUTHOR);
+	}
+	
+	private String readTextValueOfTag(XmlPullParser parser, FeedTags feedTag) throws IOException, XmlPullParserException {
+		parser.require(XmlPullParser.START_TAG, ns, feedTag.toString());
 		String title = readText(parser);
-		parser.require(XmlPullParser.END_TAG, ns, "description");
+		parser.require(XmlPullParser.END_TAG, ns, feedTag.toString());
 		return title;
 	}
 

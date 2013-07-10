@@ -1,4 +1,4 @@
-package com.example.habreader_testrss;
+package com.example.habreader_testrss.dto;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,15 +6,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Message implements Comparable<Message>{
+public class Message implements Comparable<Message> {
 	
+	private URL link;
+    private String description;
+    private Date date;
+    private String author;
+    
 	public Message() {
 		
 	}
 	
-	public Message(String title, String description) {
+	public Message(String title, String description, String author) {
 		this.title = title;
 		this.description = description;
+		this.author = author;
 	}
 	
     static SimpleDateFormat FORMATTER = 
@@ -43,11 +49,6 @@ public class Message implements Comparable<Message>{
 		public void setDescription(String description) {
 			this.description = description;
 		}
-
-		private URL link;
-        private String description;
-        private Date date;
-
           // getters and setters omitted for brevity
         public void setLink(String link) {
             try {
@@ -72,6 +73,14 @@ public class Message implements Comparable<Message>{
                 throw new RuntimeException(e);
             }
         }
+        
+    	public String getAuthor() {
+    		return author;
+    	}
+
+    	public void setAuthor(String author) {
+    		this.author = author;
+    	}
         
         /*@Override
         public String toString() {
