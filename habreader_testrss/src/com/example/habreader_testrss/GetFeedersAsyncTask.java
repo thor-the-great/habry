@@ -7,9 +7,11 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -25,7 +27,7 @@ import com.example.habreader_testrss.feedprovider.ContentProvider;
 public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message>> {
 	
 	int MAX_TITLE_LENGTH = 50;
-	int MAX_DESC_LENGTH = 400;
+	int MAX_DESC_LENGTH = 150;
 	
 	ViewGroup mainLayout;
 	Activity activity;
@@ -38,7 +40,15 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 	@Override
 	protected List<Message> doInBackground(String ... urls) {
 		
-		ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+		boolean isUseTestContentProvider = sharedPref.getBoolean("setting_isUseTestContentProvider", false);
+		
+		ContentProvider contentProvider;
+		if (isUseTestContentProvider)
+			contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
+		else 	
+			contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
+		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
 		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
 		 
 		HabrXmlParser parser = new HabrXmlParser();
@@ -101,7 +111,7 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 			authorInfo.setText(message.getAuthor());
 			authorInfo.setTextColor(Color.GREEN);
 			authorInfo.setGravity(Gravity.RIGHT);
-			authorInfo.setTextSize((float) 8.0);
+			authorInfo.setTextSize((float) 10.0);
 			//textview.setPadding(10, 1, 10, 0);			
 			//scrollView.addView(authorInfo);
 			feedElementContainer.addView(authorInfo);

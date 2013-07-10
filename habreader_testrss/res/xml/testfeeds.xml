@@ -7,7 +7,7 @@
 	<language>ru</language>
 	<managingEditor>editor@habrahabr.ru</managingEditor>
 	<generator>habrahabr.ru</generator>
-	<pubDate>Tue, 09 Jul 2013 04:16:22 GMT</pubDate>
+	<pubDate>Wed, 10 Jul 2013 03:40:57 GMT</pubDate>
 	<lastBuildDate></lastBuildDate>
 	<image>
 		<link>http://habrahabr.ru/</link>
@@ -15,375 +15,337 @@
 		<title>Хабрахабр</title>
 	</image>
 					<item>
-		<title><![CDATA[Дружим Check Point и ГОСТовое шифрование]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185930/</guid>
-		<link>http://habrahabr.ru/post/185930/</link>
-		<description><![CDATA[Привет, Хабровчане! <img align="right" src="http://habrastorage.org/storage2/959/0ed/038/9590ed038fa25da017da4ae5388d18e3.png"/><br/>
+		<title><![CDATA[Voyeur.js — маленькая и привлекательная библиотека для работы с DOM]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186136/</guid>
+		<link>http://habrahabr.ru/post/186136/</link>
+		<description><![CDATA[Доброго времени суток уважаемые хабражители. Сегодня увидел один <a href="https://github.com/dunxrion/voyeur.js">интересный проект на GitHub</a>. Эта маленькая библиотека (<a href="http://dunxrion.github.io/voyeur.js/">Voyeur.min.js</a> — 1.2kb) очень привлекает своим синтаксисом и неплохим функционалом. <br/>
 <br/>
-В данной статье мы расскажем вам о процессе настройки IPSec VPN на шлюзах Check Point R75.40VS с применением Российских криптоалгоритмов. Данная статья будет интересна в первую очередь инженерам, осуществляющим настройку и поддержку продуктов компании Check Point.<br/>
+<a href="http://instacod.es/77211"><img src="http://habr.habrastorage.org/post_images/4c5/ff3/2d9/4c5ff32d9b107cb06900f33a164bf656.png" alt="image"/></a><br/>
 <br/>
-Когда у меня возникла задача настроить на шлюзах Check Point IPSec VPN с использованием Российской криптографии, я столкнулся с проблемой нехватки информации описывающей данный процесс. По данной теме можно найти официальные гайды описывающие процесс в общих чертах и немного разрозненной информации в интернете, лично у меня после их изучения осталось множество вопросов, которые мы постарались освятить в данной статье.<br/>
+Даже не переводя <a href="http://dunxrion.github.io/voyeur.js/">документацию с официального сайта</a>, код можно понять интуитивно. По традиции приведу несколько примеров: <br/>
 <br/>
- <a href="http://habrahabr.ru/post/185930/#habracut">Много картинок</a>]]></description>
+ <a href="http://habrahabr.ru/post/186136/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Tue, 09 Jul 2013 04:10:01 GMT</pubDate>
-		<author>itsecurity</author>
-		<category><![CDATA[Блог компании АйТи]]></category><category><![CDATA[Сетевые технологии]]></category><category><![CDATA[Информационная безопасность]]></category>
-		<category><![CDATA[check point]]></category><category><![CDATA[криптопро]]></category><category><![CDATA[безопасность в сети]]></category>
+		<pubDate>Wed, 10 Jul 2013 00:07:34 GMT</pubDate>
+		<author>ilusha_sergeevich</author>
+		<category><![CDATA[JavaScript]]></category><category><![CDATA[Веб-разработка]]></category>
+		<category><![CDATA[javascript]]></category><category><![CDATA[voyeur]]></category><category><![CDATA[selector]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[(Видео) Демонстрации на стенде: Oracle Exalytics]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185948/</guid>
-		<link>http://habrahabr.ru/post/185948/</link>
-		<description><![CDATA[Предлагаем вашему вниманию видео демонстрации Oracle Exalytics прошедшей на <a href="http://www.youtube.com/watch?v=W6tBAKC7_Qc">МУК ЭКСПО 2013</a>. <br/>
+		<title><![CDATA[Смартфон Meizu MX2 становится доступнее!]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186134/</guid>
+		<link>http://habrahabr.ru/post/186134/</link>
+		<description><![CDATA[Уважаемые хабраюзеры, сегодня у нас сразу две отличные новости! Открытие первой в России фирменной точки продаж Meizu, а также приуроченное к этому событию снижение цен на все смартфоны компании, включая модель Meizu MX2! <br/>
 <br/>
-Докладчик: Александр Василенко, технический консультант по Oracle BI<br/>
-<br/>
-Тема демонстрации: Аналитика без границ — живая демонстрация Oracle Exalytics<br/>
-<br/>
-<iframe width="560" height="349" src="http://www.youtube.com/embed/0w1DQGXir1o?wmode=opaque" frameborder="0" allowfullscreen></iframe> <a href="http://habrahabr.ru/post/185948/#habracut"></a>]]></description>
+<img src="http://habrastorage.org/storage2/cf8/b3e/bcc/cf8b3ebcc1da49da4437faaeb6467248.jpg"/><br/>
+ <a href="http://habrahabr.ru/post/186134/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Tue, 09 Jul 2013 03:45:17 GMT</pubDate>
-		<author>Muk</author>
-		<category><![CDATA[Блог компании МУК]]></category><category><![CDATA[Oracle]]></category>
-		<category><![CDATA[Oracle Exalytics]]></category><category><![CDATA[mukexpo2013]]></category>
+		<pubDate>Wed, 10 Jul 2013 00:04:39 GMT</pubDate>
+		<author>meizu</author>
+		<category><![CDATA[Блог компании Meizu]]></category>
+		<category><![CDATA[meizu mx2]]></category><category><![CDATA[meizu]]></category><category><![CDATA[скидки]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[Роскомнадзор запретил три статьи «Ленты.ру» за нецензурную брань]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/186016/</guid>
-		<link>http://habrahabr.ru/post/186016/</link>
-		<description><![CDATA[<img align="left" src="http://habrastorage.org/storage2/85c/275/5af/85c2755af63ece767e01ebc4176b04ae.png" alt="image"/><a href="http://lenta.ru/news/2013/07/08/swearwords/">lenta.ru/news/2013/07/08/swearwords/</a><br/>
-Роскомнадзор потребовал от «Ленты.ру» удалить или отредактировать материалы, в которых содержится нецензурная брань. Письмо об этом поступило в редакцию 8 июля.<br/>
+		<title><![CDATA[[Из песочницы] Об особенностях видеосъёмки лекций]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186004/</guid>
+		<link>http://habrahabr.ru/post/186004/</link>
+		<description><![CDATA[<img src="http://habrastorage.org/storage2/054/8cf/30a/0548cf30a59a2124afe7b9db2c041af3.jpg"/><br/>
 <br/>
-В <a href="https://docs.google.com/file/d/0B8FEl2tdDPWvRGdhbFVHSlVFOFk/edit?usp=sharing">документе</a>, датированном 5 числом, упомянуты три материала, опубликованные с февраля по апрель 2013 года. В частности, в список попало <a href="http://lenta.ru/articles/2013/04/02/mat/">интервью</a> с доктором филологических наук, ведущим научным сотрудником Института мировой культуры МГУ имени Ломоносова Игорем Пильщиковым о происхождении русского мата. Еще два заинтересовавших Роскомнадзор материала — <a href="http://lenta.ru/articles/2013/03/19/propiskenet/">репортаж</a> с протестной акции на Красной площади, участники которой скандировали нецензурные лозунги, и <a href="http://lenta.ru/articles/2013/02/15/meteorite/">свидетельства</a> очевидцев падения метеорита в Челябинске. <i>цитата lenta.ru</i><br/>
- <a href="http://habrahabr.ru/post/186016/#habracut">Читать дальше &rarr;</a>]]></description>
+За последний год я имел отношения к записи более 1000 лекций разного уровня сложности и хотел бы поделиться своим опытом в этой части. Это обещанное продолжение статьи <a href="http://habrahabr.ru/post/162793/">Тренды в образовательной среде (памятка для вуза)</a>.<br/>
+<br/>
+Способ съёмки сильно варьируется от тематики лекции (техническая или гуманитарная), используемых технических средств (меловые и маркерные доски, плазмы, проекторы и пр.), формата лекции (есть обсуждение и вопросы из зала или нет), особенностей лектора (бегает он по аудитории или прячется за кафедру) и, конечно, бюджета.<br/>
+<br/>
+В частности, надо понимать, что ТВ опыт скорее мешает, чем помогает. Мы принципиально набираем операторов без опыта, так как телевизионщики, привыкшие к другой схеме работы, не справляются. Разные планы, разные приоритеты, минимум подсъёмок.<br/>
+<br/>
+Кроме того, если вы пишете живую, не постановочную, лекцию, то нет возможности снять ещё один дубль. Оператор не имеет права на ошибку. И очень мало можно исправить при монтаже. Зато живая лекция выгодно отличается от постановочной. Лектор забывает о камере, расслаблен, спокоен и работает с привычной аудиторией. Всё это очень хорошо чувствуется при просмотре. <br/>
+<br/>
+Итак, можно выделить следующие типы видеосъёмки лекций:<br/>
+ <a href="http://habrahabr.ru/post/186004/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Tue, 09 Jul 2013 03:28:04 GMT</pubDate>
-		<author>shara</author>
-		<category><![CDATA[Dura Lex]]></category>
-		<category><![CDATA[lenta.ru]]></category><category><![CDATA[блокировка]]></category><category><![CDATA[Роскомнадзор]]></category><category><![CDATA[мат]]></category><category><![CDATA[закон]]></category><category><![CDATA[№34-ФЗ]]></category><category><![CDATA[запретить]]></category><category><![CDATA[не пущать]]></category><category><![CDATA[цензура]]></category><category><![CDATA[Кафка]]></category>
+		<pubDate>Tue, 09 Jul 2013 23:15:19 GMT</pubDate>
+		<author>yasha_somov</author>
+		<category><![CDATA[Учебный процесс в IT]]></category><category><![CDATA[Работа с видео]]></category>
+		<category>видеолекция</category><category>образование</category><category>лекториум</category>
 	</item>
 
 		<item>
-		<title><![CDATA[Замена фона в Гимпе — рабочее решение]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/186014/</guid>
-		<link>http://habrahabr.ru/post/186014/</link>
-		<description><![CDATA[В комментариях к посту <a href="http://habrahabr.ru/post/179851/">Clipping Magic...</a> я посетовала на невозможность качественно отделить объект от фона в Гимпе. Я с мая искала рабочий способ замены фона, чтобы не мучиться с фотошопом в убунту, которая давно уже является у меня единственной осью на десктопе. Прочитав сотни уроков (в том числе уроков по ручному созданию подобных масок в фотошопе, т.к. маски в гимпе почти не отличаются), я так и не нашла способа, который был бы таким же быстрым и качественным, как Refine Edges в CS5-6. А вчера в каталоге плагинов на официальном сайте Гимпа был выложен плагин, который наконец-то справился с задачей.<br/>
-Итак, встречайте:<br/>
- <a href="http://habrahabr.ru/post/186014/#habracut">Читать дальше &rarr;</a>]]></description>
+		<title><![CDATA[[Из песочницы] Пиксельный эффект на Actionscript 3.0]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186038/</guid>
+		<link>http://habrahabr.ru/post/186038/</link>
+		<description><![CDATA[<div style="text-align:center;"><img src="http://habrastorage.org/storage2/67a/e71/12f/67ae7112fcc4d589728a159ed191b9b4.png" alt="preview" /></div><br/>
+<a href="http://kvcode.ru/direct/MaskingText2/index.html">Такой вот</a> незамысловатый эффект. Под катом исходники, местами комментарии и пояснения.<br/>
+ <a href="http://habrahabr.ru/post/186038/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Tue, 09 Jul 2013 03:03:58 GMT</pubDate>
-		<author>bigdogsru</author>
-		<category><![CDATA[Обработка изображений]]></category><category><![CDATA[Софт]]></category><category><![CDATA[Linux]]></category>
-		<category><![CDATA[gimp]]></category><category><![CDATA[linux]]></category><category><![CDATA[обработка изображений]]></category>
+		<pubDate>Tue, 09 Jul 2013 22:39:37 GMT</pubDate>
+		<author>KeeReal</author>
+		<category><![CDATA[Flash-платформа]]></category><category><![CDATA[Песочница]]></category>
+		<category>actionscript 3.0</category><category>effects</category>
 	</item>
 
 		<item>
-		<title><![CDATA[Oracle Label Security. Первое знакомство]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185946/</guid>
-		<link>http://habrahabr.ru/post/185946/</link>
-		<description><![CDATA[Oracle Label Security (OLS) — это еще одна возможность разграничения доступа к данным в Oracle Database Server. Отличительной особенностью OLS является многоуровневость политик доступа и хранение атрибутов управления доступом вместе с данными.<br/>
-<br/>
-Внутри политики определяются уровни доступа к информации, например: «сов.секретно», «секретно», «ДСП». Пользователь, обладающий более высоким уровнем доступа, имеет доступ к данным помеченным его уровнем и уровнями ниже.<br/>
-<br/>
-<i>Oracle Label Security является платной опцией Oracle Database Enterprise Edition.</i><br/>
-<br/>
-Ниже будут рассмотрены основные понятия и приведен пример использования OLS.<br/>
- <a href="http://habrahabr.ru/post/185946/#habracut">Читать дальше &rarr;</a>]]></description>
+		<title><![CDATA[Несколько простых запросов вместо одного большого для загрузки связей в ORM]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186132/</guid>
+		<link>http://habrahabr.ru/post/186132/</link>
+		<description><![CDATA[Сразу оговорюсь, это не обучающий пост и не провозглашение новой парадигмы )), скорее решение, к которому я пришел, и хочется его обсудить в широкой и честной дискуссии.<br/>
+Теперь к сути, представьте, что есть некая ORM, написанная на PHP, в которой описана модель <b>Posts</b>, имеющая связи многие-ко-многим через промежуточные таблицы с другими моделями: <b>Comments, Tags, Categories</b>. Вопрос в том, каким способом лучше поднимать связанные данные, всё сразу или с отложенной загрузкой?<br/>
+ <a href="http://habrahabr.ru/post/186132/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 19:56:30 GMT</pubDate>
-		<author>xlix123</author>
-		<category><![CDATA[Администрирование баз данных]]></category><category><![CDATA[Oracle]]></category><category><![CDATA[Информационная безопасность]]></category>
-		<category><![CDATA[oracle]]></category><category><![CDATA[security]]></category>
+		<pubDate>Tue, 09 Jul 2013 22:18:06 GMT</pubDate>
+		<author>bardex</author>
+		<category><![CDATA[SQL]]></category><category><![CDATA[PHP]]></category>
+		<category><![CDATA[php]]></category><category><![CDATA[sql]]></category><category><![CDATA[orm]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[«Отказ от ответственности»]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/186008/</guid>
-		<link>http://habrahabr.ru/post/186008/</link>
-		<description><![CDATA[<img src="http://habr.habrastorage.org/post_images/362/328/354/36232835430608feab174533793152fb.jpg" align="left"/>Не так давно, в Государственной Думе прозвучало предложение <a href="http://habrahabr.ru/post/183860/">запретить</a> хранить личные данные граждан России на зарубежных серверах. Несмотря на критику, прозвучавшую в интернете, инициатива жива и, вероятно, в ближайшие месяцы найдёт воплощение в законе. <br/>
+		<title><![CDATA[Иран раздаст всем гражданам государственные адреса электронной почты]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186122/</guid>
+		<link>http://habrahabr.ru/post/186122/</link>
+		<description><![CDATA[<img src="http://habr.habrastorage.org/post_images/a43/287/817/a43287817dfe3d56b25defcb88ff6b4b.jpg" alt="image"/><br/>
 <br/>
-Сегодня, автор идеи Сергей Владимирович Железняк объяснил, каким образом на практике может быть реализовано его предложение.<br/>
+Иран продолжает строить свой отдельный Интернет и новым шагом стал запуск государственной электронной почты. Как <a href="http://www.theverge.com/2013/7/8/4504510/iran-creating-state-run-email-service-for-all-citizens">сообщает</a> The Verge с ссылкой на Reuters, Иран планирует выдать всем своим жителям адреса государственной электронной почты и использовать эти адреса для коммуникации с ними. <br/>
 <br/>
-По словам депутата, невозможно запретить людям размещать личные данные на иностранных серверах, но подобный поступок повлечет за собой «отказ от ответственности» со стороны государства. <br/>
-<br/>
-«Если гражданин России размещает свои данные на серверах вне территории РФ, то в случае хищения денежных средств или персональных данных мы не будем принимать иски», — <a href="http://www.itar-tass.com/c96/799842.html">приводит</a> ИТАР-ТАСС слова народного избранника.<br/>
-<br/>
-Законопроект Госдума рассмотрит в ходе осенней сессии. <a href="http://habrahabr.ru/post/186008/#habracut"></a>]]></description>
+Хотя это даст иранскому правительству довольно прогрессивное средство общения со своим народом, существует опасение, что государство будет использовать его только как один из способов контроля за личной жизнью людей. Иран же обещает охранять конфиденциальность пользователей.<br/>
+ <a href="http://habrahabr.ru/post/186122/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 19:53:15 GMT</pubDate>
-		<author>veveve</author>
-		<category><![CDATA[Dura Lex]]></category><category><![CDATA[Информационная безопасность]]></category>
-		<category><![CDATA[отказ от ответственности]]></category><category><![CDATA[железняк]]></category>
-	</item>
-
-		<item>
-		<title><![CDATA[[Из песочницы] Используем поисковые движки для проверки корректности фраз]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185860/</guid>
-		<link>http://habrahabr.ru/post/185860/</link>
-		<description><![CDATA[По работе мне часто приходится вести переписку на английском, и в силу недолеченного перфекционизма, пользоваться для этого оффлайн/онлайн переводными/толковыми словарями. В целом они со своей работой справляются, пока дело не доходит до проверки правильности словосочетаний или целых фраз. Хочешь ввернуть что-нибудь из разряда продвинутого владения языком, но нет уверенности, что правильно помнишь (большой привет предлогам и фразовым глаголам).<br/>
-<br/>
-Есть парочка ресурсов, для поиска фраз, но заточены они в основном под общеупотребимые словосочетания, пословицы и фразеологизмы на отдельно взятом языке. К тому же не известно пользуются ли люди искомой фразой или употребив её вы поставите в тупик даже носителя языка.<br/>
- <a href="http://habrahabr.ru/post/185860/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 19:45:25 GMT</pubDate>
-		<author>goldena</author>
-		<category><![CDATA[Python]]></category><category><![CDATA[Поисковые машины и технологии]]></category>
-		<category>python</category><category>search engine</category><category>search api</category><category>bing api</category><category>google ajax search api</category><category>перевод текстов</category><category>поисковые системы</category>
-	</item>
-
-		<item>
-		<title><![CDATA[[Из песочницы] Описание протокола BitMessage]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/186000/</guid>
-		<link>http://habrahabr.ru/post/186000/</link>
-		<description><![CDATA[<img src="http://habrastorage.org/storage2/656/22a/160/65622a160871ec7ac7d81a5a37a31fc0.png"/>В свете программы PRISM у многих пользователей интернета наблюдается повышенный уровень паранойи. Думаю, использование протокола BitMessage поможет Вам почувствовать себя более защищенным. <br/>
-<br/>
-Сразу оговорюсь, что протокол достаточно молодой, хотя и достаточно многообещающий. Молодость средства криптографии может свидетельствовать о том, что не все дефекты (в том числе и критичные для сохранения сообщения или Вашей анонимности) были найдены и устранены. Версия клиента 0.0.1, написанного на Python, вышла 21 марта. Сейчас актуальна версия 0.3.4 и популярность, как и количество пользователей растет, в геометрической прогрессии. <br/>
-<br/>
-По сравнению чатом в tor, или i2p подкупает легкость установки клиента. Буквально в один клик!<br/>
-<br/>
- <a href="http://habrahabr.ru/post/186000/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 19:42:08 GMT</pubDate>
-		<author>vohJyschKVRKTJq4KCboU9sov</author>
-		<category><![CDATA[Песочница]]></category><category><![CDATA[Криптография]]></category><category><![CDATA[Информационная безопасность]]></category>
-		<category>криптография</category><category>общение</category><category>информационная безопасность</category>
-	</item>
-
-		<item>
-		<title><![CDATA[Парсек 2013: говорим о космосе и технологиях будущего]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/186006/</guid>
-		<link>http://habrahabr.ru/post/186006/</link>
-		<description><![CDATA[Привет, Хабр!<br/>
-<br/>
-Я считаю, что есть неразрывная связь между мечтами конкретного человека и пользой, которую он приносит обществу. И как следствие, те, кто одержим научной фантастикой имеют все шансы приблизить будущее. К примеру те, кто смотрели Star Trek в 60-x — позже работали в НАСА, а те кто занимается робототехникой в немалой своей части пришли в неё благодаря Азимову.<br/>
-<br/>
-<img src="http://habrastorage.org/storage2/d72/a93/bad/d72a93bad779e137a3a001f76424fb1a.jpg"/><br/>
-<br/>
-Мне и моим соратникам захотелось внести свою лепту в этот процесс. И поэтому на следующей неделе, в рамках международного конвента любителей фантастики Старкон пройдёт небольшая, но очень насыщенная конференция Парсек 2013.<br/>
-<br/>
-Я пригласил туда отличных докладчиков (многие из них с Хабра) и был удивлён, насколько охотно они откликнулись. <br/>
-<br/>
-Ниже короткий список профильных докладов:<br/>
-<br/>
- <a href="http://habrahabr.ru/post/186006/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 19:36:57 GMT</pubDate>
-		<author>iasonov</author>
-		<category><![CDATA[Я пиарюсь]]></category>
-		<category><![CDATA[парсек]]></category><category><![CDATA[космос]]></category><category><![CDATA[биоинформатика]]></category><category><![CDATA[fablab]]></category><category><![CDATA[239]]></category><category><![CDATA[технологии будущего]]></category><category><![CDATA[fab lab]]></category><category><![CDATA[bioinformatics]]></category><category><![CDATA[3d-принтер]]></category>
-	</item>
-
-		<item>
-		<title><![CDATA[[Из песочницы] Интересное поведение сортировки в .NET]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185996/</guid>
-		<link>http://habrahabr.ru/post/185996/</link>
-		<description><![CDATA[Всё началось с того, что на работе у коллеги стали падать тесты. Причём только у неё одной. Вдаваться в подробности не буду, но суть в том, что в тесте было два объекта List. Первый был эталонным, а второй — возвращался тестируемым методом. Затем листы сравнивались поэлементно.<br/>
-Очень быстро было выяснена причина падения теста: у коллеги порядок элементов в результирующем массиве был обратным порядку в эталонном массиве. В коде тестируемого метода использовался стандартный List.Sort с нашим компаратором, который именно на этом тесте всегда возвращает 0. Но у всей команды элементы возвращались в одном порядке, а у одной сотрудницы — строго в обратном. Было быстро выяснено, что у коллеги давно не было обновлений и версия mscorlib.dll у неё сильно отличалась от той, что была у остальных. На этом можно было бы и успокоиться, но мне стало интересно я решил копать дальше и вот что выяснил.  <a href="http://habrahabr.ru/post/185996/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 19:10:22 GMT</pubDate>
-		<author>T-D-K</author>
-		<category><![CDATA[Песочница]]></category><category><![CDATA[.NET]]></category>
-		<category>сортировка</category><category>.net framework 4.0</category><category>.net framework 4.5</category><category>быстрая сортировка</category>
-	</item>
-
-		<item>
-		<title><![CDATA[[Из песочницы] Heroku и Россия]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185998/</guid>
-		<link>http://habrahabr.ru/post/185998/</link>
-		<description><![CDATA[Миллион раз уже слышал о том, что делать проект на Heroku — признак слабого знания linux-систем и банальной лени. С одной стороны — есть в этом что-то такое, но с другой деплой приложений, в данном случае я говорю о Rails приложениях, одной строкой и отсутствие заморочек с настройкой машины — это шикарно. Так давайте поговорим о мифах против heroku, которые я слышал уже несколько сотен раз.<br/>
- <a href="http://habrahabr.ru/post/185998/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 19:08:50 GMT</pubDate>
-		<author>savroff</author>
-		<category><![CDATA[Ruby on Rails]]></category><category><![CDATA[Песочница]]></category>
-		<category>ruby</category><category>heroku</category><category>rails</category><category>rails-хостинг</category>
-	</item>
-
-		<item>
-		<title><![CDATA[Nikon хочет изменить концепцию фотоаппарата, чтобы конкурировать со смартфонами]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185990/</guid>
-		<link>http://habrahabr.ru/post/185990/</link>
-		<description><![CDATA[<img src="http://habr.habrastorage.org/post_images/71c/5bf/3ea/71c5bf3eabdf0761f63d617b7c9a3b1a.jpg" alt="image"/><br/>
-<br/>
-В последнее время из-за роста популярности смартфонов с хорошими камерами производители любительских фотоаппаратов переживают не лучшие времена. За последний год продажи мыльниц упали на 25 %.<br/>
-<br/>
-Президент Nikon Макото Кимура <a href="http://www.bloomberg.com/news/2013-07-07/nikon-president-eyes-smartphone-users-as-compact-sales-fall.html">заявил</a> в интервью Bloomberg, что компания должна найти ответ на быстрый рост мобильных устройств: «Мы хотим создать продукт, который изменит концепцию фотоаппаратов».<br/>
- <a href="http://habrahabr.ru/post/185990/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 17:51:35 GMT</pubDate>
+		<pubDate>Tue, 09 Jul 2013 19:27:59 GMT</pubDate>
 		<author>aleksandrit</author>
-		<category><![CDATA[Фототехника]]></category>
-		<category><![CDATA[Nikon]]></category><category><![CDATA[фотоаппараты]]></category><category><![CDATA[мыльницы]]></category><category><![CDATA[носимые компьютеры]]></category>
+		<category><![CDATA[ИТ-Инфраструктура]]></category>
+		<category><![CDATA[Иран]]></category><category><![CDATA[электронная почта]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[«Chaos Engine — вернусь каким и не ждали» — оригинальная позиция разработчиков в отношении ремейка игры]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185920/</guid>
-		<link>http://habrahabr.ru/post/185920/</link>
-		<description><![CDATA[<img src="http://habrastorage.org/storage2/048/326/0f9/0483260f94453da389ed7dfce687b2ad.jpg"/><br/>
+		<title><![CDATA[Microsoft выпустили очередной набор обновлений, июль 2013]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/185902/</guid>
+		<link>http://habrahabr.ru/post/185902/</link>
+		<description><![CDATA[Microsoft анонсировали выпуск серии патчей, нацеленных на устранение уязвимостей в своих продуктах. Заявленные <a href="https://twitter.com/msftsecresponse/status/352834498108465153">ранее</a> в пре-релизе (4 июля) секьюрити-фиксы покрывают в общей сложности 35 уникальных уязвимости (6 исправлений со статусом Critical и 1 со статусом Important). Детальный отчет Вы можете найти <a href="http://technet.microsoft.com/en-us/security/bulletin/ms13-jul">здесь</a>. <br/>
 <br/>
-Буквально недавно я уже касался творчества известной в свое время группы разработчиков под названием Bitmap Brothers. Коснулся вскользь, с опаской и потаенной надеждой. Иногда надежды бывают оправданными. Иногда случаются чудеса. Иногда человек действительно получает то, что он хочет. <br/>
+Критическое обновление MS13-055 нацелено на устранение уязвимостей типа <b>Remote Code Execution</b>, которые присутствуют во всех версиях браузера Internet Explorer, начиная с 6-й версии и заканчивая новейшим IE 10 (для всех ОС Windows XP — 8 — RT, x32 и x64, для серверных версий ОС как Moderate). Другое критическое обновление <a href="https://technet.microsoft.com/en-us/security/bulletin/ms13-052">MS13-052</a> нацелено на устранение уязвимостей Remote Code Execution в платформе <b>Silverlight</b> и .<b>NET Framework</b> (для всех ОС Windows XP — 8 — RT, x32 и x64).<br/>
 <br/>
-Devolver Digital не стали изобретать велосипед и пошли по оригинальному пути. «Оригинальность» в данном случае можно трактовать двояко. Во-первых, это следование оригинальным канонам, а во вторых в мир кровавого и всепоглощающего 3D увидеть что-то старое – сложно. Исключение составляют те фронты, где каждый день не на жизнь, а на смерть сражаются инди-девелоперы. И в том и в другом случае можно сказать, что разработчики… оригинальны. <br/>
+Компания анонсировала исправление для LPE 0day уязвимости CVE-2013-3660 (<a href="https://technet.microsoft.com/en-us/security/bulletin/ms13-053">MS13-055</a>), о которой мы более подробно <a href="http://habrahabr.ru/company/eset/blog/182494/">писали</a> в прошлом посте, посвященном patch tuesday. <br/>
 <br/>
-Насколько глубоко в любви к истокам они зашли в своей оригинальности? Стоит ли взять лопатку и снять несколько пластов пикселизированной земли? Скрывает ли новость очередное ностальгирующее «нытье» так горячо нелюбимое многими? Лопата – на обычном месте. Копать или нет решать вам. <br/>
+В рамках нескольких апдейтов (MS13-052, MS13-053, MS13-054) компания исправляет уязвимость CVE-2013-3129, которая присутствует в коде различных компонентов (платформах <b>.NET Framework</b>, <b>Silverlight</b> и драйвере подсистемы Win32 — <b>win32k.sys</b>) при обработке файлов шрифтов TrueType. Специальным образом сформированный TrueType файл, при его открытии, может повлечь удаленное исполнение произвольного кода в системе (RCE). При этом злоумышленник может получить полный контроль над скомпрометированной системой.<br/>
 <br/>
-<img src="http://habrastorage.org/storage2/25d/94c/7f7/25d94c7f7ebbd2cbd60c1559c727037d.png"/><br/>
- <a href="http://habrahabr.ru/post/185920/#habracut">Ностальгирующая лопата</a>]]></description>
+ <a href="http://habrahabr.ru/post/185902/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 16:27:39 GMT</pubDate>
-		<author>Weilard</author>
-		<category><![CDATA[Game Development]]></category><category><![CDATA[История ИТ]]></category>
-		<category><![CDATA[chaos]]></category><category><![CDATA[engine]]></category><category><![CDATA[remake]]></category><category><![CDATA[indie]]></category><category><![CDATA[devolver]]></category><category><![CDATA[digital]]></category><category><![CDATA[pixel]]></category><category><![CDATA[pixelart]]></category>
+		<pubDate>Tue, 09 Jul 2013 18:55:37 GMT</pubDate>
+		<author>esetnod32</author>
+		<category><![CDATA[Блог компании ESET NOD32]]></category><category><![CDATA[Информационная безопасность]]></category>
+		<category><![CDATA[patchtuesday]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[[Из песочницы] Установка Tiny Tiny RSS на роутер Zyxel Keenetic]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185876/</guid>
-		<link>http://habrahabr.ru/post/185876/</link>
-		<description><![CDATA[Совсем недавно «корпорация добра» закрыла Google Reader. Тысячи пользователей встали перед выбором читалки RSS лент. Кто то сразу нашел то, что ему по душе, а кто то до сих пор находится в поиске. Но у всех онлайн читалок есть один существенный недостаток — они так же, как и Google Reader могут закрыться в любой момент. Выходом из сложившейся ситуации является установка одной из самых популярных self-hosted читалок — Tiny Tiny RSS (далее tt-rss). Её можно установить на VDS сервер, или домашний компьютер. Но за сервер нужно платить, хоть и небольшие, но деньги, а держать всегда включенный ПК (дабы иметь доступ к читалке отовсюду) проблематично. Однако, если у вас трудится роутер Zyxel Keenetic, то tt-rss можно установить читалку на него! <br/>
- <a href="http://habrahabr.ru/post/185876/#habracut">Читать дальше &rarr;</a>]]></description>
+		<title><![CDATA[Образование, работа и повышение квалификации]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186120/</guid>
+		<link>http://habrahabr.ru/post/186120/</link>
+		<description><![CDATA[Образование в России является очень актуальным вопросом, особенно в свете последних реформ в этой сфере. Образование становится платным, а значит качественное ИТ образование, и без того плохо доступное в регионах, скорее всего станет просто роскошью. Программы поддержки отрасли работают плохо, практически любые попытки государства изменить ситуацию выглядят неуклюжи, по этому сообщество вынуждено так или иначе самоорганизовываться. То тут, то там появляются проекты «курс программирования за 10 дней», &quot;<a href="http://habrahabr.ru/post/150109/">как я стал программистом за 8 недель</a>&quot; и прочие. Несмотря на то, что для любого специалиста подобные топики просто смешны, то в одном, то в другом таком проекте можно заметить крупные компании или известных людей.<br/>
+<br/>
+Это можно оценивать по разному, но я вижу в этом отчаянную попытку изменить ситуацию. Я сам программист самоучка, и знаю что проблема образования не шутка. Даже отучившись в ВУЗе, через пять лет знания быстро перестают быть актуальными, а где их актуализировать? Фактически, каждый человек предоставлен самому себе в этом вопросе.<br/>
+ <a href="http://habrahabr.ru/post/186120/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 16:14:30 GMT</pubDate>
-		<author>RIG</author>
-		<category><![CDATA[Сетевые технологии]]></category><category><![CDATA[DIY или Сделай Сам]]></category>
-		<category>RSS</category><category>читалка</category><category>ридер</category><category>роутер</category><category>Zyxel</category><category>Keenetic</category>
+		<pubDate>Tue, 09 Jul 2013 18:36:43 GMT</pubDate>
+		<author>kozzztik</author>
+		<category><![CDATA[Human Resources]]></category><category><![CDATA[Учебный процесс в IT]]></category>
+		<category><![CDATA[образование в ит]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[[Перевод] Курс лекций «Стартап». Питер Тиль. Стенфорд 2012. Занятие 16]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185978/</guid>
-		<link>http://habrahabr.ru/post/185978/</link>
-		<description><![CDATA[<img align="right" src="http://habrastorage.org/storage2/fb6/d22/275/fb6d22275618803e89292d1287639a45.png"/><br/>
-Весной 2012 г., Питер Тиль (<a href="http://en.wikipedia.org/wiki/Peter_Thiel">Peter Thiel</a>), один из основателей PayPal и первый инвестор FaceBook, провел курс в Стенфорде — «Стартап». Перед началом Тиль заявил: «Если я сделаю свою работу правильно, это будет последний предмет, который вам придется изучать».<br/>
+		<title><![CDATA[[Из песочницы] Браузерная игра глазами гейм-дизайнера]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186082/</guid>
+		<link>http://habrahabr.ru/post/186082/</link>
+		<description><![CDATA[Это мой первый проект по созданию игр, я никогда до этого не работал в подобной сфере. Многие задачи были для меня новыми – что-то несложное, а некоторые трудновыполнимые. Бывает, приходят в голову идеи, но их очень сложно перенести на бумагу. С чего начинается и где заканчивается… <br/>
 <br/>
-Один из студентов лекции записывал и выложил <a href="http://blakemasters.tumblr.com/peter-thiels-cs183-startup">транскипт</a>. В данном хабратопике <a href="http://habrahabr.ru/users/degorov/" class="user_link">degorov</a>, переводит шестнадцатое занятие, редактор <a href="http://habrahabr.ru/users/astropilot/" class="user_link">astropilot</a>. <br/>
+<h4>Идея</h4><br/>
+Всё, как и в любом проекте, начинается с идеи. Была идея создать онлайн браузерную игру про фанатов футбола. Концепция игры: фанаты футбола собираются перед матчем и защищают интересы своей команды. У нас уже есть целевая аудитория, на которую мы поставили ставки (фанаты футбола), но игра также должна быть увлекательная и для обычных геймеров. Моя задача заключается в том, чтобы игра была как можно занимательнее.<br/>
 <br/>
-<a href="http://habrahabr.ru/post/151193/">Занятие 1: Вызов будущего</a><br/>
-<a href="http://habrahabr.ru/post/152106/">Занятие 2: Снова как в 1999?</a><br/>
-<a href="http://habrahabr.ru/post/155841/">Занятие 3: Системы ценностей</a><br/>
-<a href="http://habrahabr.ru/post/156575/">Занятие 4: Преимущество последнего хода</a><br/>
-<a href="http://habrahabr.ru/post/158811/">Занятие 5: Механика мафии</a><br/>
-<a href="http://habrahabr.ru/post/159307/">Занятие 6: Закон Тиля</a><br/>
-<a href="http://habrahabr.ru/post/159829/">Занятие 7: Следуйте за деньгами</a><br/>
-<a href="http://habrahabr.ru/post/161185/">Занятие 8: Презентация идеи (питч)</a><br/>
-<a href="http://habrahabr.ru/post/161939/">Занятие 9: Все готово, а придут ли они?</a><br/>
-<a href="http://habrahabr.ru/post/170465/">Занятие 10: После Web 2.0</a><br/>
-<a href="http://habrahabr.ru/post/171355/">Занятие 11: Секреты</a><br/>
-<a href="http://habrahabr.ru/post/173675/">Занятие 12: Война и мир</a><br/>
-<a href="http://habrahabr.ru/post/179451/">Занятие 13: Вы — не лотерейный билет</a><br/>
-<a href="http://habrahabr.ru/post/181858/">Занятие 14: Экология как мировоззрение</a><br/>
-<a href="http://habrahabr.ru/post/185246/">Занятие 15: Назад в будущее</a><br/>
-<b>Занятие 16: Разбираясь в себе</b><br/>
-Занятие 17: Глубокие мысли<br/>
-Занятие 18: Учредитель — жертва или Бог<br/>
-Занятие 19: Застой или подъем<br/>
- <a href="http://habrahabr.ru/post/185978/#habracut">Читать дальше &rarr;</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 15:06:14 GMT</pubDate>
-		<author>zag2art</author>
-		<category><![CDATA[Переводы]]></category><category><![CDATA[История ИТ]]></category><category><![CDATA[Исследования и прогнозы в IT]]></category>
-		<category>стартап</category><category>питер тиль</category><category>стенфорд</category>
-	</item>
-
-		<item>
-		<title><![CDATA[[Из песочницы] Автоматический «текучий интерфейс» и ArrayIterator в PHP-моделях]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185896/</guid>
-		<link>http://habrahabr.ru/post/185896/</link>
-		<description><![CDATA[Данный способ не претендует на оригинальность, но, как мне кажется, может быть полезен в понимании принципов работы подобных систем (см. например <a href="http://docs.magentocommerce.com/Varien/Varien_Object/Varien_Object.html">Varien_Object</a>, написанный разработчиками Magento, идея была взята в первую очередь оттуда) и, возможно, будет полезен в проектах, куда не очень хочется подключать тяжелые фреймворки, но уже нужно как-то систематизировать код. <br/>
+Идей, как правило, много. Каждый день появлялось минимум 2-3 конструктивные идеи. Я полагался не только на себя, мне помогали друзья и даже мама, хотя она никогда не играла ни во что кроме пасьянса и зума делюкс. Иногда идея приходит из самого неожиданного источника. Важно вовремя остановиться, проанализировать и отсеять ненужное. Иногда приходилось отказываться от замечательных идей только потому, что они не вписываются в общий концепт. Грустнее, когда отказываться приходилось из-за нехватки средств или вероятности не уложиться в сроки.<br/>
 <br/>
-Сложно представить достаточно крупный проект, в котором не было бы работы с моделями данных. Скажу больше: по моему опыту около трех четвертых всего кода — это создание, загрузка, изменение, сохранение или удаление записей. Будь то регистрация пользователя, вывод десятка последних статей или работа с админкой — все это мелкая работа с базовыми операциями моделей. И, соответственно, такой код должен писаться и читаться быстро и не должен забивать голову программиста техническими деталями: он (программист) должен думать о логике работы приложения, а не об очередном UPDATE-запросе.<br/>
- <a href="http://habrahabr.ru/post/185896/#habracut">Подробнее - под катом</a>]]></description>
+Споры внутри команды происходили постоянно, каждый относился к проекту очень эмоционально и с полной отдачей. Любая мелочь могла перерасти в скандал – начиная от того, где лучше расположить кнопки и заканчивая стратегией, балансом и изменением приемов. Все старались внести свой посильный вклад, поэтому мне трудно судить насколько судьба проекта зависела от моего видения игры. Истина рождалась в спорах. И пока мы спорили, проект продолжался.<br/>
+ <a href="http://habrahabr.ru/post/186082/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 14:57:33 GMT</pubDate>
-		<author>Jack_Taylor</author>
-		<category><![CDATA[PHP]]></category>
-		<category>PHP</category><category>fluent interface</category><category>модели данных</category><category>ArrayIterator</category>
-	</item>
-
-		<item>
-		<title><![CDATA[Как я Родину продавал или 7 практических советов разработчику iOS]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185980/</guid>
-		<link>http://habrahabr.ru/post/185980/</link>
-		<description><![CDATA[<img src="http://habrastorage.org/storage2/aaf/a06/201/aafa06201e107f75c049e2a185d41573.jpg"/><br/>
-Все началось с того, что в августе прошлого года мы с моим партнером по бизнесу решили, что нужно искать альтернативу работе с белорусскими компаниями и решили осваивать нелегкую, но интересную стезю iOS разработчиков.<br/>
-Практический опыт, полученный на основе собственных проб и ошибок я постарался выразить в нескольких простых советах, которые, возможно, пригодятся начинающим разработчикам. <br/>
- <a href="http://habrahabr.ru/post/185980/#habracut">Осторожно! Много скриншотов!</a>]]></description>
-		
-		<pubDate>Mon, 08 Jul 2013 14:55:13 GMT</pubDate>
-		<author>WebCreator</author>
+		<pubDate>Tue, 09 Jul 2013 18:08:38 GMT</pubDate>
+		<author>webmikestudio</author>
 		<category><![CDATA[Я пиарюсь]]></category>
-		<category><![CDATA[ios]]></category><category><![CDATA[ios development]]></category><category><![CDATA[bynet]]></category><category><![CDATA[app store]]></category><category><![CDATA[продвижение]]></category><category><![CDATA[разработка под ios]]></category><category><![CDATA[история создания]]></category><category><![CDATA[бесплатно]]></category><category><![CDATA[туризм]]></category><category><![CDATA[facebook]]></category>
+		<category>геймдизайн</category><category>браузерная игра</category><category>опыт</category>
 	</item>
 
 		<item>
-		<title><![CDATA[Быстрый поиск в «Альфа-Клике»]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185670/</guid>
-		<link>http://habrahabr.ru/post/185670/</link>
-		<description><![CDATA[Всем привет! Меня зовут Тамара, я – разработчик интернет-банка <a href="http://alfabank.ru/retail/internet/"><b>«Альфа-Клик»</b></a>.<br/>
+		<title><![CDATA[Биткоин майнинг, как вид спорта]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/185984/</guid>
+		<link>http://habrahabr.ru/post/185984/</link>
+		<description><![CDATA[<img src="http://habr.habrastorage.org/post_images/f70/031/6dc/f700316dc93ffc6480ceb50630153bed.png" alt="image"/><br/>
+Мне попал в руки чип Bitfury, который на данный момент, является самым продвинутым способом поддержки криптостойкости Биткоин. Он был ранее рассмотрен в <a href="http://habrahabr.ru/post/184506/">обзоре</a>, но к тому моменту не было ПО позволяющего испытать его в реальных, боевых условиях. Мне удалось заставить работать чип полноценно.<br/>
 <br/>
-Недавно команда Альфа Lab запустила новый поиск по Клику. Ежедневно интернет-банком пользуются сотни тысяч клиентов, и даже такая, казалось бы небольшая, доработка упростит им жизнь и поможет быстрее найти нужную функцию или получателя платежей. <br/>
-<br/>
-<a href="http://img-fotki.yandex.ru/get/9155/121132269.0/0_be29a_475c525a_orig"><img src="http://habr.habrastorage.org/post_images/ea2/719/b0c/ea2719b0c32ce6f80c2e8dacb3cb7f1d.png" alt="Быстрый поиск в Альфа-Клике"/></a><br/>
-<br/>
-На Хабре много клиентов Альфы, и будет проще и быстрее спросить напрямую – как бы вы хотели пользоваться таким сервисом, какие функции вам были бы удобны и полезны? Предлагаю обсудить это в комментариях.<br/>
-<br/>
-Несколько слов о том, как работает поиск и о его возможностях – под катом.<br/>
- <a href="http://habrahabr.ru/post/185670/#habracut">Читать дальше</a>]]></description>
+Майнинг, как способ заработать деньги был всегда сомнительным предприятием. В начале 11 года я купил несколько видеокарт для майнинга. Но мне удалось намайнить столько же монет, как если бы я просто их купил бы. У всех, с кем я общался был приблизительно такой же результат, немного отличаясь как в плюс так и минус.<br/>
+ <a href="http://habrahabr.ru/post/185984/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 14:28:17 GMT</pubDate>
-		<author>ZTamara</author>
-		<category><![CDATA[Блог компании «Альфа-Банк»]]></category><category><![CDATA[JAVA]]></category><category><![CDATA[Веб-разработка]]></category>
-		<category><![CDATA[альфа-банк]]></category><category><![CDATA[альфа-клик]]></category><category><![CDATA[поиск]]></category><category><![CDATA[интернет-банк]]></category>
+		<pubDate>Tue, 09 Jul 2013 17:20:53 GMT</pubDate>
+		<author>legkodymov</author>
+		<category><![CDATA[Платежные системы]]></category><category><![CDATA[Железо]]></category><category><![CDATA[Криптография]]></category>
+		<category><![CDATA[bitcoin]]></category><category><![CDATA[биткоин]]></category><category><![CDATA[bitfury]]></category><category><![CDATA[asic]]></category>
 	</item>
 
 		<item>
-		<title><![CDATA[RubyNoName Podcast S05E13: О Rails 4 и смерти Ruby 1.8.7]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185976/</guid>
-		<link>http://habrahabr.ru/post/185976/</link>
-		<description><![CDATA[Ссылка на подкаст: <a href="http://rubynoname.ru/posts/2013/S05E13.html">rubynoname.ru/posts/2013/S05E13.html</a><br/>
-<br/>
-<h2>Новости</h2><br/>
-<br/>
-<ul>
-<li><a href="https://github.com/mattsears/nyan-cat-formatter">Няшный вывод от Rspec</a></li>
-<li><a href="http://weblog.rubyonrails.org/2013/6/25/Rails-4-0-final/">Вышли Rails 4.0</a></li>
-<li><a href="https://github.com/blog/1529-repository-next">Новый интерфейс репозиториев в Github</a></li>
-<li><a href="http://www.ruby-lang.org/en/news/2013/06/30/we-retire-1-8-7/">Ruby 1.8.7 медленно и печально отошёл в мир воспоминаний</a></li>
-<li><a href="http://squadette.ru/blog/2013/06/19/high-scalability-3/">Устройство сетевых сервисов от Алексея Махоткина</a></li>
-<li><a href="http://www.tech-d.net/2013/06/18/threaded-ruby-in-production-rbx-edition/">Rubinius в бою</a></li>
-<li><a href="http://docopt.org/">docopt.rb — замена OptionParser</a></li>
-<li><a href="http://blog.envylabs.com/post/52395695243/chaining-scopes-in-rails-4">Изменение поведения scopes в Rails 4</a></li>
-<li><a href="http://aphyr.com/posts/288-the-network-is-reliable">Сеть надежна</a></li>
-<li><a href="http://firstround.com/article/The-one-cost-engineers-and-product-managers-dont-consider">О цене сложности</a></li>
-</ul><br/>
-<br/>
- <a href="http://habrahabr.ru/post/185976/#habracut">Читать дальше &rarr;</a>]]></description>
+		<title><![CDATA[[Из песочницы] Русское программирование. Еще одна точка зрения]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/185866/</guid>
+		<link>http://habrahabr.ru/post/185866/</link>
+		<description><![CDATA[<img src="http://habrastorage.org/storage2/4d5/e37/d2b/4d5e37d2b5a88c2b7c11430616086a3b.png"/><br/>
+<h6>Изображение для привлечения внимания. Синтаксис языка программирования выдуманный. Любое совпадение с реально существующим ЯП случайно</h6><br/>
+Хотелось бы продолжить тему особенностей работы в русских IT-компаниях и высказать свое мнение. Статья будет в некотором роде ответом на статью <a href="http://habrahabr.ru/post/185638/">Основная особенность наших разработчиков</a>.<br/>
+ <a href="http://habrahabr.ru/post/185866/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 14:21:59 GMT</pubDate>
-		<author>evtuhovich</author>
-		<category><![CDATA[Ruby on Rails]]></category><category><![CDATA[Ruby]]></category>
-		<category><![CDATA[подкасты]]></category><category><![CDATA[ruby]]></category><category><![CDATA[ruby on rails]]></category>
+		<pubDate>Tue, 09 Jul 2013 17:19:08 GMT</pubDate>
+		<author>sertanta</author>
+		<category><![CDATA[Human Resources]]></category><category><![CDATA[Управление проектами]]></category>
+		<category>Программирование</category><category>особенности</category><category>менеджмент</category>
 	</item>
 
 		<item>
-		<title><![CDATA[Как выглядит полезное приложение для Google Glass]]></title>
-		<guid isPermaLink="true">http://habrahabr.ru/post/185974/</guid>
-		<link>http://habrahabr.ru/post/185974/</link>
-		<description><![CDATA[<div style="text-align:center;"><img src="http://habrastorage.org/storage2/806/124/164/80612416421eb2075720493ee82185e0.jpg" /></div><br/>
+		<title><![CDATA[[Из песочницы] Ресайз анимированных GIF картинок с помощью PHP + GD]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186084/</guid>
+		<link>http://habrahabr.ru/post/186084/</link>
+		<description><![CDATA[Доброго времени суток.<br/>
 <br/>
-Согласно последним исследованиям, опубликованным в журнале <a href="http://www.ncbi.nlm.nih.gov/pubmed/23619739">Resuscitation Urban</a>, только одна пятая часть людей (не профессиональных врачей) знакомы с основами проведения неотложных медицинских мероприятий, в частности, с такой жизненно необходимой вещью как искусственное дыхание (<i>в оригинале</i> Hands-Only CPR (Cardio Pulmonary Resuscitation) — ручная сердечно-лёгочная реанимация). <br/>
- <br/>
-Практикующий кардиолог <a href="https://twitter.com/Christianassad">Кристиан Ассад</a> (вероятно, большой любитель гаджетов) совместно с разработчиками Крисом Вукином (Chris Vukin) и Томасом Шварцем (Thomas Schwartz) создали приложение для Google Glass под названием <b>CPRGlass</b>, которое должно существенно облегчить задачу тем, кому придётся столкнуться с обмороком и остановкой сердца без присутствия врачей и, таким образом, необходимостью проводить реанимацию прямо на месте.<br/>
- <a href="http://habrahabr.ru/post/185974/#habracut">Узнать подробности</a>]]></description>
+Сперва небольшое вступление. <br/>
+Во время разработки своего собственного проекта я столкнулся с задачей ресайза GIF файлов исключительно средствами PHP без использования программного пакета ImageMagick (думаю сами догадались почему). Если есть задача значить ее надо решить, не придав ей большого внимания и сложности я пошел на просторы Интернета искать реализованный скрипт в виде функции или класса. И к своему удивлению и огорчению (так как ресайз должен быть однозначно) я нашел всего два скрипта на PHP, авторы которых сделали попытку реализовать эту нетривиальную задачу (о других языках я вообще молчу там только безальтернативный ImageMagick), хоть перерыл Интернет вдоль и поперек.<br/>
+ <a href="http://habrahabr.ru/post/186084/#habracut">Читать дальше &rarr;</a>]]></description>
 		
-		<pubDate>Mon, 08 Jul 2013 14:03:16 GMT</pubDate>
-		<author>jeston</author>
-		<category><![CDATA[Дополненная реальность]]></category><category><![CDATA[Программирование]]></category><category><![CDATA[Гаджеты. Устройства для гиков]]></category>
-		<category><![CDATA[google glass]]></category><category><![CDATA[реанимация]]></category><category><![CDATA[дополненная реальность]]></category>
+		<pubDate>Tue, 09 Jul 2013 17:16:42 GMT</pubDate>
+		<author>Yuriy_Khomenko</author>
+		<category><![CDATA[Песочница]]></category><category><![CDATA[PHP]]></category><category><![CDATA[Веб-разработка]]></category>
+		<category>php</category><category>gd</category><category>gif</category>
+	</item>
+
+		<item>
+		<title><![CDATA[Уж очень маленький опрос, выясняющий отношение хабрасообщества к ГМО]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186116/</guid>
+		<link>http://habrahabr.ru/post/186116/</link>
+		<description><![CDATA[Немного не в тему сообщества, именно поэтому разместил в хабы-оффтопики.<br/>
+В последнее время часто вижу, как поднимают эту тему, в том числе и на самом хабре (подождите, не ищите эти статьи, я специально не даю на них ссылок, а то чего доброго изменят ваше мнение непосредственно перед голосованием!).<br/>
+Мне хотелось бы верить, что здесь собрались люди достаточно образованные. Именно поэтому я пришел с этим опросом сюда, в надежде вернуть веру в человечество. <a href="http://habrahabr.ru/post/186116/#habracut"></a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 16:51:25 GMT</pubDate>
+		<author>JaLoveAst1k</author>
+		<category><![CDATA[Научно-популярное]]></category>
+		<category><![CDATA[ГМО]]></category><category><![CDATA[технический прогресс]]></category><category><![CDATA[консерватизм]]></category><category><![CDATA[мы все умрём?]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[Android-телефонов на Jelly Bean уже больше, чем на Gingerbread]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186114/</guid>
+		<link>http://habrahabr.ru/post/186114/</link>
+		<description><![CDATA[<img src="http://habr.habrastorage.org/post_images/f4d/c19/c46/f4dc19c46e47ef2196433b959cef8af1.jpg" alt="image"/><br/>
+<br/>
+Jelly Bean, последняя версия Android, наконец-то, обогнала Gingerbread и стала самой используемоей версией мобильной платформы, <a href="http://mashable.com/2013/07/09/android-jelly-bean-eclipes-gingerbread/">пишет</a> Mashable. Согласно <a href="http://developer.android.com/about/dashboards/index.html">сайту Android Developers</a>, 37,9 % пользователей Android используют версии 4.1 и 4.2, а Gingerbread (2.3) занимает второе место с долей 34,1 %. На третьем месте Ice Cream Sandwich (4.0) с 23,3%.<br/>
+<br/>
+Gingerbread оказалась стойкой версией. Ещё в прошлом месяце она использовалась на 36,5 % — большинстве — Android-устройств, тогда как у Jelly Bean было 33 %. Как <a href="http://techcrunch.com/2013/07/08/jelly-bean-tips-past-majority-adoption-among-android-users-with-37-9-share/">пишет</a> TechCrunch, отрыву Jelly Bean могло поспособствовать то, что недавно ряд OEM-партнёров выпустил это обновление для своих устройств, в том числе для AT&T Galaxy S2. <br/>
+ <a href="http://habrahabr.ru/post/186114/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 16:44:16 GMT</pubDate>
+		<author>aleksandrit</author>
+		<category><![CDATA[Android]]></category>
+		<category><![CDATA[Android]]></category><category><![CDATA[Jelly Bean]]></category><category><![CDATA[Gingerbread]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[[recovery mode] Grand Theft Auto V — знакомство с миром игры]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186112/</guid>
+		<link>http://habrahabr.ru/post/186112/</link>
+		<description><![CDATA[<img src="http://habrastorage.org/storage2/399/964/750/3999647502a8ce3ec63f0020b17212c2.jpg"/><br/>
+<br/>
+<h4>Rockstar как и обещали выпустили сегодня ролик, знакомящий нас с миром игры.</h4><br/>
+<u>Пресс-релиз от компании &quot;<b>1С-Софтклаб</b>&quot;</u>:<br/>
+<i>Сегодня компания Rockstar Games представила миру первое геймплейное видео находящейся в разработке игры <b>Grand Theft Auto V</b>, премьера которой состоится 17 сентября.<br/>
+</i> <a href="http://habrahabr.ru/post/186112/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 16:32:18 GMT</pubDate>
+		<author>iXF</author>
+		<category><![CDATA[Game Development]]></category>
+		<category><![CDATA[gta]]></category><category><![CDATA[rockstar games]]></category><category><![CDATA[консольные игры]]></category><category><![CDATA[ps3]]></category><category><![CDATA[xbox 360]]></category><category><![CDATA[1с]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[Новая технология Ford позволяет «печатать» корпуса авто за считанные часы]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186104/</guid>
+		<link>http://habrahabr.ru/post/186104/</link>
+		<description><![CDATA[<img src="http://habrastorage.org/storage2/d31/339/631/d3133963144046060067ec9fab2b0b23.jpg"/><br/>
+<br/>
+Сразу стоит сказать, что эта технология была создана не для массового производства, а для быстрого создания прототипов, без потерь времени на изготовление отдельных деталей вручную. Ford Freeform Fabrication Technology (F3T) основана на использовании ряда металлических пластин, из которых «выдавливаются» необходимые детали корпуса. По словам разработчиков, технология позволяет за считанные часы создать корпус целого авто из CAD-файла. <br/>
+<br/>
+ <a href="http://habrahabr.ru/post/186104/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 16:17:03 GMT</pubDate>
+		<author>marks</author>
+		<category><![CDATA[3D-принтеры]]></category><category><![CDATA[Будущее здесь]]></category><category><![CDATA[Робототехника]]></category>
+		<category><![CDATA[ford]]></category><category><![CDATA[робототехника]]></category><category><![CDATA[автомобили]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[Опубликован черновик спецификации HTTP 2.0]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186102/</guid>
+		<link>http://habrahabr.ru/post/186102/</link>
+		<description><![CDATA[Сегодня был опубликован черновик спецификации стандарта HTTP/2.0. <a href="http://en.wikipedia.org/wiki/HTTP_2.0">HTTP 2.0</a> — первая новая версия HTTP-протокола с появления HTTP 1.1, описанного в 1999 году (RFC 2616).<br/>
+Прочитать черновик можно по ссылке: <a href="http://tools.ietf.org/html/draft-ietf-httpbis-http2-04">http://tools.ietf.org/html/draft-ietf-httpbis-http2-04</a><br/>
+<br/>
+Главная новинка: в качестве основы HTTP/2.0 используется SPDY — бинарный протокол прикладного уровня от Google поверх TCP/TLS соединения.<br/>
+ <a href="http://habrahabr.ru/post/186102/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 16:00:26 GMT</pubDate>
+		<author>HotWaterMusic</author>
+		<category><![CDATA[Веб-разработка]]></category>
+		<category><![CDATA[топик-ссылка]]></category><category><![CDATA[http 2.0]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[Производители ПК получат Windows 8.1 в конце августа]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186096/</guid>
+		<link>http://habrahabr.ru/post/186096/</link>
+		<description><![CDATA[<img src="http://habr.habrastorage.org/post_images/569/e4d/e09/569e4de09c206276df8a3d1950a20059.png" alt="image"/><br/>
+<br/>
+Microsoft отправит производителям ПК финальную версию Windows 8.1 в конце августа. Об этом сообщила Тами Реллер, директор по маркетингу компании Windows в Microsoft, на Всемирной партнёрской конференции компании, <a href="http://mashable.com/2013/07/08/windows-81-rtm/">пишет</a> Mashable.<br/>
+<br/>
+Windows 8.1 станет первым крупным обновлением Windows 8, и, как <a href="http://habrahabr.ru/post/179741/">ранее говорил</a> Microsoft, оно будет доступно пользователям Windows 8 бесплатно. В конце июня <a href="http://habrahabr.ru/company/eset/blog/184954/">была выпущена</a> превью-версия обновления.<br/>
+ <a href="http://habrahabr.ru/post/186096/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 14:23:29 GMT</pubDate>
+		<author>aleksandrit</author>
+		<category><![CDATA[Windows]]></category>
+		<category><![CDATA[Windows 8.1]]></category><category><![CDATA[Windows 8]]></category><category><![CDATA[Microsoft]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[Statsios.com: Appstore tracking + Big Data]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186032/</guid>
+		<link>http://habrahabr.ru/post/186032/</link>
+		<description><![CDATA[Приветствую всех.<br/>
+Хочу показать свой проект над которым я с коллегой работал последние месяцы.<br/>
+Вкратце его можно охарактеризовать как Appstore + tracking + Big Data.<br/>
+<br/>
+Все началось с того, что я заинтересовался, какие события происходят в Эпл Аппсторе, и как они влияют на рейтинги приложений.<br/>
+И при этом я был крайне недоволен статистикой которую предоставляют мне такие компании как Appannie или Distimo.<br/>
+Из мелких скриптов мониторинга «а что же там происходит?» и родился этот проект.<br/>
+<br/>
+ <a href="http://habrahabr.ru/post/186032/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 14:06:27 GMT</pubDate>
+		<author>Urn</author>
+		<category><![CDATA[Я пиарюсь]]></category>
+		<category><![CDATA[appstore]]></category><category><![CDATA[apple]]></category><category><![CDATA[app]]></category>
+	</item>
+
+		<item>
+		<title><![CDATA[[Из песочницы] Немного об управлении HTPC]]></title>
+		<guid isPermaLink="true">http://habrahabr.ru/post/186088/</guid>
+		<link>http://habrahabr.ru/post/186088/</link>
+		<description><![CDATA[<img src="http://habrastorage.org/storage2/bd4/e20/fe0/bd4e20fe0795c4a847fcd2c96f66bee2.png"/><br/>
+Я — человек ленивый. И, как и всякий IT-шник, готов горы свернуть, лишь бы потакать своей лени. Поэтому, когда в моей квартире появился самосборный HTPC, я решил довести удобство управления им до идеала. Сразу скажу, что абсолютно удобного способа у меня не получилось. Но в своих попытках создать оный я перебрал множество вариантов, от обычной радиоклавиатуры до HDMI-CEC адаптера, и, думаю, рассказ о них будет многим небезынтересен.<br/>
+ <a href="http://habrahabr.ru/post/186088/#habracut">Читать дальше &rarr;</a>]]></description>
+		
+		<pubDate>Tue, 09 Jul 2013 13:47:55 GMT</pubDate>
+		<author>dmitryredkin</author>
+		<category><![CDATA[Электроника для начинающих]]></category><category><![CDATA[Песочница]]></category><category><![CDATA[Гаджеты. Устройства для гиков]]></category>
+		<category>HTPC</category><category>пульт ду</category><category>mediaportal</category><category>XBMC</category><category>Eventghost</category>
 	</item>
 
 

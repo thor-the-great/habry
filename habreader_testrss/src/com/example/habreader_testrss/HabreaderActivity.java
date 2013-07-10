@@ -2,6 +2,7 @@ package com.example.habreader_testrss;
 
 import java.util.Locale;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -55,6 +57,20 @@ public class HabreaderActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.habreader, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.action_settings:
+	            //newGame();
+	        	Intent myIntent = new Intent(this, SettingsActivity.class);
+				startActivity(myIntent);
+	            return true;	        
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	/**
@@ -140,6 +156,11 @@ public class HabreaderActivity extends FragmentActivity {
 
 		@Override
 		public void onClick(View v) {
+			int childCount = mainFragmentLayout.getChildCount();
+			for (int i = childCount - 1; i >=1; i--) {
+				//View nextChildView = mainFragmentLayout.getChildAt(i);
+				mainFragmentLayout.removeViewAt(i);
+			}
 			//ViewGroup mainFragmentLayout = (ViewGroup) v.findViewById(R.id.fragmentMainLayout);
 			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(defaultHabrRssURL);			
 		}

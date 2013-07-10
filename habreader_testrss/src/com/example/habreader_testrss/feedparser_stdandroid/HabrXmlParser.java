@@ -7,6 +7,8 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
+
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.feedprovider.ContentProvider;
 
@@ -26,6 +28,9 @@ public class HabrXmlParser {
 		    	switch (eventType){
 	            case XmlPullParser.START_TAG:
 	                String name = parser.getName(); 
+	                if (name != null) {
+	                	Log.i("habreader - trace", "name = " + name);
+	                }
 	                if (FeedTags.ITEM.toString().equalsIgnoreCase(name)) {
 	                	Message message = readEntry(parser);
 	                	entries.add(message);
@@ -73,17 +78,22 @@ public class HabrXmlParser {
 		String description = null;
 		String author = null;
 		while (parser.next() != XmlPullParser.END_TAG) {
-			//if (parser.getEventType() != XmlPullParser.START_TAG) {
-			//	continue;
-			//}
+			if (parser.getEventType() != XmlPullParser.START_TAG) {
+				continue;
+			}
 			String name = parser.getName();
+			 if (name != null) {
+             	Log.i("habreader - trace", "name = " + name);
+             }
 			if (FeedTags.TITLE.toString().equalsIgnoreCase(name)) {
 				title = readTitle(parser);
 			} else if (FeedTags.DESCRIPTION.toString().equalsIgnoreCase(name)) {
 				description = readDescription(parser);
 			} else if (FeedTags.AUTHOR.toString().equalsIgnoreCase(name)) {
 				author = readAuthor(parser);
-			} else {
+			//} else if (name == null) {
+				//parser.next();
+			} else {			
 				skip(parser);
 			}
 		}
@@ -147,12 +157,22 @@ public class HabrXmlParser {
 		//}
 		int depth = 1;
 		while (depth != 0) {
-			switch (parser.next()) {
-			case XmlPullParser.END_TAG:
+			switch (parser.next()) {			
+			case XmlPullParser.END_TAG: {
 				depth--;
+				String name = parser.getName();
+				 if (name != null) {
+	             	Log.i("habreader - skip", "</" + name + ">");
+	             }
+			}
 				break;
-			case XmlPullParser.START_TAG:
+			case XmlPullParser.START_TAG: {
 				depth++;
+				String name = parser.getName();
+				 if (name != null) {
+	             	Log.i("habreader - skip", "<" + name + ">");
+	             }
+			}
 				break;
 			}
 		}

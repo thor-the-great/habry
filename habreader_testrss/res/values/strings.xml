@@ -3,11 +3,11 @@
 
     <string name="app_name">habreader_testrss</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="load_rss">Load RSS</string>
-    <string name="title_activity_habreader">HabreaderActivity</string>
+    <string name="title_activity_habreader">Habry</string>
     <string name="title_section1">Top hubs</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-
+    <string name="setting_isUseTestContentProvider">Use test data</string>
+    <string name="setting_isUseTestContentProvider_summ">Use local test data instead of network request</string>
 </resources>

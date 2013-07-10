@@ -43,7 +43,7 @@ class NetworkContentProvider extends ContentProvider {
 			URL feedUrl = new URL(url);		
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			InputStream is = feedUrl.openConnection().getInputStream();
-			parser.setInput(is, null);
+			parser.setInput(is, "utf-8");
 			parser.next();
 		} catch (MalformedURLException e) {
 			Log.e("habreader error", e.toString());
