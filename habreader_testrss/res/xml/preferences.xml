@@ -4,5 +4,10 @@
         android:key="setting_isUseTestContentProvider"
         android:title="@string/setting_isUseTestContentProvider"
         android:summary="@string/setting_isUseTestContentProvider_summ"
-        android:defaultValue="true" />    
+        android:defaultValue="true" />   
+    <CheckBoxPreference
+        android:key="setting_isShowPartOfFullFeed"
+        android:title="@string/setting_isShowPartOfFullFeed"
+        android:summary="@string/setting_isShowPartOfFullFeed_summ"
+        android:defaultValue="false" /> 
 </PreferenceScreen>

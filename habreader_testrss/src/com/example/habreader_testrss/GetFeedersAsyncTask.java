@@ -41,15 +41,13 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 	protected List<Message> doInBackground(String ... urls) {
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-		boolean isUseTestContentProvider = sharedPref.getBoolean("setting_isUseTestContentProvider", false);
+		boolean isUseTestContentProvider = sharedPref.getBoolean("setting_isUseTestContentProvider", false);		
 		
 		ContentProvider contentProvider;
 		if (isUseTestContentProvider)
 			contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
 		else 	
 			contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
-		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
-		//ContentProvider contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
 		 
 		HabrXmlParser parser = new HabrXmlParser();
 		List<Message> listOfHabrMsg = new ArrayList<Message>();	
@@ -65,6 +63,8 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 
 	@Override
 	protected void onPostExecute(List<Message> result) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+		boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
 		//int tableMaxWidth = tableLayout.getWidth();
 		for (int i = 0; i < result.size(); i++) {
 			Message message = result.get(i);
@@ -91,19 +91,21 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 			feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
 			feedElementContainer.addView(feedTitleTextview);
 			
-			TextView feedDescriptionTextview = new TextView(feedElementContainer.getContext());			
-			feedDescriptionTextview.setLayoutParams(layoutParams);			
-			actualTitleLength = message.getDescription() == null ? 0 : message.getDescription().length();
-			String feedDescription = "";
-			if (actualTitleLength > MAX_DESC_LENGTH ) {
-				feedDescription = message.getDescription().substring(0, MAX_DESC_LENGTH) + "...";
-			} else {
-				feedDescription = message.getDescription();
+			if (isShowPartOfFullFeed) {				
+				TextView feedDescriptionTextview = new TextView(feedElementContainer.getContext());			
+				feedDescriptionTextview.setLayoutParams(layoutParams);			
+				actualTitleLength = message.getDescription() == null ? 0 : message.getDescription().length();
+				String feedDescription = "";
+				if (actualTitleLength > MAX_DESC_LENGTH ) {
+					feedDescription = message.getDescription().substring(0, MAX_DESC_LENGTH) + "...";
+				} else {
+					feedDescription = message.getDescription();
+				}
+				feedDescriptionTextview.setText(feedDescription);
+				feedDescriptionTextview.setTextColor(Color.DKGRAY);
+				feedDescriptionTextview.setTextSize((float) 12.0);
+				feedElementContainer.addView(feedDescriptionTextview);
 			}
-			feedDescriptionTextview.setText(feedDescription);
-			feedDescriptionTextview.setTextColor(Color.DKGRAY);
-			feedDescriptionTextview.setTextSize((float) 12.0);
-			feedElementContainer.addView(feedDescriptionTextview);
 			
 			TextView authorInfo = new TextView(mainLayout.getContext());			
 			authorInfo.setLayoutParams(layoutParams);			

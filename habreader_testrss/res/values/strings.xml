@@ -10,4 +10,6 @@
     <string name="title_section3">Section 3</string>
     <string name="setting_isUseTestContentProvider">Use test data</string>
     <string name="setting_isUseTestContentProvider_summ">Use local test data instead of network request</string>
+    <string name="setting_isShowPartOfFullFeed">Show news text</string>
+    <string name="setting_isShowPartOfFullFeed_summ">Show text of the news on title page</string>    
 </resources>
