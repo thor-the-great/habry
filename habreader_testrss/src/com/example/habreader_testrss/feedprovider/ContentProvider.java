@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -15,6 +16,9 @@ public abstract class ContentProvider {
 	
 	public final static String NETWORK_CONTENT_PROVIDER = "NETWORK_CONTENT_PROVIDER";
 	public final static String TEST_FILE_CONTENT_PROVIDER = "TEST_FILE_CONTENT_PROVIDER";
+	
+	final static int HTTP_OPEN_CONNECTION_TIMEOUT = 10000;
+	final static int HTTP_READ_STREAM_TIMEOUT = 20000;
 	
 	static public ContentProvider getInstance(String contentProviderStrategy, Object initObject){
 		ContentProvider instance = null;
@@ -42,7 +46,10 @@ class NetworkContentProvider extends ContentProvider {
 		try {		
 			URL feedUrl = new URL(url);		
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-			InputStream is = feedUrl.openConnection().getInputStream();
+			URLConnection urlConnection = feedUrl.openConnection();
+			urlConnection.setConnectTimeout(HTTP_OPEN_CONNECTION_TIMEOUT);
+			urlConnection.setReadTimeout(HTTP_READ_STREAM_TIMEOUT);
+			InputStream is = urlConnection.getInputStream();
 			parser.setInput(is, "utf-8");
 			parser.next();
 		} catch (MalformedURLException e) {
