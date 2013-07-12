@@ -26,7 +26,7 @@ public abstract class ContentProvider {
 		return instance;
 	}
 	
-	public abstract XmlPullParser getContentParser();
+	public abstract XmlPullParser getContentParser() throws MalformedURLException, IOException, XmlPullParserException;
 	
 	public abstract void flashResources();
 	
@@ -37,7 +37,7 @@ class NetworkContentProvider extends ContentProvider {
 	InputStream is = null;
 
 	@Override
-	public XmlPullParser getContentParser() {		
+	public XmlPullParser getContentParser() throws MalformedURLException, IOException, XmlPullParserException {		
 		XmlPullParser parser = Xml.newPullParser();
 		try {		
 			URL feedUrl = new URL(url);		
@@ -47,13 +47,13 @@ class NetworkContentProvider extends ContentProvider {
 			parser.next();
 		} catch (MalformedURLException e) {
 			Log.e("habreader error", e.toString());
-			throw new RuntimeException(e);
+			throw e;
 		} catch (IOException e) {
 			Log.e("habreader error", e.toString());
-			throw new RuntimeException(e);
+			throw e;
 		} catch (XmlPullParserException e) {
 			Log.e("habreader error", e.toString());
-			throw new RuntimeException(e);
+			throw e;
 		}
 		return parser;
 	}

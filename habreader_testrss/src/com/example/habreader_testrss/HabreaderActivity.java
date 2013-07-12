@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class HabreaderActivity extends FragmentActivity {
 
@@ -148,7 +149,7 @@ public class HabreaderActivity extends FragmentActivity {
 			//		ARG_SECTION_NUMBER)));
 			//ViewGroup mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentMainLayout);
 			//new GetFeedersAsyncTask(mainFragmentLayout).execute(defaultHabrRssURL);
-			this.mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentMainLayout);;
+			this.mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentFeedLayout);;
 			Button btn_loadRssForUser = (Button) rootView.findViewById(R.id.loadRss);
 	        btn_loadRssForUser.setOnClickListener(this); 
 			return rootView;
@@ -161,6 +162,11 @@ public class HabreaderActivity extends FragmentActivity {
 				//View nextChildView = mainFragmentLayout.getChildAt(i);
 				mainFragmentLayout.removeViewAt(i);
 			}
+			
+			Toast myToast = Toast.makeText(v.getContext(), "Loading feeds",
+					Toast.LENGTH_SHORT);			
+			myToast.show();
+			
 			//ViewGroup mainFragmentLayout = (ViewGroup) v.findViewById(R.id.fragmentMainLayout);
 			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(defaultHabrRssURL);			
 		}

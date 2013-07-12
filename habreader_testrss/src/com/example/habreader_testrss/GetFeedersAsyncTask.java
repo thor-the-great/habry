@@ -6,24 +6,31 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.animation.LayoutTransition;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.feedparser_stdandroid.HabrXmlParser;
 import com.example.habreader_testrss.feedprovider.ContentProvider;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message>> {
 	
 	int MAX_TITLE_LENGTH = 50;
@@ -31,14 +38,15 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 	
 	ViewGroup mainLayout;
 	Activity activity;
+	Exception error;
 	
 	public GetFeedersAsyncTask(ViewGroup mainLayout, Activity activity) {
 		this.mainLayout = mainLayout;
 		this.activity = activity;
 	}
-	
+
 	@Override
-	protected List<Message> doInBackground(String ... urls) {
+	protected List<Message> doInBackground(String ... urls) {		
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean isUseTestContentProvider = sharedPref.getBoolean("setting_isUseTestContentProvider", false);		
@@ -54,15 +62,24 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 		try {		
 			listOfHabrMsg = parser.parse(contentProvider);
 		} catch (XmlPullParserException e) {
-			Log.e("habreader", e.toString());
+			Log.e("habreader", e.toString());	
+			error = e;
 		} catch (IOException e) {
 			Log.e("habreader", e.toString());
+			error = e;
 		}		
 		return listOfHabrMsg;
 	}
 
 	@Override
 	protected void onPostExecute(List<Message> result) {
+		if (error != null) {
+			Toast myToast = Toast.makeText(mainLayout.getContext(), "" + error.getMessage(),
+					Toast.LENGTH_LONG);			
+			myToast.show();
+			error = null;
+		}
+		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
 		//int tableMaxWidth = tableLayout.getWidth();
@@ -90,6 +107,16 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 			feedTitleTextview.setTextSize((float) 16.0);
 			feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
 			feedElementContainer.addView(feedTitleTextview);
+			
+			feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {
+				
+				@Override
+				public boolean onLongClick(View v) {
+					
+					((View)v.getParent()).setBackgroundResource(R.drawable.borders);
+					return false;
+				}
+			});
 			
 			if (isShowPartOfFullFeed) {				
 				TextView feedDescriptionTextview = new TextView(feedElementContainer.getContext());			
@@ -120,38 +147,12 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 			
 			LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			scrollViewLayoutParams.setMargins(10, 1, 10, 20);
-			scrollView.addView(feedElementContainer);
+			scrollView.addView(feedElementContainer);		
+			
 			mainLayout.addView(scrollView, scrollViewLayoutParams);
 			//mainLayout.addView(authorInfo);
-			//mainLayout.addView(scrollView);
-			
-			/*TableRow tr1 = new TableRow(tableLayout.getContext());
-			
-			tr1.setLayoutParams(new LayoutParams( LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
-			/*AutoResizeTextView textview = new AutoResizeTextView(tableLayout.getContext());	
-			
-			int actualTitleLength = message.getTitle() == null ? 0 : message.getTitle().length();
-			String feedTitle = "";
-			//if (actualTitleLength > MAX_TITLE_LENGTH ) {
-			//if (actualTitleLength > tableMaxWidth) {
-				//feedTitle = message.getTitle().substring(0, MAX_TITLE_LENGTH);
-				//feedTitle = message.getTitle().substring(0, tableMaxWidth);
-			//} else {
-				feedTitle = message.getTitle();
-			//}
-			textview.setText(feedTitle);
-			//textview.getTextColors(R.color.)
-			textview.setTextColor(Color.DKGRAY);	
-			
-			
-			tr1.addView(textview);
-			Button btn = new Button(tableLayout.getContext());
-			btn.setText("Test test test test tes tes test test ");
-			
-			
-			tr1.addView(btn);
-			tableLayout.addView(tr1, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));*/
-			//textview.resizeText();
+			//mainLayout.addView(scrollView);			
+
 		}
 		
 	}	
