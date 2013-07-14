@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Message implements Comparable<Message> {
 	
@@ -12,8 +14,13 @@ public class Message implements Comparable<Message> {
     private String description;
     private Date date;
     private String author;
+    private List<String> categories = new ArrayList<String>();
     
-    //
+    public List<String> getCategories() {
+		return categories;
+	}
+
+	//
 	public Message() {
 		
 	}

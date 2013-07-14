@@ -2,6 +2,8 @@ package com.example.habreader_testrss;
 
 import java.util.Locale;
 
+import com.example.habreader_testrss.tasks.GetFeedersAsyncTask;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

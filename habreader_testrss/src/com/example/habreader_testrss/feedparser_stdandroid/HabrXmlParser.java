@@ -74,31 +74,48 @@ public class HabrXmlParser {
 		String link = null;
 		String description = null;
 		String author = null;
+		List<String> categories = new ArrayList<String>();
 		while (parser.next() != XmlPullParser.END_TAG) {
 			if (parser.getEventType() != XmlPullParser.START_TAG) {
 				continue;
 			}
 			String name = parser.getName();
-			 /*if (name != null) {
-             	Log.i("habreader - trace", "name = " + name);
-             }*/
 			if (FeedTags.TITLE.toString().equalsIgnoreCase(name)) {
 				title = readTitle(parser);
 			} else if (FeedTags.DESCRIPTION.toString().equalsIgnoreCase(name)) {
 				description = readDescription(parser);
 			} else if (FeedTags.AUTHOR.toString().equalsIgnoreCase(name)) {
-				author = readAuthor(parser);			
+				author = readAuthor(parser);	
+			} else if (FeedTags.CATEGORY.toString().equalsIgnoreCase(name)) {
+				categories.add(readOneCategory(parser));
+			} else if (FeedTags.LINK.toString().equalsIgnoreCase(name)) {
+				link = readURL(parser);
 			} else {			
 				skip(parser);
 			}
 		}
-		return new Message(title, description, author);
+		Message message = new Message(title, description, author);
+		message.getCategories().addAll(categories);
+		message.setLink(link);
+		return message;
 	}
 
 	// Processes title tags in the feed.
 	private String readTitle(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
 		return readTextValueOfTag(parser, FeedTags.TITLE);
+	}
+	
+	// Processes title tags in the feed.
+	private String readURL(XmlPullParser parser) throws IOException,
+			XmlPullParserException {
+		return readTextValueOfTag(parser, FeedTags.LINK);
+	}
+	
+	// Processes title tags in the feed.
+	private String readOneCategory(XmlPullParser parser) throws IOException,
+			XmlPullParserException {
+		return readTextValueOfTag(parser, FeedTags.CATEGORY);
 	}
 
 	// Processes title tags in the feed.
