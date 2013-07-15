@@ -1,0 +1,2023 @@
+
+
+<!DOCTYPE html>
+   
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+		<meta name = "viewport" content = "width = 1080">
+		
+		<title>Защита от прослушивания SIP c помощью — TLS + SRTP + шифрованный тунель и телефона Yealink t26p / Хабрахабр</title>
+		<meta name="description" content="
+У вас паранойя? Вам кажется что вас постоянно хотят подслушать? Ведете важные переговоры? Тогда вам сюда!
+В этой заметке я расскажу об основных сложностях при настройке телефона Yealink..." />		
+		<meta name="keywords" content="asterisk, freepbx, TLS, SIP, Yealink, Openvpn" />
+		
+			<meta property="fb:app_id"      content="437464306275519" /> 
+<meta property="og:type"        content="article" /> 
+<meta property="og:url"         content="http://habrahabr.ru/post/186530/" /> 
+<meta property="og:title"       content="Защита от прослушивания SIP c помощью — TLS + SRTP + шифрованный тунель и телефона Yealink t26p" /> 
+	<meta property="og:image"       content="http://habrastorage.org/storage2/2be/9bf/19d/2be9bf19d2c71861ceee04a5f942ce8f.jpg" />
+	<link rel="image_src" href="http://habrastorage.org/storage2/2be/9bf/19d/2be9bf19d2c71861ceee04a5f942ce8f.jpg" /><meta property="og:image"       content="http://habrastorage.org/storage2/42d/26f/cf9/42d26fcf9cf7c885685c6eae6e313286.jpg" />
+	<link rel="image_src" href="http://habrastorage.org/storage2/42d/26f/cf9/42d26fcf9cf7c885685c6eae6e313286.jpg" /><meta property="og:image"       content="http://habrastorage.org/storage2/dbe/e42/e5d/dbee42e5dc189736969059cde27c8f03.jpg" />
+	<link rel="image_src" href="http://habrastorage.org/storage2/dbe/e42/e5d/dbee42e5dc189736969059cde27c8f03.jpg" /><meta property="og:image"       content="http://habrastorage.org/storage2/0c8/d53/35e/0c8d5335ed30c61cc130888feb8a00a2.jpg" />
+	<link rel="image_src" href="http://habrastorage.org/storage2/0c8/d53/35e/0c8d5335ed30c61cc130888feb8a00a2.jpg" /><meta property="og:image"       content="http://habrastorage.org/storage2/f63/e84/84b/f63e8484b56fc3844ade86c6f50e5cbe.jpg" />
+	<link rel="image_src" href="http://habrastorage.org/storage2/f63/e84/84b/f63e8484b56fc3844ade86c6f50e5cbe.jpg" />
+	
+<meta property="og:description" content="У вас паранойя? Вам кажется что вас постоянно хотят подслушать? Ведете важные переговоры? Тогда вам сюда! В этой заметке я расскажу об основных сложностях при..." />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@habrahabr" />
+
+
+			<link href="/styles/1373654302/all.css" rel="stylesheet" media="all" />
+
+
+		  <link href="/styles/1373654302/_parts/posts.css" rel="stylesheet" media="all" />
+  <link href="/styles/1373654302/_parts/comments.css" rel="stylesheet" media="all" />
+  <link href="/styles/1373654302/forms.css" rel="stylesheet" media="all" />
+  <link href="/styles/1373654302/highlight.css" rel="stylesheet" media="all" />
+  <link href="/styles/1373654302/posts/all.css" rel="stylesheet" media="all" />
+  
+		<link href="/styles/1373654302/printer.css" rel="stylesheet" media="print" />
+
+	
+
+			<script type="text/javascript" src="/javascripts/1373654302/all.js"></script>
+		
+		
+		
+
+	
+	
+	
+	
+		  <script type="text/javascript" src="/javascripts/1373654302/libs/jquery.form.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/libs/jquery.cookie.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/libs/wysiwyg.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/libs/highlight.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/libs/jquery-ui-highlight.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/_parts/posts.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/_parts/comments.js"></script>
+  <script type="text/javascript" src="/javascripts/1373654302/posts/all.js"></script>
+
+		
+		<script type="text/javascript" src="/js/1373654302/adriver.core.2.js"></script>
+		
+		<link title="Хабрахабр / Комментарии к публикации «Защита от прослушивания SIP c помощью — TLS + SRTP + шифрованный тунель и телефона Yealink t26p»" type="application/rss+xml" rel="alternate" href="http://habrahabr.ru/rss/post/186530/"/>
+				
+			<script type="text/javascript">
+			var _gaq = window._gaq || [];
+			window.onerror = function(msg, url, line) {
+			    //var preventErrorAlert = true;
+			    //_gaq.push(['_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line]);
+			    //return preventErrorAlert;
+			};
+			
+			jQuery.error = function (message) {
+			    _gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent]);
+			}
+			</script>
+			 
+	</head>
+
+	<body>
+	  <a style="background: #ffff18 url(/images/banners/banner1.png) no-repeat center center;display:block;height:90px;box-shadow:0 1px 2px #ccc;" href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=410696&bt=21&bid=2696012&bn=2696012&rnd=1251482300"></a>
+
+
+
+		
+		<div id="layout">
+		  <div id="header">
+  <div class="userpanel silver">
+      <div class="top">
+        <a href="http://habrahabr.ru/users/thorthegreat/" class="username dark">ThorTheGreat</a>
+        	<sup><a href="/settings/upgrade/">read-only</a></sup>
+				
+        <a href="http://habrahabr.ru/settings/" class="nav-settings">настройки</a>
+        <a href="http://habrahabr.ru/logout/ThorTheGreat/4131245819/">выйти</a>
+      </div>
+      <div class="bottom">
+				<a href="http://habrahabr.ru/tracker/">трекер</a>
+				
+				<a href="http://habrahabr.ru/users/ThorTheGreat/favorites/">избранное</a>
+					<a href="/sandbox/add/">получить инвайт</a>
+      </div>
+      <div class="charge" id="charge_string">
+
+      </div>
+  </div>
+  <a class="logo " href="http://habrahabr.ru/feed/posts/" title="На главную страницу"></a>
+  <div class="search">
+    <form id="search_form" name="search" method="get" action="/search/" >
+      <input type="submit" value="" />
+      <input type="text" name="q" x-webkit-speech speech  >
+    </form>
+  </div>
+
+	<div class="main_menu">
+		<a href="http://habrahabr.ru/feed/posts/">лента</a><a href="http://habrahabr.ru/posts/top/" class="active">посты</a><a href="http://habrahabr.ru/qa/">q&amp;a</a><a href="http://habrahabr.ru/events/coming/">события</a><a href="http://habrahabr.ru/hubs/">хабы</a><a href="http://habrahabr.ru/companies/">компании</a>
+		<div class="banner_special">
+
+		<script type="text/javascript">
+			(function(){
+				var custom = [];
+				/* custom params */
+					custom[1] = 'Asterisk';
+					custom[2] = 'telephony';
+					custom[3] = 'linux';
+				/* end of custom params */
+				var std = {gender:100, age:101},i;for(i in std){try{custom[std[i]]=eval(i)}catch(e){} }
+				custom.getStd = function(){for(var i=0,j,s=[];i<this.length;i++){if(this[i])s.push((!j?(j=1,i+'='):'')+escape(this[i]));else j=0}return s.length?'&custom='+s.join(';'):''};
+				var RndNum4NoCash = Math.round(Math.random() * 1000000000), ar_Tail = escape(document.referrer || 'unknown');
+				document.write('<iframe src="http://ad.adriver.ru/cgi-bin/erle.cgi?' + 'sid=176776&target=top&w=135&h=35&bt=25&pz=0&rnd=' +
+				RndNum4NoCash + '&tail256=' + ar_Tail + custom.getStd() + '" frameborder=0 vspace=0 hspace=0 width=135 height=35 marginwidth=0'
+				+ ' marginheight=0 scrolling=no></iframe>');
+			})();
+ 		</script>
+	
+
+</div>
+		
+	</div>
+
+</div>
+
+
+
+		  
+		  
+
+	
+  <div class="content_left">
+
+	
+<div id="global_notify">
+		<div class="inner first" id="notification_5">
+			<a href="#close" class="close" data-id="5" title="Закрыть уведомление">закрыть (4) </a>
+				В настройках появился раздел <a href="http://habrahabr.ru/settings/social/">«Ключница»</a>. Теперь можно связать профиль на «Хабре» с аккаунтом в социальной сети.
+		</div>
+		<div class="inner hidden" id="notification_4">
+			<a href="#close" class="close" data-id="4" title="Закрыть уведомление">закрыть (3) </a>
+				О, <a href="http://habrahabr.ru/info/help/shortcuts/">горячие клавиши</a> заработали!
+		</div>
+		<div class="inner hidden" id="notification_3">
+			<a href="#close" class="close" data-id="3" title="Закрыть уведомление">закрыть (2) </a>
+				В разделе <a href="http://habrahabr.ru/companies/">«Компании»</a> теперь можно быстро подписаться или отписаться от компании.
+		</div>
+		<div class="inner hidden" id="notification_2">
+			<a href="#close" class="close" data-id="2" title="Закрыть уведомление">закрыть </a>
+				В «Ленте» появилась вкладка «Всё». Теперь посты и вопросы из Q&A можно читать в одном потоке.
+		</div>
+</div>
+
+
+
+
+
+
+
+
+	
+  <div class="post shortcuts_item" id="post_186530">
+  	<div class="published">13 июля в 21:11</div>
+    <h1 class="title">
+
+	    
+
+        <span class="post_title">Защита от прослушивания SIP c помощью — TLS + SRTP + шифрованный тунель и телефона Yealink t26p</span>
+
+      <span class="flag flag_tutorial" title="Обучающий материал">tutorial</span>
+
+			
+
+      
+			
+			
+
+  	</h1>
+  	
+  	<div class="hubs">
+		<a href="http://habrahabr.ru/hub/Asterisk/" class="hub " title="Вы не подписаны на этот хаб" >Asterisk</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/hub/telephony/" class="hub " title="Вы не подписаны на этот хаб" >Телефония</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/hub/linux/" class="hub subscribed" title="Вы подписаны на этот хаб" >Linux</a><span class="profiled_hub" title="Профильный хаб">*</span>
+</div>
+
+  	
+  	<div class="content html_format">
+  	<img src="http://habrastorage.org/storage2/2be/9bf/19d/2be9bf19d2c71861ceee04a5f942ce8f.jpg" alt="image"/><br/>
+У вас паранойя? Вам кажется что вас постоянно хотят подслушать? Ведете важные переговоры? Тогда вам сюда!<br/>
+В этой заметке я расскажу об основных сложностях при настройке телефона Yealink t26p.<br/>
+Для начала мы заставим телефон поднять шифрованный тунель с сертификатами до сервера OpenVPN, а потом пустить внутри тунеля SIP с шифрованной через сертификаты сигнализацией и голосом! (TLS + SRTP).<br/>
+Кому интересно прошу под кат.<br/>
+<a name="habracut"></a><br/>
+<br/>
+Для начала предлагаю ознакомится со схемой работы.<br/>
+<img src="http://habrastorage.org/storage2/42d/26f/cf9/42d26fcf9cf7c885685c6eae6e313286.jpg" alt="image"/><br/>
+Смысл работы в следующем — телефоны подключены из любой точки через интернет. Они поднимают шифрованный канал до единственного торчащего в мир порта OpenVPN сервера. А далее с этого сервера телефония идет в недры корпоративной сети, к спрятанному там серверу Asterisk. Но как вы можете заметить, канал до сервера OpenVPN у нас шифрованный, а вот внутри корпоративной сети где много обслуживающего персонала, можно перехватить трафик SIP на каком нибудь из шлюзов и в последствии расшифровать, и узнать о чем был разговор! Этот кусочек сети специально пометил красной линией. Поэтому мы настроим на астериске SRTP + TLS и будем шифровать еще и трафик внутри сети — чтобы он был защищен от недобросовестных работников компании. Таким образом, круг лиц имеющих доступ к разговорам, очень сильно сужается.<br/>
+<br/>
+<h4>Для установки сервера OpenVPN я использовал dvd образ Centos 6.4. На установке останавливаться не буду- все стандартно. </h4><br/>
+<br/>
+Чиним сразу глюк локали.<br/>
+<pre><code class="bash">export LC_CTYPE=en_US.UTF-8
+</code></pre><br/>
+<br/>
+Включаем форвардинг на сетевых интерфейсах.<br/>
+<pre><code class="bash">nano /etc/sysctl.conf
+#Найти и заменить
+net.ipv4.ip_forward = 1
+</code></pre><br/>
+<br/>
+Включаем загрузку сетевого интерфейса при запуске.<br/>
+<pre><code class="bash">nano /etc/sysconfig/network-scripts/ifcfg-eth0
+#Найти и заменить.
+ONBOOT=yes
+</code></pre><br/>
+<br/>
+Обновляем CentOS.<br/>
+<pre><code class="bash">cd /usr/src/
+yum update -y
+</code></pre><br/>
+<br/>
+Добавляем нужный репозиторий.<br/>
+<pre><code class="bash">wget http://fedora.ip-connect.vn.ua/fedora-epel/6/i386/epel-release-6-8.noarch.rpm
+rpm -Uvh epel-release-6-8.noarch.rpm
+</code></pre><br/>
+<br/>
+Ставим требуемые пакеты.<br/>
+<pre><code class="bash">yum install openvpn git bridge-utils -y
+</code></pre><br/>
+<br/>
+EasyRSA тепер отдельно и на гитхабе — поэтому:<br/>
+<pre><code class="bash">git clone https://github.com/OpenVPN/easy-rsa.git
+cp -r /usr/src/easy-rsa/easy-rsa /etc/openvpn/
+</code></pre><br/>
+<br/>
+Советую для последующих добавлений и изменений скопировать оригинальный конфиг VPN и закоментировать там все строки, потом будет удобно искать нужные команды для добавления и их синтаксис.<br/>
+<pre><code class="bash">cp /usr/share/doc/openvpn-2.3.1/sample/sample-config-files/server.conf /etc/openvpn/
+nano /etc/openvpn/server.conf  
+#Закоментировать все в конфиге и оставить для наглядности, потом вставляем :
+
+port 1194
+proto udp
+dev tun0
+ca /etc/openvpn/easy-rsa/2.0/keys/ca.crt
+cert /etc/openvpn/easy-rsa/2.0/keys/server.crt
+key /etc/openvpn/easy-rsa/2.0/keys/server.key
+dh /etc/openvpn/easy-rsa/2.0/keys/dh1024.pem
+server 172.19.7.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push &quot;route 172.19.7.0 255.255.255.0&quot;
+client-to-client
+keepalive 10 120
+user root
+group root
+persist-key
+persist-tun
+status openvpn-status.log
+log /var/log/openvpn.log
+verb 3
+mute 20
+</code></pre><br/>
+<br/>
+Меняем метод шифрования с sha256 на MD5 т.к. телефон не понимает первый метод. В сборке easy-rsa есть 3 варианта файла openssl, менять будем во всех сразу чтобы не выяснять какой будет использовать система при генерации ключей и сертификатов.<br/>
+<pre><code class="bash">cp /etc/openvpn/easy-rsa/2.0/openssl-0.9.6.cnf /etc/openvpn/easy-rsa/2.0/openssl-0.9.6.cnf.orig && sed -e 's/default_md.*=.*sha256/default_md = md5 /g' /etc/openvpn/easy-rsa/2.0/openssl-0.9.6.cnf.orig &gt; /etc/openvpn/easy-rsa/2.0/openssl-0.9.6.cnf
+
+cp /etc/openvpn/easy-rsa/2.0/openssl-0.9.8.cnf /etc/openvpn/easy-rsa/2.0/openssl-0.9.8.cnf.orig && sed -e 's/default_md.*=.*sha256/default_md = md5 /g' /etc/openvpn/easy-rsa/2.0/openssl-0.9.8.cnf.orig &gt; /etc/openvpn/easy-rsa/2.0/openssl-0.9.8.cnf
+
+cp /etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf.orig && sed -e 's/default_md.*=.*sha256/default_md = md5 /g' /etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf.orig &gt; /etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf
+</code></pre><br/>
+<br/>
+Далее меняем дефолтные значения <br/>
+<pre><code class="bash">nano /etc/openvpn/easy-rsa/2.0/vars
+export KEY_SIZE=1024
+export KEY_COUNTRY=&quot;RU&quot;
+export KEY_PROVINCE=&quot;CA&quot;
+export KEY_CITY=&quot;Moscow&quot;
+export KEY_ORG=&quot;YOURCOMPANY&quot;
+export KEY_EMAIL=&quot;info@YOURCOMPANY.ru&quot;
+export KEY_OU=&quot;MY&quot;
+</code></pre><br/>
+<br/>
+<h4>Можно приступать к генерации сертификатов:</h4><br/>
+Перейдем в нужную директорию, где будем генерировать ключи и сертификаты<br/>
+<pre><code class="bash">cd  /etc/openvpn/easy-rsa/2.0
+[root@test 2.0]# source ./vars
+NOTE: If you run ./clean-all, I will be doing a rm -rf on /etc/openvpn/easy-rsa/2.0/keys
+[root@test 2.0]# ./clean-all
+#Создаем самоподписной корневой сертификат и ключ, все ответы можно оставить по умолчанию, кроме Common Name
+[root@test 2.0]# ./build-ca
+Generating a 1024 bit RSA private key
+.........++++++
+.......................++++++
+writing new private key to 'ca.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [RU]:
+State or Province Name (full name) [CA]:
+Locality Name (eg, city) [Moscow]:
+Organization Name (eg, company) [YOURCOMPANY]:
+Organizational Unit Name (eg, section) [changeme]:
+Common Name (eg, your name or your server's hostname) [changeme]:test
+Name [changeme]:
+Email Address [mail@host.domain]:
+</code></pre><br/>
+<br/>
+Создаем сертификат и ключ для сервера<br/>
+Все ответы можно оставить по умолчанию<br/>
+<pre><code class="bash">[root@test 2.0]# ./build-key-server server
+Generating a 1024 bit RSA private key
+.........................++++++
+.............................++++++
+writing new private key to 'server.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [RU]:
+State or Province Name (full name) [MOSCOW]:
+Locality Name (eg, city) [MOSCOW]:
+Organization Name (eg, company) [YOURCOMPANY]:
+Organizational Unit Name (eg, section) [changeme]:
+Common Name (eg, your name or your server's hostname) [server]:
+Name [changeme]:
+Email Address [mail@host.domain]:
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+Using configuration from /etc/openvpn/easy-rsa/2.0/openssl-0.9.8.cnf
+Check that the request matches the signature
+Signature ok
+The Subject's Distinguished Name is as follows
+countryName           :PRINTABLE:'RU'
+stateOrProvinceName   :PRINTABLE:'MOSCOW'
+localityName          :PRINTABLE:'MOSCOW'
+organizationName      :PRINTABLE:'YOURCOMPANY'
+organizationalUnitName:PRINTABLE:'changeme'
+commonName            :PRINTABLE:'server'
+name                  :PRINTABLE:'changeme'
+emailAddress          :IA5STRING:'mail@host.domain'
+Certificate is to be certified until Mar 20 06:56:48 2023 GMT (3650 days)
+Sign the certificate? [y/n]:y
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+</code></pre><br/>
+<br/>
+Генирируем ключ Диффи-Хелмана<br/>
+<pre><code class="bash">[root@test 2.0]# ./build-dh
+Generating DH parameters, 1024 bit long safe prime, generator 2
+This is going to take a long time
+...................................................+.................................................................+...................+..+.........................................................................................................................................+...........+.......................................................+....+..................................................................................................+......................................................................+.................................................................................................+............................+.....................................................................+.............++*++*++*
+</code></pre><br/>
+<br/>
+Генерируем клиентский ключ (для каждой машины или телефона он должен быть свой)<br/>
+Все ответы оставляем по умолчанию<br/>
+<pre><code class="bash">[root@test 2.0]# ./build-key client1
+Generating a 1024 bit RSA private key
+.++++++
+......++++++
+writing new private key to 'client1.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [RU]:
+State or Province Name (full name) [CA]:
+Locality Name (eg, city) [Moscow]:
+Organization Name (eg, company) [YOURCOMPANY]:
+Organizational Unit Name (eg, section) [changeme]:
+Common Name (eg, your name or your server's hostname) [client1]:
+Name [changeme]:
+Email Address [mail@host.domain]:
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+Using configuration from /etc/openvpn/easy-rsa/2.0/openssl-0.9.8.cnf
+Check that the request matches the signature
+Signature ok
+The Subject's Distinguished Name is as follows
+countryName           :PRINTABLE:'RU'
+stateOrProvinceName   :PRINTABLE:'CA'
+localityName          :PRINTABLE:'Moscow'
+organizationName      :PRINTABLE:'YOURCOMPANY'
+organizationalUnitName:PRINTABLE:'changeme'
+commonName            :PRINTABLE:'client1'
+name                  :PRINTABLE:'changeme'
+emailAddress          :IA5STRING:'mail@host.domain'
+Certificate is to be certified until Mar 20 07:01:46 2023 GMT (3650 days)
+Sign the certificate? [y/n]:y
+1 out of 1 certificate requests certified, commit? [y/n]y
+Write out database with 1 new entries
+Data Base Updated
+</code></pre><br/>
+<br/>
+<h4>Подготовка файла для подсоединения телефона:</h4><br/>
+Создаем папку — внутри должна лежать папка keys и файл vpn.cnf. <br/>
+Пример vpn.cnf — вместо XXX естественно ваш адрес сервера:<br/>
+<pre><code class="bash">client
+dev tun
+proto udp
+remote XXX.XXX.XXX.XXX 1194
+resolv-retry infinite
+nobind
+ca /yealink/config/openvpn/keys/ca.crt
+cert /yealink/config/openvpn/keys/client1.crt
+key /yealink/config/openvpn/keys/client1.key
+verb 3
+mute 20
+</code></pre><br/>
+<br/>
+Внутри папки keys должны лежать соответственно три файла — ca.crt, client1.crt, client1.key. Имена файлов в конфиге и в папке должны соответствовать. Файлы вытаскивать с сервера после генерации любым удобным способом.<br/>
+После этого ставим 7zip и архивируем файл vpn.cnf и папку keys в tar архив без сжатия. Либо можете на линуксе из папки с файлом vpn.cnf и папкой keys запустить:<br/>
+<pre><code class="bash">tar cvf connect.tar ./vpn.cnf ./keys
+</code></pre><br/>
+<br/>
+Заходим в веб интерфейс телефона. Идем на вкладку Network &gt; Advanced &gt; Vpn. Ставим active = enabled, импортируем файл и нажимаем внизу submit.<br/>
+<img src="http://habrastorage.org/storage2/dbe/e42/e5d/dbee42e5dc189736969059cde27c8f03.jpg" alt="image"/><br/>
+<br/>
+Если телефон не схавал файлик можете его перезагрузить. Увидеть что он подключился к нашему серверу — посмотрев логи:<br/>
+<pre><code class="bash">tail -n100 -f /var/log/openvpn.log
+</code></pre><br/>
+ <br/>
+<h4> Настройка TLS + SRTP на Asterisk. </h4><br/>
+Настройку с нуля писать не буду ибо статей море, и мои тоже есть. Расскажу как же сделать сертификаты, включить шифрование и впихнуть все это в телефон.<br/>
+Итак на астере надо сделать Certificate Authority.<br/>
+<pre><code class="bash">mkdir /etc/cert
+cd /etc/cert/
+root@server-sip1:/etc/cert# openssl genrsa -des3 -out ca.key 4096
+
+Generating RSA private key, 4096 bit long modulus
+.......................++
+...............................++
+e is 65537 (0x10001)
+Enter pass phrase for ca.key:
+Verifying - Enter pass phrase for ca.key:
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert# openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+Enter pass phrase for ca.key:
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:RU
+State or Province Name (full name) [Some-State]:MOSCOW
+Locality Name (eg, city) []:MOSCOW
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:YOURCOMPANY
+Organizational Unit Name (eg, section) []:VoIP
+Common Name (eg, YOUR name) []:YUORCOMPANY CA
+Email Address []:INFO@YOURCOMPANY.RU
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert# ls
+ca.crt  ca.key
+root@server-sip1:/etc/cert#
+</code></pre><br/>
+<br/>
+CA создали — далее нужно загрузить в телефон файл ca.crt чтобы он знал что данному СА модно доверять — закладка Security &gt; Trusted Certificates.<br/>
+<img src="http://habrastorage.org/storage2/0c8/d53/35e/0c8d5335ed30c61cc130888feb8a00a2.jpg" alt="image"/><br/>
+Создание и подпись сертификата сервера и для телефонов — описываю для сервера, а для телефона процедуру повторить.<br/>
+<pre><code class="bash">root@server-sip1:/etc/cert# openssl genrsa -out key-server.pem 1024
+Generating RSA private key, 1024 bit long modulus
+.....++++++
+...++++++
+e is 65537 (0x10001)
+root@server-sip1:/etc/cert# openssl req -new -key key-server.pem -out req-server.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:RU
+State or Province Name (full name) [Some-State]:MOSCOW
+Locality Name (eg, city) []:MOSCOW
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:YOURCOMPANY
+Organizational Unit Name (eg, section) []:VoIP
+Common Name (eg, YOUR name) []:server
+Email Address []:info@yourcompany.ru
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert#
+root@server-sip1:/etc/cert# openssl x509 -req -days 365 -in req-server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out cert-server.crt
+Signature ok
+subject=/C=RU/ST=MOSCOW/L=MOSCOW/O=Yourcompany/OU=VoIP/CN=server/emailAddress=info@yourcompany.ru
+Getting CA Private Key
+Enter pass phrase for ca.key:
+root@server-sip1:/etc/cert#
+</code></pre><br/>
+<br/>
+Подготовка сертификата для Астериска.<br/>
+Структура файла для астера должна выглядеть следующим образом — вначале файл сертификата следующего вида:<br/>
+<pre><code class="bash">-----BEGIN CERTIFICATE-----
+MIIDvDCCAyWgAwIBAgIJAPMabsMiJJQPMA0GCSqGSIb3DQEBBQUAMIGbMQswCQYD
+[...]
+CfITDxcJBZfeXIPZP52+8FSMlm5985uMvao+emlIUGk11rY61Amxr387grDvgOaI
+-----END CERTIFICATE-----
+</code></pre><br/>
+<br/>
+Потом сразу файл ключа:<br/>
+<pre><code class="bash">-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQCqRw0jpQFn+f+lnDZiZzCRca9ojgu2brO+Q56jnqorvCIlYFC0
+[...]
+FT65O46u6Vmp1gPbNklOEg7TtZUtfacPY2PyeP4KoHaG
+-----END RSA PRIVATE KEY-----
+</code></pre><br/>
+<br/>
+Скомпоновать можно через cat:<br/>
+<pre><code class="bash">root@server-sip1:/etc/asterisk/cert# cat /etc/cert/key.pem &gt; /etc/asterisk/cert/asterisk.pem
+root@server-sip1:/etc/asterisk/cert# cat /etc/cert/cert-server.crt &gt;&gt; /etc/asterisk/cert/asterisk.pem
+</code></pre><br/>
+<br/>
+Теперь прописываем в файле sip.conf (или sip_general_custom.conf если это Elastix или FreePBX)<br/>
+<pre><code class="bash">tcpenable=yes
+tcpbindaddr=0.0.0.0
+tlsenable=yes
+tlsbindaddr=0.0.0.0
+tlscertfile=/etc/asterisk/cert/asterisk.pem
+tlscafile=/etc/cert/ca.crt
+</code></pre><br/>
+<br/>
+Когда все готово нужно на конкретном extension включить TLS и SRTP. <br/>
+<br/>
+Таким же образом готовим файл для телефона и загружаем его в меню Security &gt; Server Certificates<br/>
+<img src="http://habrastorage.org/storage2/f63/e84/84b/f63e8484b56fc3844ade86c6f50e5cbe.jpg" alt="image"/><br/>
+<br/>
+Данной статьей ни в коем случае не хочу претендовать на полноту материала. Но очень хотелось донести эти важные нюансы настройки для человека который может с этим в последствии столкнуться. У меня на выяснения всех нюансов выписки и подготовки сертификатов для телефона и астериска ушла неделя. Если у вас есть предложения как можно сделать — лучше\быстрее\правильнее, то с удовольствием почитаю в коментариях! 
+  	<div class="clear"></div> 	
+  	</div>
+    <ul class="tags">
+	<li ><a href="http://habrahabr.ru/search/?q=%5Basterisk%5D&target_type=posts" rel="tag">asterisk</a></li><li >, <a href="http://habrahabr.ru/search/?q=%5Bfreepbx%5D&target_type=posts" rel="tag">freepbx</a></li><li >, <a href="http://habrahabr.ru/search/?q=%5BTLS%5D&target_type=posts" rel="tag">TLS</a></li><li >, <a href="http://habrahabr.ru/search/?q=%5BSIP%5D&target_type=posts" rel="tag">SIP</a></li><li >, <a href="http://habrahabr.ru/search/?q=%5BYealink%5D&target_type=posts" rel="tag">Yealink</a></li><li >, <a href="http://habrahabr.ru/search/?q=%5BOpenvpn%5D&target_type=posts" rel="tag">Openvpn</a></li>
+</ul>
+
+    <div class="infopanel_wrapper">
+	<div class="infopanel " id="infopanel_post_186530">
+	
+				<div class="voting   ">
+	
+						<span class="plus" title="Read-only пользователи не могут голосовать"></span>
+	
+					<div class="mark">
+								<span class="score" title="Оценка будет видна после завершения голосования">&#8212;</span>
+					</div>
+					
+						<span class="minus" title="Read-only пользователи не могут голосовать"></span>
+		
+				</div>
+	
+		<div class="pageviews" title="Просмотры поста">9722</div>
+			
+		<div class="favorite">
+				<a class="add" title="Добавить в избранное" href="#" onclick="return posts_add_to_favorite(this, '2', 186530)"> </a>
+		</div>
+		<div class="favs_count" title="Количество пользователей, добавивших пост в избранное">113</div>
+		
+		
+		
+	
+	
+	
+	
+				<div class="author">
+					<a title="Автор текста" href="http://habrahabr.ru/users/MotjaX/" >MotjaX</a>
+					<span class="rating" title="рейтинг пользователя">6,8</span>
+				</div>
+		
+	
+	
+		
+			<div class="share">
+				<div class="twitter">
+					<a href="http://twitter.com/intent/tweet?text=%D0%97%D0%B0%D1%89%D0%B8%D1%82%D0%B0+%D0%BE%D1%82+%D0%BF%D1%80%D0%BE%D1%81%D0%BB%D1%83%D1%88%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F+SIP+c+%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E+%E2%80%94+TLS+%2B+SRTP+%2B+%D1%88%D0%B8%D1%84%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9+%D1%82%D1%83%D0%BD%D0%B5%D0%BB%D1%8C+%D0%B8+%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B0+Yealink+t26p+%23habr+http://habr.ru/p/186530/" title="Опубликовать ссылку в Twitter" target="_blank"></a>
+				</div>
+				<div class="vkontakte">
+					<a href="http://vk.com/share.php?url=http://habrahabr.ru/post/186530/" title="Опубликовать ссылку во ВКонтакте" onclick="window.open(this.href, 'Опубликовать ссылку во Вконтакте', 'width=800,height=300'); return false"></a>
+				</div>
+				<div class="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=http://habrahabr.ru/post/186530/" title="Опубликовать ссылку в Facebook" onclick="window.open(this.href, 'Опубликовать ссылку в Facebook', 'width=640,height=436,toolbar=0,status=0'); return false"></a>
+				</div>
+				<div class="googleplus">
+					<a href="https://plus.google.com/share?url=http://habrahabr.ru/post/186530/" title="Опубликовать ссылку в Google Plus" onclick="window.open(this.href, 'Опубликовать ссылку в Google Plus', 'width=800,height=300'); return false"></a>
+				</div>
+			</div>
+	
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+
+
+    
+    
+	</div>
+
+
+
+	
+<style type="text/css">
+	.post_inner_banner.alfaclick20_inner_banner {overflow:hidden;text-align:center;height:67px;border:1px solid #d4d4d4;border-radius:15px;background: url(/images/posts/inner_post_banner/alfaclick20/logo.png) no-repeat 20px 12px;}
+	.post_inner_banner.alfaclick20_inner_banner  a.alfalink {display:block;position:absolute;top:12px;left:18px;color:#eb312d;width:30px;height:42px;}
+	.post_inner_banner.alfaclick20_inner_banner  a.alfa {vertical-align:top;margin-top:16px;display:inline-block;color:#eb312d;font-size:16px;border:1px solid #ee2e22;border-radius:15px;padding:5px 10px;}
+	.post_inner_banner.alfaclick20_inner_banner  .ironman {display:inline-block;background: url(/images/posts/inner_post_banner/alfaclick20/ironman.png) no-repeat;width:180px;height:67px;}
+	.post_inner_banner.alfaclick20_inner_banner .alfaone {margin-right:50px;}
+	.post_inner_banner.alfaclick20_inner_banner .alfatwo {margin-right:30px;}
+	.post_inner_banner.alfaclick20_inner_banner .alfathree {margin-right:40px;}
+	@media (max-width: 1300px) { 
+		.post_inner_banner.alfaclick20_inner_banner .alfaone {margin-left:50px;}
+		.post_inner_banner.alfaclick20_inner_banner .alfathree {margin-right:20px;}
+		.post_inner_banner.alfaclick20_inner_banner .alfafour {}
+	}
+	@media (max-width: 1200px) { 
+		.post_inner_banner.alfaclick20_inner_banner .alfaone {margin-left:50px;margin-right:20px;}
+		.post_inner_banner.alfaclick20_inner_banner .alfatwo {margin-right:10px;}
+		.post_inner_banner.alfaclick20_inner_banner .alfathree {margin-right:20px;}
+	}
+	@media (max-width: 1100px) { 
+		.post_inner_banner.alfaclick20_inner_banner .alfaone {margin-left:30px;}
+		.post_inner_banner.alfaclick20_inner_banner .alfatwo {margin-right:10px;}
+		.post_inner_banner.alfaclick20_inner_banner .alfathree {margin-right:10px;}
+	}
+</style>
+<div class="alfaclick20_inner_banner post_inner_banner hidden">
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=398663&bt=21&bid=2536141&bn=2536141&rnd=793043413" class="alfalink"></a>
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=398663&bt=21&bid=2562310&bn=2562310&rnd=738964705" class="alfa alfaone">&laquo;Альфа-Клик 2.0&raquo;</a>
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=398663&bt=21&pid=1170584&bid=2562317&bn=2562317&rnd=564129589" class="alfa alfatwo">Подключить</a>
+	<div class="ironman alfathree"></div>
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=398663&bt=21&pid=1170585&bid=2562503&bn=2562503&rnd=1923962480" class="alfa alfafour">Трейлер</a>
+</div>
+<style type="text/css">
+	.post_inner_banner.badoo_inner_banner .badoo_left {float:left;background: url(/images/posts/inner_post_banner/badoo/badoo_post_left.png) no-repeat;width:152px;height:71px;}
+	.post_inner_banner.badoo_inner_banner .badoo_center {width:99.9%;text-align:center;line-height:69px;font-family:'PT Sans', sans-serif;font-size:18px;color:#000;border-right:1px solid #d9d9d9;border-top:1px solid #d9d9d9;border-bottom:1px solid #d9d9d9;border-radius:13px;height:69px;}
+	.post_inner_banner.badoo_inner_banner #badoo_logo {display:inline-block;position:relative;top:5px;width:76px;height:22px;margin:3px 10px 0 10px;background: url(/images/posts/inner_post_banner/badoo/badoo_post_logo.png) no-repeat;}
+</style>
+<div class="badoo_inner_banner post_inner_banner hidden">
+	<a class="block_url" href="">
+		<div class="badoo_left"></div>
+		<div class="badoo_center">
+			Developers, stick with Russians – work in <span id="badoo_logo"></span> London
+		</div>
+	</a>
+</div>
+<style type="text/css">
+	.post_inner_banner.acerw511_inner_banner {overflow:hidden;text-align:left;height:67px;border:1px solid #d4d4d4;border-radius:15px;background: url(/images/posts/inner_post_banner/microsoft/acerw511.png) no-repeat right top;}
+	.post_inner_banner.acerw511_inner_banner  a.acertab {display:block;position:absolute;top:20px;left:18px;color:#000;font-size:22px;font-family:Verdana,'PT Sans', sans-serif;font-weight:bolder;}
+	.post_inner_banner.acerw511_inner_banner  a.acerw511 {vertical-align:top;margin-top:16px;display:inline-block;color:#2dc1eb;font-size:16px;font-weight:bold;font-family:'PT Sans', sans-serif;border:1px solid #2dc1eb;border-radius:15px;padding:5px 20px;}
+	.post_inner_banner.acerw511_inner_banner  .ironman {display:inline-block;background: url(/images/posts/inner_post_banner/acerw511/ironman.png) no-repeat;width:180px;height:67px;}
+	.post_inner_banner.acerw511_inner_banner .acontest {margin-left:330px;}
+	.post_inner_banner.acerw511_inner_banner .arules {margin-left:20px;}
+</style>
+<div class="acerw511_inner_banner post_inner_banner hidden">
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=407691&bt=21&bid=2656283&bn=2656283&rnd=305218494" class="acertab">Acer Iconia TAB W511</a>
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=407691&bt=21&bid=2656283&bn=2656283&rnd=305218494" class="acerw511 acontest">Конкурс</a>
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=407691&bt=21&bid=2656284&bn=2656284&rnd=318496636" class="acerw511 arules">Правила</a>
+</div>
+<style type="text/css">
+	.post_inner_banner.alfamobile_inner_banner {overflow:hidden;text-align:center;height:67px;border:1px solid #d4d4d4;border-radius:15px;}
+	.post_inner_banner.alfamobile_inner_banner a {text-decoration:none;color:#000;}
+	.post_inner_banner.alfamobile_inner_banner .logo {background: url(/images/posts/inner_post_banner/alfamobile/logo.png) no-repeat 20px 12px;width:47px;height:54px;}
+	.post_inner_banner.alfamobile_inner_banner div {display:block;float:left;text-align:left;font-size:12px;}
+	.post_inner_banner.alfamobile_inner_banner .shape {background: url(/images/posts/inner_post_banner/alfamobile/shapes.png) no-repeat 0 0;padding-left:30px;margin-top:20px;}
+	.post_inner_banner.alfamobile_inner_banner .shape.sam_one {background-position:0 -2px;width:105px;margin-left:25px;}
+	.post_inner_banner.alfamobile_inner_banner .shape.sam_two {background-position:-157px -3px;width:100px;margin-left:15px;}
+	.post_inner_banner.alfamobile_inner_banner .shape.sam_three {background-position:-289px 0px;width:140px;margin-left:15px;}
+	.post_inner_banner.alfamobile_inner_banner .sam_buttons {width:258px;height:36px;margin-top:15px;margin-right:20px;float:right;}
+	.post_inner_banner.alfamobile_inner_banner .sam_buttons a {font-size:14px;font-weight:bold;padding:0 10px;line-height:38px;color:#fff;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
+	.post_inner_banner.alfamobile_inner_banner .sam_buttons a.ios {display:inline-block;height:36px;background: #f12f16;}
+	.post_inner_banner.alfamobile_inner_banner .sam_buttons a.ios:before{
+	 width:12px;
+	 height:20px;
+	 content: '';
+	 display: inline-block;
+	 background: url(/images/posts/inner_post_banner/alfamobile/icons.png) no-repeat left top;
+	 margin-right: 10px;
+	 vertical-align: text-bottom;
+  }
+	 
+	
+	.post_inner_banner.alfamobile_inner_banner .sam_buttons a.android {display:inline-block;height:36px;margin-left:5px;background: #abc430;}
+	.post_inner_banner.alfamobile_inner_banner .sam_buttons a.android:before{
+	 width:16px;
+	 height:21px;
+	 content: '';
+	 display: inline-block;
+	 background: url(/images/posts/inner_post_banner/alfamobile/icons.png) no-repeat right top;
+	 margin-right: 10px;
+	 vertical-align: text-bottom;
+  }
+
+	@media (max-width: 1300px) {
+		.post_inner_banner.alfamobile_inner_banner .shape {margin-left:5px !important;}
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_one {margin-left:15px !important;}
+	}
+	@media (max-width: 1200px) {
+		.post_inner_banner.alfamobile_inner_banner .shape {margin-left:0px !important;}
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_one {margin-left:5px !important;width:90px;}
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_two {margin-left:5px !important;width:80px;}
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_three {margin-left:5px !important;width:125px;}
+		.post_inner_banner.alfamobile_inner_banner .sam_buttons {margin-right:3px;}
+	}
+	@media (max-width: 1100px) {
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_three {display:none;}
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_one {margin-left:25px !important;}
+		.post_inner_banner.alfamobile_inner_banner .shape.sam_one {margin-left:15px !important;}
+		.post_inner_banner.alfamobile_inner_banner .sam_buttons {margin-right:20px;}
+	}
+</style>
+<div class="alfamobile_inner_banner post_inner_banner hidden">
+	<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=410118&bt=21&pid=1222177&bid=2689787&bn=2689787&rnd=614210270" target="_blank">
+		<div class="logo"></div>
+		<div class="shape sam_one">Переводы с<br>карты на карту</div>
+		<div class="shape sam_two">Переводы<br/>через QR-Код</div>
+		<div class="shape sam_three">Новая функция<br/><b>«Мой контроль»</b></div>
+	</a>
+	<div class="sam_buttons">
+		<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=410118&bt=21&pid=1222177&bid=2689798&bn=2689798&rnd=794660216" class="ios" target="_blank">на iOS</a>
+		<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=410118&bt=21&pid=1222177&bid=2689803&bn=2689803&rnd=1862219896" class="android" target="_blank">на Android</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	
+function show_inner_banner_block(name, url) {
+	if( typeof(name) !== 'undefined') {
+		if( $('.'+name+'_inner_banner').size() > 0) {
+			$('.'+name+'_inner_banner').show();
+		}
+	}
+
+	if( typeof(url) !== 'undefined') {
+		$('.'+name+'_inner_banner .block_url').attr('href', url);
+	}
+}
+</script>
+
+<div id="adriver_banner_1586921565"></div>
+<script type="text/javascript">
+new adriver("adriver_banner_1586921565", {sid:179440, bt:52, bn:3});
+</script>
+
+
+	
+	<div class="comments_list " id="comments">
+
+  <h2 class="title ">комментарии (<span id="comments_count">11</span>)
+  		<span class="subscribe_comments">
+			отслеживать новые: 
+			<label ><input type="checkbox" id="subscribe_comments" rel="{target_type:'2',target_id:186530 }"  /> в почте</label>
+			<label ><input type="checkbox" id="tracker_comments" rel="{target_type:'2',target_id:186530 }"  /> в трекере</label>
+		</span>
+
+  </h2>
+
+    <div class="comment_item" id="comment_6489264" >
+	
+	<span class="parent_id" data-parent_id="0"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489264">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489264" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489264, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489264, '3',	 186530, 1)"	 ></a>
+					<div class="mark positive ">
+							<span class="score" title="Всего 5: &uarr;5 и &darr;0">+5</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/syncer/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+				<a href="http://habrahabr.ru/users/syncer/" class="username">syncer</a><span class="comma">,</span>
+				<time>13 июля 2013 в 21:41<span class="time_changed"> (комментарий был изменён)</span></time>
+				
+				<a href="#comment_6489264" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489264 )" title="В избранное"></a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Спасибо за статью! А не слишком много оверхеда при такой топологии?<br/>
+Если все равно SRTP+TLS, не проще ли на едже ставить сразу астериск со всем выше перечисленным?<br/>
+ 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489264">
+		<div class="comment_item" id="comment_6489340" >
+	
+	<span class="parent_id" data-parent_id="6489264"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489340">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489340" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489340, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489340, '3',	 186530, 1)"	 ></a>
+					<div class="mark positive ">
+							<span class="score" title="Всего 3: &uarr;2 и &darr;1">+1</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/latv/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+				<a href="http://habrahabr.ru/users/latv/" class="username">latv</a><span class="comma">,</span>
+				<time>13 июля 2013 в 22:46</time>
+				
+				<a href="#comment_6489340" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489340 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489340" data-parent_id="6489264" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489264" data-id="6489340" data-parent_id="6489264" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Зашел в пост прочитать этот комментарий. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489340">
+	</div>
+</div>
+
+		<div class="comment_item" id="comment_6489518" >
+	
+	<span class="parent_id" data-parent_id="6489264"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489518">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489518" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489518, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489518, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/SpiritOfVox/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/61/19/99/6273/small_6273.jpg" alt="" /></a>
+				<a href="http://habrahabr.ru/users/SpiritOfVox/" class="username">SpiritOfVox</a><span class="comma">,</span>
+				<time>14 июля 2013 в 01:02</time>
+				
+				<a href="#comment_6489518" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489518 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489518" data-parent_id="6489264" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489264" data-id="6489518" data-parent_id="6489264" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Следует не забывать о необходимости очень внимательно выставлять * в общую сеть т.к. стоит чуть ошибиться и за ваш счёт родные кубинских мигрантов смогут быть в курсе о погоды в европе. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489518">
+	</div>
+</div>
+
+		<div class="comment_item" id="comment_6489804" >
+	
+	<span class="parent_id" data-parent_id="6489264"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489804">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489804" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489804, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489804, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/0c/c0/09/70273/small_70273.jpg" alt="" /></a>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="username">MotjaX</a><span class="comma">,</span>
+				<time>14 июля 2013 в 11:14<span class="time_changed"> (комментарий был изменён)</span></time>
+				
+				<a href="#comment_6489804" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489804 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489804" data-parent_id="6489264" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489264" data-id="6489804" data-parent_id="6489264" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Это первая фаза проекта, дальше через сервер OpenVPN планируется запускать клиентов и к другим серверам, а не только к *. ( RDP например) На самом OpenVPN разруливать доступом разных клиентов к разным сервисам — поэтому сделали отдельный. Кстати если есть мысли то подскажите как разных клиентов пускать к разным сетевым адресам? Я пока придумал только через iptables. Да и <a href="http://habrahabr.ru/users/spiritofvox/" class="user_link">SpiritOfVox</a> прав по поводу кубы, это тоже повлияло при принятии решения. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489804">
+	</div>
+</div>
+
+	</div>
+</div>
+
+    <div class="comment_item" id="comment_6489382" >
+	
+	<span class="parent_id" data-parent_id="0"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489382">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489382" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489382, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489382, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 6: &uarr;3 и &darr;3">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/mtp/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+				<a href="http://habrahabr.ru/users/mtp/" class="username">mtp</a><span class="comma">,</span>
+				<time>13 июля 2013 в 23:24<span class="time_changed"> (комментарий был изменён)</span></time>
+				
+				<a href="#comment_6489382" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489382 )" title="В избранное"></a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Сорри, что не в личку, но очень уж ошибка распространённая. <a href="http://ru.wikipedia.org/wiki/Паранойя">Паранойя</a>, а не параноя. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489382">
+		<div class="comment_item" id="comment_6489808" >
+	
+	<span class="parent_id" data-parent_id="6489382"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489808">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489808" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489808, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489808, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/0c/c0/09/70273/small_70273.jpg" alt="" /></a>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="username">MotjaX</a><span class="comma">,</span>
+				<time>14 июля 2013 в 11:17</time>
+				
+				<a href="#comment_6489808" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489808 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489808" data-parent_id="6489382" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489382" data-id="6489808" data-parent_id="6489382" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Спасибо, поправил. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489808">
+	</div>
+</div>
+
+	</div>
+</div>
+
+    <div class="comment_item" id="comment_6489386" >
+	
+	<span class="parent_id" data-parent_id="0"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489386">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489386" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489386, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489386, '3',	 186530, 1)"	 ></a>
+					<div class="mark positive ">
+							<span class="score" title="Всего 5: &uarr;5 и &darr;0">+5</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/mtp/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+				<a href="http://habrahabr.ru/users/mtp/" class="username">mtp</a><span class="comma">,</span>
+				<time>13 июля 2013 в 23:27</time>
+				
+				<a href="#comment_6489386" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489386 )" title="В избранное"></a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				По статье — вообще непонятно, какая была цель и для чего это всё. Описывается просто некая последовательность действий, без комментариев, найденных граблей и различных путей их обхода. Но главное всё же цель.<br/>
+<br/>
+Да, ещё про средства не сказали, про телефон, например. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489386">
+		<div class="comment_item" id="comment_6489822" >
+	
+	<span class="parent_id" data-parent_id="6489386"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489822">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489822" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489822, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489822, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/0c/c0/09/70273/small_70273.jpg" alt="" /></a>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="username">MotjaX</a><span class="comma">,</span>
+				<time>14 июля 2013 в 11:33</time>
+				
+				<a href="#comment_6489822" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489822 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489822" data-parent_id="6489386" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489386" data-id="6489822" data-parent_id="6489386" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Мне казалось что все понятно. <br/>
+Цель — защита голоса от прослушивания — при подключении через интернет. <br/>
+Грабли находил на каждом шагу и решил что описывать их будет намного дольше — т.к. самая большая проблема — отсутствие нормальной инструкции как готовить сертификаты для телефона и генерировать их. Поэтому я заполнил данный пробел — написав инструкцию как соединить эти технологии и подготовить к этому сервер с OpenVPN, Asterisk и сам телефон. Пути решения — пока знаю только 1 — его и описал в статье. Надеялся узнать различные пути решения в комментариях. Про телефон особо и сказать нечего. По отзывам пользователя телефон сделан очень качественно, никакого люфта, удобные кнопки, можно очень быстро набирать номер без задержек, хорошее качество передачи речи и микрофон. По поводу же его внутренних настроек лично хотелось бы выразить свое недовольство китайцам — написавшим это чудовище. Не всегда логичный веб интерфейс — к примеру кнопка перезагрузки находится в меня Upgrade. Так же в Grandstream удобнее сделана загрузка сертификатов и ключей TLS. В них просто текстовые поля в которые можно скопировать содержимое сертификата и ключа. Тут надо готовить все заранее. Очень неудобно сделана загрузка настроек OpenVPN. Вместо того чтобы прикрутить поддержку <a href="http://ru.wikipedia.org/wiki/PKCS12">PKCS12</a> — они сделали неописанную (я не нашел нормального описания в мануале) процедуру подготовки архива. Так же почему то модуль openvpn-client в телефоне собран без поддержки sha256 — тоже непонятно. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489822">
+		<div class="comment_item" id="comment_6489868" >
+	
+	<span class="parent_id" data-parent_id="6489822"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489868">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489868" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489868, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489868, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/latv/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+				<a href="http://habrahabr.ru/users/latv/" class="username">latv</a><span class="comma">,</span>
+				<time>14 июля 2013 в 12:23</time>
+				
+				<a href="#comment_6489868" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489868 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489868" data-parent_id="6489822" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489822" data-id="6489868" data-parent_id="6489822" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				С удивлением обнаружил, что у меня валяется на подоконнике выигранный на одной конференции Yealink T26P. <br/>
+А как вы решили обойтись со смартфонами? Оставить за бортом? 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489868">
+		<div class="comment_item" id="comment_6489886" >
+	
+	<span class="parent_id" data-parent_id="6489868"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489886">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489886" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489886, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489886, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/0c/c0/09/70273/small_70273.jpg" alt="" /></a>
+				<a href="http://habrahabr.ru/users/MotjaX/" class="username">MotjaX</a><span class="comma">,</span>
+				<time>14 июля 2013 в 12:47</time>
+				
+				<a href="#comment_6489886" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489886 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489886" data-parent_id="6489868" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489868" data-id="6489886" data-parent_id="6489868" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Тут все как раз нормально. Приложение на Android не поддерживает Bridge (tap) интерфейсы. Я же сделал специально с тунельным(tun), поэтому мобильные телефоны работают с тунелем нормально. Подготовка стандартная — вытащили файлики для телефона в папку, туда же положили файл *.ovpn со стандартным конфигом наподобие:<br/>
+client<br/>
+dev tun<br/>
+proto udp<br/>
+remote XXX.XXX.XXX.XXX 1194<br/>
+resolv-retry infinite<br/>
+persist-key<br/>
+persist-tun<br/>
+ca ca.crt<br/>
+cert client1.crt<br/>
+key client1.key<br/>
+comp-lzo no<br/>
+verb 3<br/>
+Единственное пока не было возможности проверить файлы pkcs12. В easyrsa есть скрипт генерации ./build-key-pkcs12. Телефон точно работает с этим форматом, т.е. можете сгенерить под него 1 файл и загрузить в приложении. <br/>
+По поводу подключения SIP с TLS+SRTP прокомментировать не могу т.к. не пробовал пока. И не знаю какое приложение умеет с этим работать. Подозреваю что CSIPSimple умеет. 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489886">
+		<div class="comment_item" id="comment_6489940" >
+	
+	<span class="parent_id" data-parent_id="6489886"></span>
+	<div class="comment_body">
+			<div class="info " rel="6489940">
+				<div class="folding-dot-holder"><div class="folding-dot"></div></div>
+				<div id="voting_6489940" class="voting   ">
+						<a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 6489940, '3',	186530, -1)"></a>
+						<a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 6489940, '3',	 186530, 1)"	 ></a>
+					<div class="mark  ">
+							<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+					</div>	 
+				</div>
+				<a href="http://habrahabr.ru/users/latv/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+				<a href="http://habrahabr.ru/users/latv/" class="username">latv</a><span class="comma">,</span>
+				<time>14 июля 2013 в 14:03</time>
+				
+				<a href="#comment_6489940" class="link_to_comment">#</a>
+					<a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 6489940 )" title="В избранное"></a>
+					<div class="show_tree" data-id="6489940" data-parent_id="6489886" title="Показать ветку комментариев">&#8629;</div>
+					
+					<a href="#comment_6489886" data-id="6489940" data-parent_id="6489886" class="to_parent">&uarr;</a>
+				<span class="to_chidren"></span>
+				<div class="clear"></div>
+			</div>
+			<div class="message html_format ">
+				Оказывается, и для айфона есть openvpn клиент без jailbreak. <a href="http://habrahabr.ru/post/168853/">habrahabr.ru/post/168853/</a><br/>
+Неожиданно топик дал много новых мыслей. Спасибо =) 
+			</div>
+			<div class="reply_form_placeholder"></div>
+			<div class="reply">
+					
+				
+			</div>
+	</div>
+	
+	<div class="reply_comments" id="reply_comments_6489940">
+	</div>
+</div>
+
+	</div>
+</div>
+
+	</div>
+</div>
+
+	</div>
+</div>
+
+	</div>
+</div>
+
+</div>
+					<form action="#" method="post"  id="comments_form" class="hidden">
+					<input type="hidden" name="ts" value="1373835486" />
+					<input type="hidden" name="tt" value="2" />
+					<input type="hidden" name="ti" value="186530" />  
+					<input type="hidden" name="comment_id" value="0" />
+					<input type="hidden" name="parent_id" value="0" />
+
+				</form>
+
+
+	
+<form action="/json/favorites/" method="post" id="edit_tags_form" class="hidden">
+  <input type="hidden" name="action" value="add" />
+  <input type="hidden" name="ti" value="0" />
+  <input type="hidden" name="tt" value="0" />
+  <label>Пометьте топик понятными вам метками, если хотите</label>
+  <input type="text" name="tags_string" class="tags_string" />
+  <div class="description">Метки лучше разделять запятой. Например: <i>общение, социальные сети, myspace.com, подростки, мердок</i></div>
+  <input type="submit" value="Сохранить" class="submit" /> или <a href="#" class="close" onclick="return close_edit_tags()">закрыть</a>
+</form>
+    
+
+
+  </div>
+  <div class="sidebar_right">
+			
+	
+		<div class="banner_300x500">
+		<div id="adriver_banner_1863387959"></div>
+		<script type="text/javascript">
+			(function(){
+				var custom = {};
+					custom[1] = 'Asterisk';
+					custom[2] = 'telephony';
+					custom[3] = 'linux';
+				
+				var std = {},i;for(i in
+				std){try{custom[std[i]]=eval(i)}catch(e){} }
+				new adriver("adriver_banner_1863387959", {sid: 176776, bt: 52, bn: 1, custom:
+				custom});
+			}());
+		</script>
+		</div>
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+<div class="block daily_best_posts">
+  <div class="title">Лучшее <sup>за 24 часа</sup></div>
+  <div class="posts_list">
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186582/" class="post_name">Будущее русского Gentoo Linux</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186572/" class="post_name">Простая методика построения фильтров товаров с помощью MongoDb и MapReduce</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186570/" class="post_name">Использование ncurses в PHP</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186554/" class="post_name">Я, пират (главы 3-5)</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186546/" class="post_name">Raspberry Picrowave: ну очень «умная» микроволновка</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/eset/blog/186580/" class="post_name">NY Times: правительства заинтересованы в 0day</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186568/" class="post_name">Автоматическое оповещение об изменениях статуса почтовых посылок через SMS</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186532/" class="post_name">Интерактивный глобус — SVG versus Canvas</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/185232/" class="post_name">Знакомство с UnrealEngine. Часть 1</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/186576/" class="post_name">Обсуждение Cubietruck (от создателей Cubieboard)</a>
+      </div>
+  </div>
+  <div class="all"><a href="/top/">все лучшие</a></div>
+</div>
+
+		
+		
+
+
+<div class="block similar_posts">
+
+	<div class="title">Похожие посты</div>
+  <div class="posts_list">
+    	<div class="post_item">
+    				<a class="post_name" href="/post/182270/">Asterisk конференции — создание через почту</a>
+    				<span class="when">12.06.2013</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/180889/">Asterisk на Mikrotik</a>
+    				<span class="when">25.05.2013</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/180445/">Asterisk в примерах: балансировка каналов</a>
+    				<span class="when">21.05.2013</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/174125/">Asterisk. Передаем номер звонящего при переадресации на мобильный с помощью СМС</a>
+    				<span class="when">25.03.2013</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/171163/">Простая установка Asterisk + FreePBX для начинающих</a>
+    				<span class="when">01.03.2013</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/169591/">Связь Elastix c Panasonic TDE 200 и платой v SIPGW16 по SIP</a>
+    				<span class="when">15.02.2013</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/155625/">Поддержка протоколов TLS/SSL для сокетного соединения на AS3</a>
+    				<span class="when">25.12.2012</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/158057/">Офисная телефония на Asterisk+FreePBX</a>
+    				<span class="when">09.11.2012</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/151011/">Поднимает телефонию с нуля: Asterisk, FreePBX, GSM-шлюз на Huawei E173 в Debian</a>
+    				<span class="when">06.09.2012</span>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/post/140645/">Asterisk + FreePBX + 7937G</a>
+    				<span class="when">25.03.2012</span>
+      </div>
+  </div>			
+</div>
+
+
+
+		
+		
+
+	<div class="block live_broadcast">
+		<div class="title">Прямой эфир &nbsp;<sup><span class="dotted tab open" data-type="live_broadcast_activity">посты</span> 
+																											 &nbsp;<span class="dotted tab " data-type="qa_activity">q&a</span></sup></div>
+
+		<div class="live_broadcast_activity ">
+				<div class="posts_list">
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/juffinhalli/" class="user_name">juffinhalli</a> &rarr;
+								<a href="/post/186576/#comment_6490836" class="post_name">Обсуждение Cubietruck (от создателей Cubieboard)</a>&nbsp;<span class="count">16</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/JerryJJ/" class="user_name">JerryJJ</a> &rarr;
+								<a href="/post/186590/#comment_6490834" class="post_name">Почему бережливый стартап все изменил?</a>&nbsp;<span class="count">5</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/Vladek/" class="user_name">Vladek</a> &rarr;
+								<a href="/post/186538/#comment_6490832" class="post_name">Эксперимент от Valve: Pipeline, или школа начинающих игровых разработчиков</a>&nbsp;<span class="count">32</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/KOLANICH/" class="user_name">KOLANICH</a> &rarr;
+								<a href="/post/186580/#comment_6490830" class="post_name">NY Times: правительства заинтересованы в 0day</a>&nbsp;<span class="count">4</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/gnomeby/" class="user_name">gnomeby</a> &rarr;
+								<a href="/post/186570/#comment_6490828" class="post_name">Использование ncurses в PHP</a>&nbsp;<span class="count">9</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/WYCOR/" class="user_name">WYCOR</a> &rarr;
+								<a href="/post/186582/#comment_6490826" class="post_name">Будущее русского Gentoo Linux</a>&nbsp;<span class="count">23</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/nukex/" class="user_name">nukex</a> &rarr;
+								<a href="/post/186314/#comment_6490824" class="post_name">Как легко потерять домен с миллионной посещаемостью</a>&nbsp;<span class="count">221</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/Shirixae/" class="user_name">Shirixae</a> &rarr;
+								<a href="/post/186554/#comment_6490822" class="post_name">Я, пират (главы 3-5)</a>&nbsp;<span class="count">22</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/Ogi/" class="user_name">Ogi</a> &rarr;
+								<a href="/post/186490/#comment_6490816" class="post_name">Роскомнадзор планирует блокировать ресурсы с информацией о заблокированных ресурсах</a>&nbsp;<span class="count">227</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/users/Sakura/" class="user_name">Sakura</a> &rarr;
+								<a href="/post/186452/#comment_6490814" class="post_name">Чем бы вы стали заниматься, если…?</a>&nbsp;<span class="count">376</span>
+							</div>
+				</div>
+				<div class="all"><a href="/posts/">все посты</a></div>
+		</div>
+
+		<div class="qa_activity hidden">
+				
+			
+			
+					<div class="posts_list">
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/schroeder/" class="user_name">schroeder</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43444/#comment_206666" class="post_name">На чем проще всего сделать веб-админку для сайта с игрой?</a>&nbsp;<span class="count">2</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/Taras_Kovalenko/" class="user_name">Taras_Kovalenko</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43448/#comment_206662" class="post_name">Не срабатывает \r\n в TextBox</a>&nbsp;<span class="count">1</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/Virusmater/" class="user_name">Virusmater</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43428/#comment_206658" class="post_name">Keyboard Encoder</a>&nbsp;<span class="count">2</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/freeKODE/" class="user_name">freeKODE</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43440/#comment_206656" class="post_name">Ноутбук с классической клавиатурой</a>&nbsp;<span class="count">2</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/VYakushev/" class="user_name">VYakushev</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43382/#answer_164302" class="post_name">Вопрос по android верстке</a>&nbsp;<span class="count">2</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/svd71/" class="user_name">svd71</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43430/#comment_206654" class="post_name">Java — Main class not found</a>&nbsp;<span class="count">3</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/alex_ter/" class="user_name">alex_ter</a> &rarr;
+									<a href="http://habrahabr.ru/qa/4440/#answer_164294" class="post_name">Удаленное администрирование ПК</a>&nbsp;<span class="count">10</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/barker/" class="user_name">barker</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43442/#answer_164288" class="post_name">Изображения в электронных письмах</a>&nbsp;<span class="count">1</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/sergeyzhuzhgov/" class="user_name">sergeyzhuzhgov</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43332/#answer_164286" class="post_name">SMS-шлюз — работающий по миру</a>&nbsp;<span class="count">8</span>
+								</div>
+								<div class="post_item">
+									<a href="http://habrahabr.ru/users/krs/" class="user_name">krs</a> &rarr;
+									<a href="http://habrahabr.ru/qa/43364/#comment_206652" class="post_name">Можно ли доверять HTTP_REFERER (предварительно прочитайте вопрос)</a>&nbsp;<span class="count">4</span>
+								</div>
+					</div>
+					<div class="all"><a href="/qa/">все вопросы</a></div>
+		</div>  
+	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.live_broadcast .tab').click(function(){
+				$('.live_broadcast .tab').removeClass('open')
+				$(this).addClass('open')
+
+				$('.live_broadcast_activity').hide()
+				$('.qa_activity').hide()
+
+				$('.' + $(this).data('type')).show();
+
+			})
+		})
+	</script>
+
+
+
+  
+		
+<div id="htmlblock_placeholder"></div>
+
+	<script type="text/javascript">
+	var htmlblock_hidden = true;
+	var check_window_position = function(name, html, url){
+		var screen_top = window.pageYOffset
+		var screen_bottom = window.pageYOffset + $(window).height()
+		var htmlblock_placeholder_top = $('#htmlblock_placeholder').offset().top // + ($(window).height() / 2 )
+		if( screen_top < htmlblock_placeholder_top && htmlblock_placeholder_top < screen_bottom ){
+			if ( htmlblock_hidden ){
+				$('#htmlblock_placeholder').html(html);
+				$('.'+name+'_htmlblock').removeClass('hidden');
+				if( typeof(url) !== 'undefined'){
+					$('.'+name+'_htmlblock .block_url').attr('href', url);
+				}
+				if (name == 'ie10_2' || name == 'ie10_3'){
+					var imgie = new Image(1,1);
+					imgie.src = 'http://view.atdmt.com/MRR/view/442774355/direct/01/';
+				}
+
+				htmlblock_hidden = false
+			}
+		}
+	}
+	
+	function show_html_block(name, url){
+		if( typeof(name) !== 'undefined'){
+			$.post('/json/html/'+name+'/', function(html){
+				$(window).bind('scroll', function(){
+					check_window_position(name, html, url);
+				});
+				check_window_position(name, html, url);
+			})
+		}
+	}
+
+	</script>
+
+
+	<!--  AdRiver code START. Type:AjaxJS Site: SP SZ: html PZ: 0 BN: 2 -->
+
+	<div id="adriver_banner_327292689"></div>
+
+	<script type="text/javascript">
+	new adriver("adriver_banner_327292689", {sid:179440, bt:52, sz:'html', bn:2});
+	</script>
+
+	<!--  AdRiver code END  -->
+
+		
+<div class="block best_company">
+
+		<div class="title">Компания дня <img src="/i/bg_cicle_help.png" title="
+Компания, чей пост набрал максимальное количество баллов<br>
+среди всех опубликованных в корпоративных блогах постах за <br>
+прошедшие сутки. Учитываются посты, для которых истек срок голосования <br>(3 дня с момента публикации)." class="help-tip"></div>
+
+		<div class="company_info">
+			<div class="name">
+			 <img class="favicon" src="http://media.habrahabr.ru/images/thumbs/companies/icons/4a/a4/47/74621/small_74621.jpg" alt="Нордавинд" height="16" width="16" />
+			 <div class="company_name"><a href="http://habrahabr.ru/company/nordavind/" class="title">Нордавинд</a></div>
+			</div>
+
+			<p>Последний пост:
+				<a href="http://habrahabr.ru/company/nordavind/blog/186238/">Камера размером с теннисный мяч снимает стабилизированное видео в полёте</a>
+			</p>
+
+			<div class="buttons">
+  			<div id="fans_count">111 подписчиков</div>
+  				<input  type="button"  id="addCompanyFan" data-id="2009" class="blue " title="Мне нравится компания" value="Подписаться" />
+  				<input  type="button"  id="removeCompanyFan" data-id="2009" class="hidden" title="Компания мне больше не нравится" value="Подписан" />
+			</div>
+		</div>
+
+	</div>
+
+
+		
+
+		
+	<div class="block new_vacanies">
+  <a href="http://hantim.ru" class="title">Хантим</a>
+  <div class="vacancies">
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20274-veduschiy-sistemnyy-inzhener-po-telekommunikatsiyam-i-multimediynym-sistemam">Ведущий/системный инженер по телекоммуникациям и мультимедийным системам</a>&nbsp;&rarr; <a href="http://openv.hantim.ru/jobs" class="company_name">Open Vision</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20548-it-spetsialist">IT-специалист</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://hantim.ru/jobs/20480-spetsialist-po-pr-v-seti-internet">Специалист по PR в сети Интернет</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20476-sistemnyy-administrator-udalenka">Системный администратор (удаленка)</a>&nbsp;&rarr; <a href="http://Vegapro.hantim.ru/jobs" class="company_name">Проект Вега</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/14672-administrator-baz-dannyh-oracle-dba">Администратор баз данных (Oracle DBA)</a>&nbsp;&rarr; <a href="http://zedtema.hantim.ru/jobs" class="company_name">Zed TEMA</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/14624-inzhener-linux">Инженер Linux</a>&nbsp;&rarr; <a href="http://zedtema.hantim.ru/jobs" class="company_name">Zed TEMA</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20218-inzhener-tehpodderzhki-servernoe-oborudovanie">Инженер техподдержки (серверное оборудование)</a>&nbsp;&rarr; <a href="http://croc.hantim.ru/jobs" class="company_name">КРОК инкорпорейтед</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20206-inzhener-po-unix-sistemam">Инженер по UNIX-системам </a>&nbsp;&rarr; <a href="http://croc.hantim.ru/jobs" class="company_name">КРОК инкорпорейтед</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://hantim.ru/jobs/19844-sistemnyy-administrator-windows">Системный администратор Windows</a>&nbsp;&rarr; <a href="http://webinar-comdi.hantim.ru/jobs" class="company_name">Webinar-Comdi</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://hantim.ru/jobs/19848-sistemnyy-administrator-linux">Системный администратор Linux</a>&nbsp;&rarr; <a href="http://webinar-comdi.hantim.ru/jobs" class="company_name">Webinar-Comdi</a>
+		</div>
+  </div>
+  <div class="all"><a href="http://hantim.ru/">все вакансии</a></div>
+</div>
+
+		
+	<div class="block freelansim">
+	  <a href="http://freelansim.ru" class="title"></a>
+	  <div class="tasks">
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30044">Нужна инфографика с 3D</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30042">Нужно несколько промо-видео </a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/29694">настройка веб сервера</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30040">Калькулятор стоимости доставки с API Yandex.maps</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30038">Нарезка макета сайта</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30036">Прототип десктопного веб-приложения (только фронтенд)</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30034">Требуется копирайтер по недвижимости</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30032">Игрок первой лиги на серверную часть проекта</a>
+				</div>
+				<div class="task marked">
+					<a href="http://freelansim.ru/tasks/29370">Реализация проекта на Magento CE</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/30030">Статьи на тему CRM, порталы, документооборот</a>
+				</div>
+
+	  </div>
+	  <div class="all"><a href="http://freelansim.ru/tasks">все заказы</a></div>
+	</div>
+
+		
+		
+		
+
+<div class="block similar_events">
+	<div class="title">Ближайшие события</div>
+		<div class="events_items">
+				<div class="event_item">
+						<div class="date">
+						<div class="dayname dayname_2"></div>
+						<div class="day">16</div>
+						<div class="month">июл</div>
+						</div>
+					<div class="title">
+						<a href="/events/2642/">Повышение квалификации «Информационная безопасность предприятия»</a>
+					</div>
+				</div>
+				<div class="event_item">
+						<div class="date">
+						<div class="dayname dayname_2"></div>
+						<div class="day">16</div>
+						<div class="month">июл</div>
+						</div>
+					<div class="title">
+						<a href="/events/2710/">Радиосвязь. Изменения в законодательстве. Управление радиочастотным ресурсом.</a>
+					</div>
+				</div>
+				<div class="event_item">
+						<div class="date">
+						<div class="dayname dayname_2"></div>
+						<div class="day">16</div>
+						<div class="month">июл</div>
+						</div>
+					<div class="title">
+						<a href="/events/2868/">Бесплатный вебинар «Обновленная линейка Cisco: обзор новых решений от вендора»</a>
+					</div>
+				</div>
+				<div class="event_item">
+						<div class="date">
+						<div class="dayname dayname_2"></div>
+						<div class="day">16</div>
+						<div class="month">июл</div>
+						</div>
+					<div class="title">
+						<a href="/events/2844/">5-я встреча IT-сообщества IT talk в Киеве</a>
+					</div>
+				</div>
+				<div class="event_item">
+						<div class="date">
+						<div class="dayname dayname_3"></div>
+						<div class="day">17</div>
+						<div class="month">июл</div>
+						</div>
+					<div class="title">
+						<a href="/events/2634/">EMC — Развёртывание и управление СХД VNX Unified Storage</a>
+					</div>
+				</div>
+		</div>
+	<div class="all"><a href="/events/">все события</a></div>
+</div>
+
+		
+  </div>
+  <div class="clear"></div>
+
+				
+	<div class="rotated_posts">
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/company/nordavind/blog/180063/" class="grey">Камуфляж против видеонаблюдения</a>
+			</div>
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/post/181336/" class="grey">Arduino: Автоматическая подсветка лестницы</a>
+			</div>
+			<div class="rotated_post last">
+				<a href="http://habrahabr.ru/company/kolibrios/blog/181309/" class="grey">В KolibriOS появилась поддержка USB</a>
+			</div>
+	</div>
+
+		  <div id="footer">
+			<dl class="user">
+				<dt><a href="http://habrahabr.ru/users/ThorTheGreat/">ThorTheGreat</a></dt>
+				<dd><a href="http://habrahabr.ru/tracker/">Трекер</a></dd>
+				  <dd><a href="http://habrahabr.ru/sandbox/add/">Написать</a></dd>
+					<dd><a href="http://habrahabr.ru/settings/upgrade/">Read-only</a></dd>
+					<dd><a href="http://habrahabr.ru/settings/">Настройки</a></dd>
+			</dl>
+			<dl>
+				<dt>Разделы</dt>
+
+				<dd><a href="http://habrahabr.ru/qa/">Q&A</a></dd>
+				<dd><a href="http://habrahabr.ru/hubs/">Хабы</a></dd>
+				<dd><a href="http://habrahabr.ru/events/">События</a></dd>
+				<dd><a href="http://habrahabr.ru/companies/">Компании</a></dd>
+				<dd><a href="http://habrahabr.ru/users/">Пользователи</a></dd>
+			</dl>
+			<dl>
+				<dt>Посты</dt>
+				<dd><a href="http://habrahabr.ru/feed/">Лента</a></dd>
+				<dd><a href="http://habrahabr.ru/posts/top/">Лучшие</a></dd>
+				<dd><a href="http://habrahabr.ru/posts/collective/">Тематические</a></dd>
+				<dd><a href="http://habrahabr.ru/posts/corporative/">Корпоративные</a></dd>
+				<dd><a href="http://habrahabr.ru/sandbox/">Песочница</a></dd>
+			</dl>
+			<dl>
+				<dt>Инфо</dt>
+				<dd><a href="http://habrahabr.ru/info/about/">О сайте</a></dd>
+				<dd><a href="http://habrahabr.ru/info/help/rules/">Правила</a></dd>
+				<dd><a href="http://habrahabr.ru/info/help/">Помощь</a></dd>
+				<dd><a href="http://habrahabr.ru/info/agreement/">Соглашение</a></dd>
+				<dd><a href="http://habrahabr.ru/info/stats/">Статистика</a></dd>
+			</dl>
+			<dl>
+				<dt>Услуги</dt>
+				<dd><a href="http://habrahabr.ru/info/advertising/">Реклама</a></dd>
+				<dd><a href="http://habrahabr.ru/info/advertising/corporate/">Корпоративные тарифы</a></dd>
+				<dd><a href="http://habrahabr.ru/info/advertising/workshops/">Семинары</a></dd>
+				<dd><a href="http://habrahabr.ru/special/">Спецпроекты</a></dd>
+			</dl>
+      <div class="copyright">
+
+    		<div class="about">
+    		  <a class="footer_logo" href="http://thematicmedia.ru/">Тематические Медиа</a>
+    			© 2006&#8211;2013
+			<br><br>
+			<a href="/feedback/">Служба поддержки</a><br><br>
+			<a href="http://m.habrahabr.ru">Мобильная версия</a><br><br>
+			
+			
+			<div class="social_accounts">
+				<a href="https://twitter.com/habrahabr" class="tw"></a>
+				<a href="https://www.facebook.com/habrahabr.ru" class="fb"></a>
+				<a href="http://vk.com/habr" class="vk"></a>
+				<!-- <a href="" class="gp"></a> //-->
+			</div>
+			
+		</div>
+      </div>
+
+</div>
+
+		</div>
+
+		
+    
+		
+		
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // test gggg
+        // настройки всплывающих уведомлений
+        $.jGrowl.defaults.closerTemplate = '<div>Закрыть все уведомления</div>';         
+        
+        // настройки тултипов
+        $(".help-tip").tipTip({maxWidth: "300px", edgeOffset: 10});  
+        
+      });
+      // global vars
+      var g_base_url = 'habrahabr.ru';
+      var g_show_xpanel = true;
+      var g_base_fullurl = 'http://habrahabr.ru/';
+      var g_is_guest = true;
+        var g_user_login = 'ThorTheGreat';
+        var g_user_id = 399270;
+        var g_user_avatar = 'http://habrahabr.ru/i/avatars/stub-user-small.gif';   
+    </script>
+		
+    <script type="text/javascript" src="/javascripts/1373654302/_parts/shortcuts.js"></script>
+		<script type="text/javascript" src="/javascripts/1373654302/_parts/to_top.js"></script>
+		<link href="/styles/1373654302/_parts/_to_top.css" rel="stylesheet" media="all" />
+
+		
+		<script type="text/javascript" src="/javascripts/1373654302/_parts/float_block.js"></script>
+		
+		<!-- <script type="text/javascript" src="/javascripts/1373654302/_parts/float_block.js"></script> //-->
+			<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter19919284 = new Ya.Metrika({id:19919284,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/19919284" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+	var ga = document.createElement('script');
+		ga.setAttribute('async', 'true');
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	/* ]]>*/
+</script>
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(
+	    ['_setAccount', 'UA-726094-1'],
+	    ['_setDomainName', '.habrahabr.ru'],
+	    ["_addOrganic", "mail.ru", "q"],
+	    ["_addOrganic","rambler.ru", "words"],
+	    ["_addOrganic","nigma.ru", "s"],
+	    ["_addOrganic","blogs.yandex.ru", "text"],
+	    ["_addOrganic","webalta.ru", "q"],
+	    ["_addOrganic","aport.ru", "r"],
+	    ["_addOrganic","akavita.by", "z"],
+	    ["_addOrganic","meta.ua", "q"],
+	    ["_addOrganic","bigmir.net", "q"],
+	    ["_addOrganic","tut.by", "query"],
+	    ["_addOrganic","all.by", "query"],
+	    ["_addOrganic","i.ua", "q"],
+	    ["_addOrganic","online.ua", "q"],
+	    ["_addOrganic","a.ua", "s"],
+	    ["_addOrganic","ukr.net", "search_query"],
+	    ["_addOrganic","search.com.ua", "q"],
+	    ["_addOrganic","search.ua", "query"],
+	    ["_addOrganic","poisk.ru", "text"],
+	    ["_addOrganic","km.ru", "sq"],
+	    ["_addOrganic","liveinternet.ru", "ask"],
+	    ["_addOrganic","gogo.ru", "q"],
+	    ["_addOrganic","gde.ru", "keywords"],
+	    ["_addOrganic","quintura.ru", "request"],
+	    ['_trackPageview']
+	);
+	document.documentElement.firstChild.appendChild(ga);
+</script>	
+
+		<script type="text/javascript" src="/javascripts/1373654302/advertising.js"></script>
+			<script type="text/javascript" src="http://habrahabr.ru/viewcount/post/186530/"></script>
+
+		
+		<div class="footer_logos">
+		
+		<div class="project freelansim">
+			<a href="http://freelansim.ru" class="icon "></a>
+			<div class="text">Заказы для фрилансеров</div>
+		</div>
+		
+		<div class="project brainstorage">
+			<a href="http://brainstorage.ru" class="icon "></a>
+			<div class="text">Все мозги в одном месте</div>
+		</div>
+		
+		<div class="project hantim">
+			<a href="http://hantim.ru" class="icon "></a>
+			<div class="text">Вакансии для айтишников</div>
+		</div>
+		
+		<div class="project autokadabra">
+			<a href="http://autokadabra.ru" class="icon "></a>
+			<div class="text ">Уютная и дружелюбная</div>
+		</div>
+		
+</div>
+
+
+		
+		
+		
+	</body>
+</html>

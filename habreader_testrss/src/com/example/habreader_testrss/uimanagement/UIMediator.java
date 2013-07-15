@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.tasks.GetFeedMainDetailsAsyncTask;
@@ -67,14 +69,13 @@ public class UIMediator {
 
 				//((View)v.getParent()).setBackgroundResource(R.drawable.borders);
 				((View)v.getParent()).setFadingEdgeLength(2);
+				
+				Toast myToast = Toast.makeText(v.getContext(), "Loading post", Toast.LENGTH_SHORT);			
+				myToast.show();
 
 				GetFeedMainDetailsAsyncTask getFeedDetailsTask = new GetFeedMainDetailsAsyncTask(mainLayout, activity);
 				getFeedDetailsTask.execute(message);
-
-				//Uri uri = Uri.parse(message.getLink().toString());
-				//Intent feedDetails = new Intent(Intent.ACTION_VIEW, uri);
-				//activity.startActivity(feedDetails);
-
+				
 				return false;
 
 				//((View)v.getParent()).

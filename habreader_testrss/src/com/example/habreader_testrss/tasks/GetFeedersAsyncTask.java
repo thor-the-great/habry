@@ -41,7 +41,7 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 		if (isUseTestContentProvider)
 			contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, activity.getResources().getXml(R.xml.testfeeds));
 		else 	
-			contentProvider = ContentProvider.getInstance(ContentProvider.NETWORK_CONTENT_PROVIDER, null);
+			contentProvider = ContentProvider.getInstance(ContentProvider.BEST_HUBS_CONTENT_PROVIDER, null);
 		 
 		HabrXmlParser parser = new HabrXmlParser();
 		List<Message> listOfHabrMsg = new ArrayList<Message>();	

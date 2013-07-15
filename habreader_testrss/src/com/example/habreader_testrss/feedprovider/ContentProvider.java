@@ -14,7 +14,8 @@ import android.util.Xml;
 
 public abstract class ContentProvider {
 	
-	public final static String NETWORK_CONTENT_PROVIDER = "NETWORK_CONTENT_PROVIDER";
+	public final static String BEST_HUBS_CONTENT_PROVIDER = "BEST_HUBS_CONTENT_PROVIDER";
+	public final static String QA_CONTENT_PROVIDER = "QA_CONTENT_PROVIDER";
 	public final static String TEST_FILE_CONTENT_PROVIDER = "TEST_FILE_CONTENT_PROVIDER";
 	
 	final static int HTTP_OPEN_CONNECTION_TIMEOUT = 10000;
@@ -22,8 +23,10 @@ public abstract class ContentProvider {
 	
 	static public ContentProvider getInstance(String contentProviderStrategy, Object initObject){
 		ContentProvider instance = null;
-		if ( NETWORK_CONTENT_PROVIDER.equals(contentProviderStrategy) ) {
-			instance = new NetworkContentProvider();
+		if ( BEST_HUBS_CONTENT_PROVIDER.equals(contentProviderStrategy) ) {
+			instance = new BestHubsContentProvider();
+		} else if ( QA_CONTENT_PROVIDER.equals(contentProviderStrategy) ) {
+			instance = new QAHubsContentProvider();
 		} else if ( TEST_FILE_CONTENT_PROVIDER.equals(contentProviderStrategy) ) {
 			instance = new TestFileContentProvider((XmlPullParser) initObject);
 		}
@@ -36,15 +39,16 @@ public abstract class ContentProvider {
 	
 }
 
-class NetworkContentProvider extends ContentProvider {		
-	String url = "http://habrahabr.ru/rss/hubs/";
+abstract class NetworkContentProvider extends ContentProvider {		
 	InputStream is = null;
 
+	abstract String getUrl();
+	
 	@Override
 	public XmlPullParser getContentParser() throws MalformedURLException, IOException, XmlPullParserException {		
 		XmlPullParser parser = Xml.newPullParser();
 		try {		
-			URL feedUrl = new URL(url);		
+			URL feedUrl = new URL(getUrl());		
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 			URLConnection urlConnection = feedUrl.openConnection();
 			urlConnection.setConnectTimeout(HTTP_OPEN_CONNECTION_TIMEOUT);
@@ -76,6 +80,26 @@ class NetworkContentProvider extends ContentProvider {
 			}
 		}
 	}		
+}
+
+class BestHubsContentProvider extends NetworkContentProvider {		
+	String url = "http://habrahabr.ru/rss/hubs/";
+
+	@Override
+	String getUrl() {		
+		return url;
+	}
+	
+}
+
+class QAHubsContentProvider extends NetworkContentProvider {		
+	String url = "http://habrahabr.ru/rss/qa/";
+
+	@Override
+	String getUrl() {		
+		return url;
+	}
+	
 }
 
 class TestFileContentProvider extends ContentProvider {		
