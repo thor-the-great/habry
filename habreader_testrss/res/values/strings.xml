@@ -13,5 +13,7 @@
     <string name="setting_isShowPartOfFullFeed">Show news text</string>
     <string name="setting_isShowPartOfFullFeed_summ">Show text of the news on title page</string>
     <string name="title_activity_feed_details">Feed Details</string>
+    <string name="title_feed_list">Feeds</string>
+    <string name="title_feed_detail">Feed Detail</string>
 
 </resources>

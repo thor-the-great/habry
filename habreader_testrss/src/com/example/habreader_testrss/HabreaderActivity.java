@@ -152,8 +152,21 @@ public class HabreaderActivity extends FragmentActivity {
 			//ViewGroup mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentMainLayout);
 			//new GetFeedersAsyncTask(mainFragmentLayout).execute(defaultHabrRssURL);
 			this.mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentFeedLayout);;
-			Button btn_loadRssForUser = (Button) rootView.findViewById(R.id.loadRss);
-	        btn_loadRssForUser.setOnClickListener(this); 
+			//Button btn_loadRssForUser = (Button) rootView.findViewById(R.id.loadRss);
+	        //btn_loadRssForUser.setOnClickListener(this); 
+			
+			int childCount = mainFragmentLayout.getChildCount();
+			for (int i = childCount - 1; i >=1; i--) {
+				//View nextChildView = mainFragmentLayout.getChildAt(i);
+				mainFragmentLayout.removeViewAt(i);
+			}
+			
+			Toast myToast = Toast.makeText(rootView.getContext(), "Loading feeds",
+					Toast.LENGTH_SHORT);			
+			myToast.show();
+			
+			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(defaultHabrRssURL);	
+			
 			return rootView;
 		}
 
