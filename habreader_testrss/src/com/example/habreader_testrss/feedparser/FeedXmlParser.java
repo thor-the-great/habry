@@ -1,4 +1,4 @@
-package com.example.habreader_testrss.feedparser_stdandroid;
+package com.example.habreader_testrss.feedparser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import android.util.Log;
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.feedprovider.ContentProvider;
 
-public class HabrXmlParser {
+public class FeedXmlParser {
 	// We don't use namespaces
 	private static final String ns = null;
 
@@ -28,7 +28,7 @@ public class HabrXmlParser {
 	                /*if (name != null) {
 	                	Log.i("habreader - trace", "name = " + name);
 	                }*/
-	                if (FeedTags.ITEM.toString().equalsIgnoreCase(name)) {
+	                if (FeedTagsEnum.ITEM.toString().equalsIgnoreCase(name)) {
 	                	Message message = readEntry(parser);
 	                	entries.add(message);
 	                }
@@ -53,7 +53,7 @@ public class HabrXmlParser {
 			}
 			String name = parser.getName();
 			// Starts by looking for the entry tag
-			if (FeedTags.ITEM.toString().equalsIgnoreCase(name)) {
+			if (FeedTagsEnum.ITEM.toString().equalsIgnoreCase(name)) {
 				entries.add(readEntry(parser));
 			} else {
 				skip(parser);
@@ -80,15 +80,15 @@ public class HabrXmlParser {
 				continue;
 			}
 			String name = parser.getName();
-			if (FeedTags.TITLE.toString().equalsIgnoreCase(name)) {
+			if (FeedTagsEnum.TITLE.toString().equalsIgnoreCase(name)) {
 				title = readTitle(parser);
-			} else if (FeedTags.DESCRIPTION.toString().equalsIgnoreCase(name)) {
+			} else if (FeedTagsEnum.DESCRIPTION.toString().equalsIgnoreCase(name)) {
 				description = readDescription(parser);
-			} else if (FeedTags.AUTHOR.toString().equalsIgnoreCase(name)) {
+			} else if (FeedTagsEnum.AUTHOR.toString().equalsIgnoreCase(name)) {
 				author = readAuthor(parser);	
-			} else if (FeedTags.CATEGORY.toString().equalsIgnoreCase(name)) {
+			} else if (FeedTagsEnum.CATEGORY.toString().equalsIgnoreCase(name)) {
 				categories.add(readOneCategory(parser));
-			} else if (FeedTags.LINK.toString().equalsIgnoreCase(name)) {
+			} else if (FeedTagsEnum.LINK.toString().equalsIgnoreCase(name)) {
 				link = readURL(parser);
 			} else {			
 				skip(parser);
@@ -103,32 +103,32 @@ public class HabrXmlParser {
 	// Processes title tags in the feed.
 	private String readTitle(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
-		return readTextValueOfTag(parser, FeedTags.TITLE);
+		return readTextValueOfTag(parser, FeedTagsEnum.TITLE);
 	}
 	
 	// Processes title tags in the feed.
 	private String readURL(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
-		return readTextValueOfTag(parser, FeedTags.LINK);
+		return readTextValueOfTag(parser, FeedTagsEnum.LINK);
 	}
 	
 	// Processes title tags in the feed.
 	private String readOneCategory(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
-		return readTextValueOfTag(parser, FeedTags.CATEGORY);
+		return readTextValueOfTag(parser, FeedTagsEnum.CATEGORY);
 	}
 
 	// Processes title tags in the feed.
 	private String readDescription(XmlPullParser parser) throws IOException,
 			XmlPullParserException {
-		return readTextValueOfTag(parser, FeedTags.DESCRIPTION);
+		return readTextValueOfTag(parser, FeedTagsEnum.DESCRIPTION);
 	}
 	
 	private String readAuthor(XmlPullParser parser) throws IOException,	XmlPullParserException {		
-		return readTextValueOfTag(parser, FeedTags.AUTHOR);
+		return readTextValueOfTag(parser, FeedTagsEnum.AUTHOR);
 	}
 	
-	private String readTextValueOfTag(XmlPullParser parser, FeedTags feedTag) throws IOException, XmlPullParserException {
+	private String readTextValueOfTag(XmlPullParser parser, FeedTagsEnum feedTag) throws IOException, XmlPullParserException {
 		parser.require(XmlPullParser.START_TAG, ns, feedTag.toString());
 		String title = readText(parser);
 		parser.require(XmlPullParser.END_TAG, ns, feedTag.toString());

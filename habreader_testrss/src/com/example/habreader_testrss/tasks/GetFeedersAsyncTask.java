@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.habreader_testrss.R;
 import com.example.habreader_testrss.dto.Message;
-import com.example.habreader_testrss.feedparser_stdandroid.HabrXmlParser;
+import com.example.habreader_testrss.feedparser.FeedXmlParser;
 import com.example.habreader_testrss.feedprovider.ContentProvider;
 import com.example.habreader_testrss.uimanagement.UIMediator;
 
@@ -43,7 +43,7 @@ public class GetFeedersAsyncTask extends AsyncTask<String, Integer, List<Message
 		else 	
 			contentProvider = ContentProvider.getInstance(ContentProvider.BEST_HUBS_CONTENT_PROVIDER, null);
 		 
-		HabrXmlParser parser = new HabrXmlParser();
+		FeedXmlParser parser = new FeedXmlParser();
 		List<Message> listOfHabrMsg = new ArrayList<Message>();	
 		try {		
 			listOfHabrMsg = parser.parse(contentProvider);

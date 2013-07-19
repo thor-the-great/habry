@@ -1,6 +1,6 @@
-package com.example.habreader_testrss.feedparser_stdandroid;
+package com.example.habreader_testrss.feedparser;
 
-public enum FeedTags {
+public enum FeedTagsEnum {
 	RSS, CHANNEL, ITEM, TITLE, DESCRIPTION, AUTHOR, LINK, CATEGORY;
 
 	@Override
