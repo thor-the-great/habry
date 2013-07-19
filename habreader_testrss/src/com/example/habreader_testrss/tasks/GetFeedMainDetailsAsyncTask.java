@@ -59,7 +59,7 @@ public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 
 			Element htmlElement = feedDocument.getRootElement();
 
-			Element bodyElement = htmlElement.getChildElements().get(1);
+			Element bodyElement = htmlElement.getChildElements().get(1).getChildElements().get(1).getChildElements().get(1);
 
 			//Element bodyElement = htmlElement.getFirstChildElement("body");
 			Elements divCollection = bodyElement.getChildElements();
@@ -68,7 +68,7 @@ public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 				if ("div".equalsIgnoreCase(divElement.getLocalName())) {
 					Attribute divClassAttribute = divElement.getAttribute("class");
 					if (divClassAttribute != null 
-							//&& "content html_format".equalsIgnoreCase(divClassAttribute.getValue())
+							&& "content html_format".equalsIgnoreCase(divClassAttribute.getValue())
 							) {
 						Log.d("habry", "Found usefull content");
 						newRootElement = divElement;
