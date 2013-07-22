@@ -1,6 +1,8 @@
 package com.example.habreader_testrss.messageparser;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -23,13 +25,16 @@ public class MessageParser {
 	final static int MAX_RECURSION_DEEP_LEVEL = 4;
 	
 	private static MessageParser instance;
+	private Map<String, Object> messageParameters = new HashMap<String, Object>();
 	
 	private MessageParser() {		
 	}
 	
-	public static MessageParser getInstance() {
+	public static MessageParser getInstance(Map<String, Object> params) {
 		if (instance == null) 
 			instance = new MessageParser();
+		instance.messageParameters.clear();
+		instance.messageParameters.putAll(params);
 		return instance;
 	}
 
@@ -39,7 +44,7 @@ public class MessageParser {
 		try {
 			tagsoup = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
 			Builder bob = new Builder(tagsoup);
-			//Builder bob = new Builder();
+
 			Document feedDocument = bob.build(oneFeedMessage.getLink().toString());
 			Log.d("habry", "Document is parsed " + feedDocument.getChildCount());
 
@@ -50,24 +55,23 @@ public class MessageParser {
 			newRootElement = searchContent(bodyElement, currentRecursionLevel);
 
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("habry", "MessageParser. Exception is " + e);
 		} catch (ValidityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("habry", "MessageParser. Exception is " + e);
 		} catch (ParsingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("habry", "MessageParser. Exception is " + e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e("habry", "MessageParser. Exception is " + e);
 		}
-		// TODO Auto-generated method stub
 		
 		if (newRootElement != null) {
 			Element html = new Element("html");
 			Element body = new Element("body");
 			newRootElement.detach();
+			
+			Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
+			doPostProcessingForContent(newRootElement, maxWidth.intValue());
+			
 			body.appendChild(newRootElement);
 			html.appendChild(body);		
 			Document feedDetailsDocument = new Document(html);
@@ -102,5 +106,30 @@ public class MessageParser {
 		}
 		currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
 		return returnElement;
+	}
+	
+	private void doPostProcessingForContent(Element documentRootElement, int imgWidth) {
+		Elements elements = documentRootElement.getChildElements();		
+		if (elements != null && elements.size() > 0) {
+			for (int i = 0; i < elements.size(); i ++) {
+				Element element = elements.get(i);
+				if ("img".equalsIgnoreCase(element.getLocalName())) {
+					Attribute widthAttribute = element.getAttribute("width");					
+					if (widthAttribute != null) {
+						int widthAttributeValue = 0;
+						try { 
+							widthAttributeValue = Integer.parseInt(widthAttribute.getValue());
+						} catch (NumberFormatException nfe) {}						
+						if (widthAttributeValue > imgWidth || widthAttributeValue == 0) {
+							widthAttribute.setValue(Integer.toString(imgWidth));
+						}
+					} else {
+						Attribute imageWidthAttr = new Attribute("width", Integer.toString(imgWidth));
+						element.addAttribute(imageWidthAttr);
+					}						
+				}
+				doPostProcessingForContent(element, imgWidth);
+			}
+		}
 	}
 }

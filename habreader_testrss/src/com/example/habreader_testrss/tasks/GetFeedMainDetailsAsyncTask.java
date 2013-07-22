@@ -1,21 +1,14 @@
 package com.example.habreader_testrss.tasks;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import nu.xom.Attribute;
-import nu.xom.Builder;
 import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
-
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Point;
 import android.os.AsyncTask;
+import android.view.Display;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
@@ -38,15 +31,22 @@ public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 			WebView webview = new WebView(activity);
 			activity.setContentView(webview);
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
+			
 			//webview.getSettings().setLoadWithOverviewMode(true);
 			//webview.getSettings().setUseWideViewPort(true);
 		}
 	}
 	
+	@SuppressLint("NewApi")
 	@Override
 	protected Document doInBackground(Message... feeds) {
 		Message feedMessage = feeds[0];		
-		Document document = MessageParser.getInstance().parsePostToDocument(feedMessage);		
+		Display dispaly = activity.getWindowManager().getDefaultDisplay();
+		Point sizePoint = new Point();
+		dispaly.getSize(sizePoint);
+		Map<String, Object> documentParams = new HashMap<String, Object>(); 
+		documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
+		Document document = MessageParser.getInstance(documentParams).parsePostToDocument(feedMessage);		
 		return document;
 	}	
 
