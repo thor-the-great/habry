@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.habreader_testrss.dummy.DummyContent;
+import com.example.habreader_testrss.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a single Feed detail screen. This fragment is either
@@ -60,4 +61,17 @@ public class FeedDetailFragment extends Fragment {
 
 		return rootView;
 	}
+	
+	public static FeedDetailFragment newInstance(int index) {
+		FeedDetailFragment f = new FeedDetailFragment();
+
+        // Supply index input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("index", index);
+        
+        args.putString(FeedDetailFragment.ARG_ITEM_ID, "1");
+        f.setArguments(args);        
+
+        return f;
+    }
 }

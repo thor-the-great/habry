@@ -1,12 +1,16 @@
 package com.example.habreader_testrss;
 
 import com.example.habreader_testrss.HabreaderActivity.MainFeedsSectionFragment;
+import com.example.habreader_testrss.dummy.DummyContent;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 /**
  * An activity representing a list of Feeds. This activity has different
@@ -53,6 +57,39 @@ public class FeedListActivity extends FragmentActivity implements
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
+		FeedListFragment feedListFragment = (FeedListFragment) getSupportFragmentManager().findFragmentById(R.id.feed_list);
+		ListView listView = feedListFragment.getListView();
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		int index = 0;
+		listView.setItemChecked(index, true);
+		// Check what fragment is currently shown, replace if needed.
+        /*FeedDetailFragment details = (FeedDetailFragment)feedListFragment.getFragmentManager().findFragmentById(R.id.feed_detail);
+        if (details == null 
+        		//|| details.getShownIndex() != index) {
+        		){
+            // Make new fragment to show this selection.
+            details = FeedDetailFragment.newInstance(index);
+
+            // Execute a transaction, replacing any existing fragment
+            // with this one inside the frame.
+            //FragmentTransaction ft = getFragmentManager().beginTransaction();
+            
+            if (mTwoPane) {	            
+	            FragmentManager fragmentMager = getSupportFragmentManager();	            
+	            android.support.v4.app.FragmentTransaction ft = fragmentMager.beginTransaction();
+	            if (index == 0) {
+	            	ft.replace(R.id.feed_detail_container, details);
+	            } //else {
+	            	//ft.replace(R.id.a_item, details);
+	            //}
+	            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+	            ft.commit();
+            }
+        }*/
+		onItemSelected(DummyContent.ITEMS.get(0).id);
+		//FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		//feedListFragment.onListItemClick(feedListFragment, feedListFragment, 0, DummyContent.ITEMS.get(0).id);
+		//transaction.commit();		
 	}
 
 	@Override

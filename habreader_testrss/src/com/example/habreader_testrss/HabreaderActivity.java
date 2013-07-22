@@ -2,10 +2,14 @@ package com.example.habreader_testrss;
 
 import java.util.Locale;
 
+import com.example.habreader_testrss.dummy.DummyContent;
+import com.example.habreader_testrss.feedprovider.ContentProvider;
 import com.example.habreader_testrss.tasks.GetFeedersAsyncTask;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -37,7 +41,7 @@ public class HabreaderActivity extends FragmentActivity {
 	 */
 	ViewPager mViewPager;
 	
-	static String defaultHabrRssURL = "http://habrahabr.ru/rss/hubs/";
+	//static String defaultHabrRssURL = "http://habrahabr.ru/rss/hubs/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +52,16 @@ public class HabreaderActivity extends FragmentActivity {
 		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
-
+		mSectionsPagerAdapter.setMenuSelection(getIntent().getStringExtra(FeedDetailFragment.ARG_ITEM_ID));
+		//savedInstanceState = new Bundle();
+		//savedInstanceState.putString(FeedDetailFragment.ARG_ITEM_ID, );
+		
+				
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-
+		
+		
 	}
 
 	@Override
@@ -81,9 +90,15 @@ public class HabreaderActivity extends FragmentActivity {
 	 * one of the sections/tabs/pages.
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+		
+		String mainMenuSelection = null;
+		
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
+		}
+		
+		void setMenuSelection(String mainMenuSelection) {
+			this.mainMenuSelection = mainMenuSelection;
 		}
 
 		@Override
@@ -92,13 +107,16 @@ public class HabreaderActivity extends FragmentActivity {
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
 			Fragment fragment = null;
-			if ( position == 0 ) {
+			if ( position == 0 ) {				
 				fragment = new MainFeedsSectionFragment();
+				//Bundle arguments = new Bundle();				
+				//fragment.setArguments(arguments);
 			} else {
 				fragment = new DummySectionFragment();
 			}
 			Bundle args = new Bundle();
 			args.putInt(MainFeedsSectionFragment.ARG_SECTION_NUMBER, position + 1);
+			args.putString(FeedDetailFragment.ARG_ITEM_ID, mainMenuSelection);
 			fragment.setArguments(args);
 			return fragment;
 		}
@@ -136,8 +154,20 @@ public class HabreaderActivity extends FragmentActivity {
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		
 		ViewGroup mainFragmentLayout;
+		
+		ContentProvider contentProvider = null;
 
 		public MainFeedsSectionFragment() {
+		}
+		
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+
+			if (getArguments().containsKey(FeedDetailFragment.ARG_ITEM_ID)) {
+				
+				contentProvider = getContentProvider(getArguments().getString(FeedDetailFragment.ARG_ITEM_ID));
+			}
 		}
 
 		@Override
@@ -165,7 +195,9 @@ public class HabreaderActivity extends FragmentActivity {
 					Toast.LENGTH_SHORT);			
 			myToast.show();
 			
-			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(defaultHabrRssURL);	
+			if (contentProvider == null)
+				contentProvider = getContentProvider(null);			
+			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(contentProvider);	
 			
 			return rootView;
 		}
@@ -182,8 +214,26 @@ public class HabreaderActivity extends FragmentActivity {
 					Toast.LENGTH_SHORT);			
 			myToast.show();
 			
+			if (contentProvider == null)
+				contentProvider = getContentProvider(null);				
 			//ViewGroup mainFragmentLayout = (ViewGroup) v.findViewById(R.id.fragmentMainLayout);
-			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(defaultHabrRssURL);			
+			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(contentProvider);			
+		}
+		
+		private ContentProvider getContentProvider(String index) {
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(super.getActivity());
+			boolean isUseTestContentProvider = sharedPref.getBoolean("setting_isUseTestContentProvider", false);		
+			
+			ContentProvider contentProvider;
+			if (isUseTestContentProvider || index == null || "".equalsIgnoreCase(index))
+				contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, super.getActivity().getResources().getXml(R.xml.testfeeds));
+			else if (1 == Integer.parseInt(index))	
+				contentProvider = ContentProvider.getInstance(ContentProvider.BEST_HUBS_CONTENT_PROVIDER, null);
+			else if (2 == Integer.parseInt(index))
+				contentProvider = ContentProvider.getInstance(ContentProvider.QA_CONTENT_PROVIDER, null);
+			else
+				contentProvider = ContentProvider.getInstance(ContentProvider.TEST_FILE_CONTENT_PROVIDER, super.getActivity().getResources().getXml(R.xml.testfeeds));
+			return contentProvider;
 		}
 	}
 	
