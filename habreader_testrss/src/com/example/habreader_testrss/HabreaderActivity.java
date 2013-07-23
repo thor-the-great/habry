@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import com.example.habreader_testrss.dummy.DummyContent;
 import com.example.habreader_testrss.feedprovider.ContentProvider;
+import com.example.habreader_testrss.settings.SettingsActivity;
 import com.example.habreader_testrss.tasks.GetFeedersAsyncTask;
 
 import android.content.Intent;
@@ -182,9 +183,7 @@ public class HabreaderActivity extends FragmentActivity {
 			//ViewGroup mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentMainLayout);
 			//new GetFeedersAsyncTask(mainFragmentLayout).execute(defaultHabrRssURL);
 			this.mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentFeedLayout);;
-			//Button btn_loadRssForUser = (Button) rootView.findViewById(R.id.loadRss);
-	        //btn_loadRssForUser.setOnClickListener(this); 
-			
+						
 			int childCount = mainFragmentLayout.getChildCount();
 			for (int i = childCount - 1; i >=1; i--) {
 				//View nextChildView = mainFragmentLayout.getChildAt(i);
@@ -254,12 +253,7 @@ public class HabreaderActivity extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_habreader_dummy,
-					container, false);
-			//TextView dummyTextView = (TextView) rootView
-			//		.findViewById(R.id.section_label);
-			//dummyTextView.setText(Integer.toString(getArguments().getInt(
-			//		ARG_SECTION_NUMBER)));
+			View rootView = inflater.inflate(R.layout.fragment_habreader_dummy,	container, false);			
 			return rootView;
 		}
 	}

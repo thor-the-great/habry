@@ -69,8 +69,8 @@ public class MessageParser {
 			Element body = new Element("body");
 			newRootElement.detach();
 			
-			Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
-			doPostProcessingForContent(newRootElement, maxWidth.intValue());
+			//Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
+			//doPostProcessingForContent(newRootElement, maxWidth.intValue());
 			
 			body.appendChild(newRootElement);
 			html.appendChild(body);		

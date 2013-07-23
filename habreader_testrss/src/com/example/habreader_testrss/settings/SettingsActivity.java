@@ -1,4 +1,5 @@
-package com.example.habreader_testrss;
+package com.example.habreader_testrss.settings;
+
 
 import android.app.Activity;
 import android.os.Bundle;

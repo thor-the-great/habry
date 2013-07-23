@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.habreader_testrss.AppRuntimeContext;
 import com.example.habreader_testrss.R;
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.feedparser.FeedXmlParser;
@@ -58,6 +59,8 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 			myToast.show();
 			error = null;
 		}
+		
+		AppRuntimeContext.getInstance().addMessageList(result);
 		
 		UIMediator uiMediator = new UIMediator();
 		uiMediator.showFeedList(result, mainLayout, activity);		

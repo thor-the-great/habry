@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import nu.xom.Document;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.AsyncTask;
-import android.view.Display;
 import android.view.ViewGroup;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.messageparser.MessageParser;
@@ -27,25 +27,25 @@ public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 	}
 	@Override
 	protected void onPostExecute(Document result) {
-		if (result != null) {
+		if (result != null) {									
 			WebView webview = new WebView(activity);
 			activity.setContentView(webview);
+			webview.getSettings().setJavaScriptEnabled(true);		
+			webview.setWebViewClient(new WebViewClient() {
+				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+					Toast.makeText(activity, "Post cannot be loaded! " + description, Toast.LENGTH_SHORT).show();
+				}
+			});			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
-			
-			//webview.getSettings().setLoadWithOverviewMode(true);
-			//webview.getSettings().setUseWideViewPort(true);
+			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		}
 	}
 	
-	@SuppressLint("NewApi")
 	@Override
 	protected Document doInBackground(Message... feeds) {
-		Message feedMessage = feeds[0];		
-		Display dispaly = activity.getWindowManager().getDefaultDisplay();
-		Point sizePoint = new Point();
-		dispaly.getSize(sizePoint);
+		Message feedMessage = feeds[0];			
 		Map<String, Object> documentParams = new HashMap<String, Object>(); 
-		documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
+		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
 		Document document = MessageParser.getInstance(documentParams).parsePostToDocument(feedMessage);		
 		return document;
 	}	

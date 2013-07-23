@@ -1,4 +1,7 @@
-package com.example.habreader_testrss;
+package com.example.habreader_testrss.settings;
+
+import com.example.habreader_testrss.R;
+import com.example.habreader_testrss.R.xml;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

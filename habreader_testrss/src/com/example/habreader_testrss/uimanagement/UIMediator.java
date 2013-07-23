@@ -2,6 +2,7 @@ package com.example.habreader_testrss.uimanagement;
 
 import java.util.List;
 
+import android.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,10 +10,14 @@ import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,7 +28,7 @@ import com.example.habreader_testrss.tasks.GetFeedMainDetailsAsyncTask;
 
 public class UIMediator {
 
-	int MAX_TITLE_LENGTH = 50;
+	int MAX_TITLE_LENGTH = 500;
 	int MAX_DESC_LENGTH = 150;
 	int MAX_NUMBER_OF_CATEGORIES = 3;
 
@@ -33,20 +38,31 @@ public class UIMediator {
 
 		for (int i = 0; i < result.size(); i++) {
 			Message message = result.get(i);			
-			createOneFeedMessageRow(isShowPartOfFullFeed, message, mainLayout, activity);
+			createOneFeedMessageRow(isShowPartOfFullFeed, message, mainLayout, activity, i);
 		}
 	}
 
-	private void createOneFeedMessageRow(boolean isShowPartOfFullFeed, final Message message, final ViewGroup mainLayout, final Activity activity) {
+	private void createOneFeedMessageRow(boolean isShowPartOfFullFeed, final Message message, final ViewGroup mainLayout, final Activity activity, int messageIndexInList) {
 
 		ScrollView scrollView = new ScrollView(mainLayout.getContext());
 		//LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
 		//scrollView.setLayoutParams(layoutParams);
-		LinearLayout feedElementContainer = new LinearLayout(scrollView.getContext());
+		LinearLayout feedMainContainer = new LinearLayout(scrollView.getContext());
+		feedMainContainer.setOrientation(LinearLayout.HORIZONTAL);
+		
+		LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		
+		CheckBox filterByCategoryWidget = new CheckBox(mainLayout.getContext());
+		filterByCategoryWidget.setChecked(false);
+		filterByCategoryWidget.setLayoutParams(layoutParams);
+		
+		feedMainContainer.addView(filterByCategoryWidget);
+		
+		LinearLayout feedElementContainer = new LinearLayout(feedMainContainer.getContext());
 		feedElementContainer.setOrientation(LinearLayout.VERTICAL);
 
 		TextView feedTitleTextview = new TextView(feedElementContainer.getContext());
-		LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		
 		feedTitleTextview.setLayoutParams(layoutParams);			
 		int actualTitleLength = message.getTitle() == null ? 0 : message.getTitle().length();
 		String feedTitle = "";
@@ -60,9 +76,9 @@ public class UIMediator {
 		feedTitleTextview.setTextSize((float) 16.0);
 		feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
 		feedElementContainer.addView(feedTitleTextview);
-
-		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {
-
+		
+		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {		
+			
 			@Override
 			public boolean onLongClick(View v) {		
 
@@ -81,7 +97,7 @@ public class UIMediator {
 				//((View)v.getParent()).
 				//setBackgroundDrawable(activity.getResources().getDrawable(android.R.drawable.list_selector_background)); 
 			}
-		});
+		});		
 
 		if (isShowPartOfFullFeed) {				
 			TextView feedDescriptionTextview = new TextView(feedElementContainer.getContext());			
@@ -127,15 +143,38 @@ public class UIMediator {
 		//textview.setPadding(10, 1, 10, 0);			
 		//scrollView.addView(authorInfo);
 		feedElementContainer.addView(categories);
+		
+		feedMainContainer.addView(feedElementContainer);		
 
 		LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		scrollViewLayoutParams.setMargins(10, 1, 10, 20);
-		scrollView.addView(feedElementContainer);		
+		scrollViewLayoutParams.setMargins(5, 1, 5, 5);
+		scrollView.addView(feedMainContainer);		
 
 
 		scrollView.setVerticalFadingEdgeEnabled(true);
 		scrollView.setFadingEdgeLength(2);
-
+		scrollView.setTag(messageIndexInList);
 		mainLayout.addView(scrollView, scrollViewLayoutParams);
-	}	
+		
+		FilterFeedsListener filterFeedsListener = new FilterFeedsListener(scrollView, message);		
+		filterByCategoryWidget.setOnCheckedChangeListener(filterFeedsListener);
+	}
+	
+	class FilterFeedsListener implements OnCheckedChangeListener {
+		
+		View viewToOperate;
+		Message message;
+		
+		FilterFeedsListener (View viewToOperate, Message message) {
+			this.viewToOperate = viewToOperate;
+			this.message = message;
+		}
+		
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			this.viewToOperate.setVisibility(View.GONE);			
+		}
+		
+	}
 }
