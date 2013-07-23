@@ -10,6 +10,7 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.view.Display;
 import android.view.ViewGroup;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 
 import com.example.habreader_testrss.dto.Message;
@@ -30,10 +31,8 @@ public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 		if (result != null) {
 			WebView webview = new WebView(activity);
 			activity.setContentView(webview);
-			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
-			
-			//webview.getSettings().setLoadWithOverviewMode(true);
-			//webview.getSettings().setUseWideViewPort(true);
+			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);			
 		}
 	}
 	
