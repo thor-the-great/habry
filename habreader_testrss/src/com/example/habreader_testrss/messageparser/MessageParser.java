@@ -69,7 +69,7 @@ public class MessageParser {
 			Element body = new Element("body");
 			newRootElement.detach();
 			
-			Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
+			//Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
 			//doPostProcessingForContent(newRootElement, maxWidth.intValue());
 			
 			body.appendChild(newRootElement);
@@ -108,7 +108,7 @@ public class MessageParser {
 		return returnElement;
 	}
 	
-	public void doPostProcessingForContent(Element documentRootElement, int imgWidth) {
+	private void doPostProcessingForContent(Element documentRootElement, int imgWidth) {
 		Elements elements = documentRootElement.getChildElements();		
 		if (elements != null && elements.size() > 0) {
 			for (int i = 0; i < elements.size(); i ++) {
