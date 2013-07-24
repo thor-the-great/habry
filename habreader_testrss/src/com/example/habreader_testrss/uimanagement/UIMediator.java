@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -22,7 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.habreader_testrss.AppRuntimeContext;
+import com.example.habreader_testrss.FeedDetailFragment;
+import com.example.habreader_testrss.HabreaderActivity;
 import com.example.habreader_testrss.dto.Message;
+import com.example.habreader_testrss.feeddetail.PostDetail;
+import com.example.habreader_testrss.feeddetail.PostDetail.PostDetailSectionFragment;
 import com.example.habreader_testrss.tasks.GetFeedMainDetailsAsyncTask;
 
 public class UIMediator {
@@ -32,6 +37,7 @@ public class UIMediator {
 	int MAX_NUMBER_OF_CATEGORIES = 3;
 
 	public void showFeedList (List<Message> result, final ViewGroup mainLayout, final Activity activity) {
+		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
 
@@ -76,43 +82,25 @@ public class UIMediator {
 		feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
 		feedElementContainer.addView(feedTitleTextview);
 		
-		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {		
+		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {	
 			
 			@Override
 			public boolean onLongClick(View v) {		
-
-
-				//((View)v.getParent()).setBackgroundResource(R.drawable.borders);
-				((View)v.getParent()).setFadingEdgeLength(2);
-				
+				((View)v.getParent()).setFadingEdgeLength(2);				
 				Toast myToast = Toast.makeText(v.getContext(), "Loading post", Toast.LENGTH_SHORT);			
 				myToast.show();
-
-				GetFeedMainDetailsAsyncTask getFeedDetailsTask = new GetFeedMainDetailsAsyncTask(mainLayout, activity);
-				getFeedDetailsTask.execute(message);
 				
-				return false;
-
-				//((View)v.getParent()).
-				//setBackgroundDrawable(activity.getResources().getDrawable(android.R.drawable.list_selector_background)); 
+				//GetFeedMainDetailsAsyncTask getFeedDetailsTask = new GetFeedMainDetailsAsyncTask(mainLayout, activity);
+				//getFeedDetailsTask.execute(message);	
+				
+				Intent detailIntent = new Intent(activity, PostDetail.class);
+				//detailIntent.putExtra(FeedDetailFragment.ARG_ITEM_ID, "0");
+				detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
+				activity.startActivity(detailIntent);
+				
+				return true;				
 			}
 		});		
-
-		if (isShowPartOfFullFeed) {				
-			TextView feedDescriptionTextview = new TextView(feedElementContainer.getContext());			
-			feedDescriptionTextview.setLayoutParams(layoutParams);			
-			actualTitleLength = message.getDescription() == null ? 0 : message.getDescription().length();
-			String feedDescription = "";
-			if (actualTitleLength > MAX_DESC_LENGTH ) {
-				feedDescription = message.getDescription().substring(0, MAX_DESC_LENGTH) + "...";
-			} else {
-				feedDescription = message.getDescription();
-			}
-			feedDescriptionTextview.setText(feedDescription);
-			feedDescriptionTextview.setTextColor(Color.DKGRAY);
-			feedDescriptionTextview.setTextSize((float) 12.0);
-			feedElementContainer.addView(feedDescriptionTextview);
-		}		
 
 		TextView authorInfo = new TextView(mainLayout.getContext());			
 		authorInfo.setLayoutParams(layoutParams);			
@@ -172,8 +160,7 @@ public class UIMediator {
 		}
 		
 		@Override
-		public void onCheckedChanged(CompoundButton buttonView,
-				boolean isChecked) {
+		public void onCheckedChanged(CompoundButton buttonView,	boolean isChecked) {
 			if (isChecked) {
 				List<Integer> notSameCategoryIndexList = new ArrayList<Integer>();
 				List<String> filterMessageCategories = message.getCategories();

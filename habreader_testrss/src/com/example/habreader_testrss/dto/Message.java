@@ -1,5 +1,6 @@
 package com.example.habreader_testrss.dto;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Message implements Comparable<Message> {
+public class Message implements Comparable<Message>, Serializable {
 	
 	private URL link;
     private String description;

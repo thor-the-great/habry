@@ -144,8 +144,7 @@ public class HabreaderActivity extends FragmentActivity {
 	}
 
 	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
+	 * A fragment representing a section of the app
 	 */
 	public static class MainFeedsSectionFragment extends Fragment implements OnClickListener {
 		/**

@@ -32,18 +32,21 @@
         <activity
             android:name="com.example.habreader_testrss.HabreaderActivity"
             android:label="@string/title_activity_habreader" >
-            <!--intent-filter>
+
+            <!--
+            intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter-->
+            </intent-filter
+            -->
         </activity>
         <activity android:name="com.example.habreader_testrss.settings.SettingsActivity" >
         </activity>
         <activity
             android:name="com.example.habreader_testrss.FeedDetailsActivity"
             android:label="@string/title_activity_feed_details" >
-        </activity>        
+        </activity>
         <activity
             android:name="com.example.habreader_testrss.FeedDetailActivity"
             android:label="@string/title_feed_detail"
@@ -51,6 +54,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".FeedListActivity" />
+        </activity>
+        <activity
+            android:name="com.example.habreader_testrss.feeddetail.PostDetail"
+            android:label="@string/title_activity_post_detail" >
         </activity>
     </application>
 
