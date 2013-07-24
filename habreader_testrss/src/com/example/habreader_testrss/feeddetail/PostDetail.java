@@ -56,6 +56,7 @@ public class PostDetail extends FragmentActivity implements
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setDisplayShowTitleEnabled(false);
 
 		// Create the adapter that will return a fragment for each of the three
 		// primary sections of the app.
@@ -184,7 +185,7 @@ public class PostDetail extends FragmentActivity implements
 			//dummyTextView.setText(Integer.toString(getArguments().getInt(
 			//		ARG_SECTION_NUMBER)));
 			Message postMessage = (Message) getArguments().getSerializable(POST_DETAIL_MESSAGE);
-			GetFeedMainDetailsAsyncTask getFeedDetailsTask = new GetFeedMainDetailsAsyncTask((ViewGroup)container, this.getActivity());
+			GetFeedMainDetailsAsyncTask getFeedDetailsTask = new GetFeedMainDetailsAsyncTask((ViewGroup)rootView, this.getActivity());
 			getFeedDetailsTask.execute(postMessage);
 			return rootView;
 		}
