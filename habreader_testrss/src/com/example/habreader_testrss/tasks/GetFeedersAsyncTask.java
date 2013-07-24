@@ -60,7 +60,7 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 			error = null;
 		}
 		
-		AppRuntimeContext.getInstance().addMessageList(result);
+		AppRuntimeContext.getInstance().addFeedList(result);
 		
 		UIMediator uiMediator = new UIMediator();
 		uiMediator.showFeedList(result, mainLayout, activity);		

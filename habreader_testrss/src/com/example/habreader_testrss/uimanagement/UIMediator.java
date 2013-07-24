@@ -1,8 +1,8 @@
 package com.example.habreader_testrss.uimanagement;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import android.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,11 +10,9 @@ import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -23,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.habreader_testrss.AppRuntimeContext;
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.tasks.GetFeedMainDetailsAsyncTask;
 
@@ -156,24 +155,63 @@ public class UIMediator {
 		scrollView.setTag(messageIndexInList);
 		mainLayout.addView(scrollView, scrollViewLayoutParams);
 		
-		FilterFeedsListener filterFeedsListener = new FilterFeedsListener(scrollView, message);		
+		FilterFeedsListener filterFeedsListener = new FilterFeedsListener(mainLayout, message, messageIndexInList);		
 		filterByCategoryWidget.setOnCheckedChangeListener(filterFeedsListener);
 	}
 	
 	class FilterFeedsListener implements OnCheckedChangeListener {
 		
-		View viewToOperate;
+		View mainLayout;
 		Message message;
+		int messageIndex;
 		
-		FilterFeedsListener (View viewToOperate, Message message) {
-			this.viewToOperate = viewToOperate;
+		FilterFeedsListener (View mainLayout, Message message, int messageIndexParam) {
+			this.mainLayout = mainLayout;
 			this.message = message;
+			this.messageIndex = messageIndexParam;
 		}
 		
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
-			this.viewToOperate.setVisibility(View.GONE);			
+			if (isChecked) {
+				List<Integer> notSameCategoryIndexList = new ArrayList<Integer>();
+				List<String> filterMessageCategories = message.getCategories();
+				List<Message> feedList = AppRuntimeContext.getInstance().getFeedList();
+				for(int i = 0; i < feedList.size(); i++ ) {
+					Message oneFeed = feedList.get(i);
+					List<String> oneMessageCategoryList = oneFeed.getCategories();
+					boolean oneMessageBelongsToCategories = false;
+					for (String oneMessageCategory : oneMessageCategoryList) {
+						if (filterMessageCategories.contains(oneMessageCategory)) {
+							oneMessageBelongsToCategories = true;
+							break;
+						}
+					}
+					if(!oneMessageBelongsToCategories) {
+						notSameCategoryIndexList.add(i);
+					}
+				}
+				
+				for(int i=0; i<((ViewGroup)mainLayout).getChildCount(); ++i) {
+				    View nextChild = ((ViewGroup)mainLayout).getChildAt(i);
+				    if (nextChild.getTag() != null) {
+				    	int messageIndex = (Integer) nextChild.getTag();
+				    	for (Integer sameCategoryIndexValue : notSameCategoryIndexList) {
+							if (sameCategoryIndexValue.compareTo(messageIndex) == 0) {
+								nextChild.setVisibility(View.GONE);
+							}
+						}
+				    }
+				}
+			} else {
+				for(int i=0; i<((ViewGroup)mainLayout).getChildCount(); ++i) {
+				    View nextChild = ((ViewGroup)mainLayout).getChildAt(i);
+				    if (View.GONE == nextChild.getVisibility() ) {
+				    	nextChild.setVisibility(View.VISIBLE);
+				    }
+				}
+			}
 		}
 		
 	}
