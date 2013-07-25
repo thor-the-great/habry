@@ -165,7 +165,16 @@ public class PostDetail extends FragmentActivity implements
 				fragment = new PostDetailSectionFragment();
 				break;
 			case 1:
-				fragment = new PostCommentsSectionFragment();
+				switch(message.getType()) {
+					case POST:
+						fragment = new PostCommentsSectionFragment();
+						break;
+					case QA:
+						fragment = new PostQASectionFragment();
+						break;
+					default:
+						break;
+				}				
 				break;	
 			default:
 				fragment = new PostDetailSectionFragment();

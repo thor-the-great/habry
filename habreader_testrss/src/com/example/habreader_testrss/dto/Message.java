@@ -16,6 +16,7 @@ public class Message implements Comparable<Message>, Serializable {
     private Date date;
     private String author;
     private List<String> categories = new ArrayList<String>();
+    private MessageType type;
     
     public List<String> getCategories() {
 		return categories;
@@ -110,5 +111,13 @@ public class Message implements Comparable<Message>, Serializable {
             if (another == null) return 1;
             // sort descending, most recent first
             return another.date.compareTo(date);
-        }
+        } 
+
+		public MessageType getType() {
+			return type;
+		}
+
+		public void setType(MessageType type) {
+			this.type = type;
+		}
     }

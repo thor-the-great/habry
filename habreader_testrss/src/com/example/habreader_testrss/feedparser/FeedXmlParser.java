@@ -25,11 +25,9 @@ public class FeedXmlParser {
 		    	switch (eventType){
 	            case XmlPullParser.START_TAG:
 	                String name = parser.getName(); 
-	                /*if (name != null) {
-	                	Log.i("habreader - trace", "name = " + name);
-	                }*/
 	                if (FeedTagsEnum.ITEM.toString().equalsIgnoreCase(name)) {
 	                	Message message = readEntry(parser);
+	                	message.setType(contentProvider.getMessageType());
 	                	entries.add(message);
 	                }
 	                break;

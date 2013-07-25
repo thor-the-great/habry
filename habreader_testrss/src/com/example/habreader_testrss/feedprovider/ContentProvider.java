@@ -9,6 +9,8 @@ import java.net.URLConnection;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.example.habreader_testrss.dto.MessageType;
+
 import android.util.Log;
 import android.util.Xml;
 
@@ -36,6 +38,8 @@ public abstract class ContentProvider {
 	public abstract XmlPullParser getContentParser() throws MalformedURLException, IOException, XmlPullParserException;
 	
 	public abstract void flashResources();
+	
+	public abstract MessageType getMessageType();
 	
 }
 
@@ -89,6 +93,11 @@ class BestHubsContentProvider extends NetworkContentProvider {
 	String getUrl() {		
 		return url;
 	}
+
+	@Override
+	public MessageType getMessageType() {
+		return MessageType.POST;
+	}
 	
 }
 
@@ -98,6 +107,11 @@ class QAHubsContentProvider extends NetworkContentProvider {
 	@Override
 	String getUrl() {		
 		return url;
+	}
+
+	@Override
+	public MessageType getMessageType() {
+		return MessageType.QA;
 	}
 	
 }
@@ -117,5 +131,10 @@ class TestFileContentProvider extends ContentProvider {
 	@Override
 	public void flashResources() {
 		
+	}
+
+	@Override
+	public MessageType getMessageType() {
+		return MessageType.POST;
 	}			
 }

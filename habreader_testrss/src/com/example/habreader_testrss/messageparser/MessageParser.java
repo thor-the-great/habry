@@ -52,7 +52,7 @@ public class MessageParser {
 
 			Element bodyElement = htmlElement.getChildElements().get(1);
 			Integer currentRecursionLevel = Integer.valueOf(0);
-			newRootElement = searchContent(bodyElement, currentRecursionLevel);
+			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "post shortcuts_item");
 
 		} catch (SAXException e) {
 			Log.e("habry", "MessageParser. Exception is " + e);
@@ -81,7 +81,93 @@ public class MessageParser {
 		return null;
 	}
 	
-	private Element searchContent(Element bodyElement, Integer currentRecursionLevel){
+	public Document parseCommentsToDocument(Message oneFeedMessage) {
+		XMLReader tagsoup;
+		Element newRootElement = null;
+		try {
+			tagsoup = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+			Builder bob = new Builder(tagsoup);
+
+			Document feedDocument = bob.build(oneFeedMessage.getLink().toString());
+			Log.d("habry", "Document is parsed " + feedDocument.getChildCount());
+
+			Element htmlElement = feedDocument.getRootElement();
+
+			Element bodyElement = htmlElement.getChildElements().get(1);
+			Integer currentRecursionLevel = Integer.valueOf(0);
+			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "comments_list");
+
+		} catch (SAXException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (ValidityException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (ParsingException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (IOException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		}
+		
+		if (newRootElement != null) {
+			Element html = new Element("html");
+			Element body = new Element("body");
+			newRootElement.detach();
+			
+			//Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
+			//doPostProcessingForContent(newRootElement, maxWidth.intValue());
+			
+			body.appendChild(newRootElement);
+			html.appendChild(body);		
+			Document feedDetailsDocument = new Document(html);
+			return feedDetailsDocument;
+		}
+		
+		return null;
+	}
+	
+	public Document parseQAToDocument(Message oneFeedMessage) {
+		XMLReader tagsoup;
+		Element newRootElement = null;
+		try {
+			tagsoup = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+			Builder bob = new Builder(tagsoup);
+
+			Document feedDocument = bob.build(oneFeedMessage.getLink().toString());
+			Log.d("habry", "Document is parsed " + feedDocument.getChildCount());
+
+			Element htmlElement = feedDocument.getRootElement();
+
+			Element bodyElement = htmlElement.getChildElements().get(1);
+			Integer currentRecursionLevel = Integer.valueOf(0);
+			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "answers");
+
+		} catch (SAXException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (ValidityException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (ParsingException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (IOException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		}
+		
+		if (newRootElement != null) {
+			Element html = new Element("html");
+			Element body = new Element("body");
+			newRootElement.detach();
+			
+			//Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
+			//doPostProcessingForContent(newRootElement, maxWidth.intValue());
+			
+			body.appendChild(newRootElement);
+			html.appendChild(body);		
+			Document feedDetailsDocument = new Document(html);
+			return feedDetailsDocument;
+		}
+		
+		return null;
+	}
+	
+	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue){
 		Element returnElement = null;
 		if (currentRecursionLevel.intValue() == MAX_RECURSION_DEEP_LEVEL) {
 			currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
@@ -92,14 +178,14 @@ public class MessageParser {
 		if (elements != null && elements.size() > 0) {
 			for (int i = 0; (i < elements.size()) && returnElement == null; i ++) {
 				Element element = elements.get(i);
-				if ("div".equalsIgnoreCase(element.getLocalName())) {
-					Attribute divClassAttribute = element.getAttribute("class");
-					if (divClassAttribute != null && "post shortcuts_item".equalsIgnoreCase(divClassAttribute.getValue())) {
+				if (tag.equalsIgnoreCase(element.getLocalName())) {
+					Attribute divClassAttribute = element.getAttribute(attrName);
+					if (divClassAttribute != null && attrValue.trim().equalsIgnoreCase(divClassAttribute.getValue().trim())) {
 						returnElement = element;
 						break;
 					} else {
 						currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-						returnElement = searchContent(element, currentRecursionLevel);
+						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue);
 					}						
 				}
 			}
