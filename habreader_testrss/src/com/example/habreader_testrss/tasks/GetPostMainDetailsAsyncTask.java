@@ -15,13 +15,13 @@ import android.widget.Toast;
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.messageparser.MessageParser;
 
-public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Document> {
+public class GetPostMainDetailsAsyncTask extends AsyncTask<Message, Integer, Document> {
 	
 	ViewGroup mainLayout;
 	Activity activity;
 	Exception error;
 	
-	public GetFeedMainDetailsAsyncTask(ViewGroup mainLayout, Activity activity) {
+	public GetPostMainDetailsAsyncTask(ViewGroup mainLayout, Activity activity) {
 		this.mainLayout = mainLayout;
 		this.activity = activity;
 	}
@@ -29,7 +29,8 @@ public class GetFeedMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 	protected void onPostExecute(Document result) {
 		if (result != null) {									
 			WebView webview = new WebView(activity);
-			activity.setContentView(webview);
+			mainLayout.addView(webview);
+			//activity.setContentView(webview);
 			webview.getSettings().setJavaScriptEnabled(true);		
 			webview.setWebViewClient(new WebViewClient() {
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {

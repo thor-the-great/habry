@@ -27,8 +27,8 @@ import com.example.habreader_testrss.FeedDetailFragment;
 import com.example.habreader_testrss.HabreaderActivity;
 import com.example.habreader_testrss.dto.Message;
 import com.example.habreader_testrss.feeddetail.PostDetail;
-import com.example.habreader_testrss.feeddetail.PostDetail.PostDetailSectionFragment;
-import com.example.habreader_testrss.tasks.GetFeedMainDetailsAsyncTask;
+import com.example.habreader_testrss.feeddetail.PostDetailSectionFragment;
+import com.example.habreader_testrss.tasks.GetPostMainDetailsAsyncTask;
 
 public class UIMediator {
 
@@ -90,7 +90,7 @@ public class UIMediator {
 				Toast myToast = Toast.makeText(v.getContext(), "Loading post", Toast.LENGTH_SHORT);			
 				myToast.show();
 				
-				//GetFeedMainDetailsAsyncTask getFeedDetailsTask = new GetFeedMainDetailsAsyncTask(mainLayout, activity);
+				//GetPostMainDetailsAsyncTask getFeedDetailsTask = new GetPostMainDetailsAsyncTask(mainLayout, activity);
 				//getFeedDetailsTask.execute(message);	
 				
 				Intent detailIntent = new Intent(activity, PostDetail.class);
