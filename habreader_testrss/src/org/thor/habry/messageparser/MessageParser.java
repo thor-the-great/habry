@@ -22,7 +22,7 @@ import nu.xom.ValidityException;
 
 public class MessageParser {
 	
-	final static int MAX_RECURSION_DEEP_LEVEL = 4;
+	final static int MAX_RECURSION_DEEP_LEVEL = 5;
 	
 	private static MessageParser instance;
 	private Map<String, Object> messageParameters = new HashMap<String, Object>();
@@ -52,7 +52,7 @@ public class MessageParser {
 
 			Element bodyElement = htmlElement.getChildElements().get(1);
 			Integer currentRecursionLevel = Integer.valueOf(0);
-			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "post shortcuts_item");
+			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "content html_format");
 
 		} catch (SAXException e) {
 			Log.e("habry", "MessageParser. Exception is " + e);

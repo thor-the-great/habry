@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentLeft="true"
+    android:background="#eee"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,6 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:scrollbars="vertical"
     tools:context=".HabreaderActivity$MainFeedsSectionFragment" >
+
     <LinearLayout        
         android:id="@+id/fragmentFeedLayout"
         android:layout_width="fill_parent"
@@ -20,12 +22,6 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:scrollbars="vertical">
-        <!--Button
-        android:id="@+id/loadRss"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/load_rss" /-->
+        android:scrollbars="vertical">        
     </LinearLayout>
 </ScrollView>

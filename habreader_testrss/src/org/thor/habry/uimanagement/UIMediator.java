@@ -16,6 +16,7 @@ import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -80,10 +81,10 @@ public class UIMediator {
 		feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
 		feedElementContainer.addView(feedTitleTextview);
 		
-		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {	
+		feedTitleTextview.setOnClickListener(new OnClickListener() {	
 			
 			@Override
-			public boolean onLongClick(View v) {		
+			public void onClick(View v) {		
 				((View)v.getParent()).setFadingEdgeLength(2);				
 				Toast myToast = Toast.makeText(v.getContext(), "Loading post", Toast.LENGTH_SHORT);			
 				myToast.show();
@@ -95,20 +96,18 @@ public class UIMediator {
 				detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
 				activity.startActivity(detailIntent);
 				
-				return true;				
+				//return true;				
 			}
 		});		
 
-		TextView authorInfo = new TextView(mainLayout.getContext());			
-		authorInfo.setLayoutParams(layoutParams);			
+		//TextView authorInfo = new TextView(mainLayout.getContext());			
+		//authorInfo.setLayoutParams(layoutParams);			
 
-		authorInfo.setText(message.getAuthor());
-		authorInfo.setTextColor(Color.GREEN);
-		authorInfo.setGravity(Gravity.RIGHT);
-		authorInfo.setTextSize((float) 12.0);
-		//textview.setPadding(10, 1, 10, 0);			
-		//scrollView.addView(authorInfo);
-		feedElementContainer.addView(authorInfo);
+		//authorInfo.setText(message.getAuthor());
+		//authorInfo.setTextColor(Color.GREEN);
+		//authorInfo.setGravity(Gravity.RIGHT);
+		//authorInfo.setTextSize((float) 12.0);		
+		//feedElementContainer.addView(authorInfo);
 
 		TextView categories = new TextView(mainLayout.getContext());			
 		categories.setLayoutParams(layoutParams);			
@@ -130,14 +129,15 @@ public class UIMediator {
 		
 		feedMainContainer.addView(feedElementContainer);		
 
-		LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		scrollViewLayoutParams.setMargins(5, 1, 5, 5);
+		LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		scrollViewLayoutParams.setMargins(1, 5, 1, 5);
 		scrollView.addView(feedMainContainer);		
 
 
 		scrollView.setVerticalFadingEdgeEnabled(true);
-		scrollView.setFadingEdgeLength(2);
+		scrollView.setFadingEdgeLength(1);
 		scrollView.setTag(messageIndexInList);
+		scrollView.setBackgroundColor(Color.WHITE);
 		mainLayout.addView(scrollView, scrollViewLayoutParams);
 		
 		FilterFeedsListener filterFeedsListener = new FilterFeedsListener(mainLayout, message, messageIndexInList);		

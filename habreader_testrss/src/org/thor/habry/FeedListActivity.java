@@ -64,12 +64,8 @@ public class FeedListActivity extends FragmentActivity implements
 		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		int index = 0;
 		listView.setItemChecked(index, true);
-		// Check what fragment is currently shown, replace if needed.
-        
-		onItemSelected(DummyContent.ITEMS.get(0).id);
-		//FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		//feedListFragment.onListItemClick(feedListFragment, feedListFragment, 0, DummyContent.ITEMS.get(0).id);
-		//transaction.commit();		
+		// Check what fragment is currently shown, replace if needed.        
+		onItemSelected(DummyContent.ITEMS.get(0).id);		
 	}
 
 	@Override
