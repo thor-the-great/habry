@@ -1,15 +1,12 @@
 package org.thor.habry;
 
+import org.thor.habry.AppRuntimeContext.AppMode;
 import org.thor.habry.HabreaderActivity.MainFeedsSectionFragment;
 import org.thor.habry.dummy.DummyContent;
 
-import org.thor.habry.R;
-
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -36,7 +33,7 @@ public class FeedListActivity extends FragmentActivity implements
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	private boolean mTwoPane;
+	//private boolean mTwoPane;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +47,16 @@ public class FeedListActivity extends FragmentActivity implements
 			// large-screen layouts (res/values-large and
 			// res/values-sw600dp). If this view is present, then the
 			// activity should be in two-pane mode.
-			mTwoPane = true;
+			//mTwoPane = true;
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
 			((FeedListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.feed_list)).setActivateOnItemClick(true);
+			AppRuntimeContext.getInstance().setAppMode(AppMode.TWO_SIDES);
+		} 
+		else {
+			AppRuntimeContext.getInstance().setAppMode(AppMode.ONE_SIDE);
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
@@ -64,8 +65,9 @@ public class FeedListActivity extends FragmentActivity implements
 		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		int index = 0;
 		listView.setItemChecked(index, true);
-		// Check what fragment is currently shown, replace if needed.        
-		onItemSelected(DummyContent.ITEMS.get(0).id);		
+		// Check what fragment is currently shown, replace if needed.  
+		;
+		onItemSelected(DummyContent.getInstance(getBaseContext()).getITEMS().get(0).id);		
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public class FeedListActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		if (mTwoPane) {
+		if (AppMode.TWO_SIDES.equals(AppRuntimeContext.getInstance().getAppMode())) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.

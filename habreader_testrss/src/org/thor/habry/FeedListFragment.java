@@ -1,6 +1,9 @@
 package org.thor.habry;
 
+import java.util.List;
+
 import org.thor.habry.dummy.DummyContent;
+import org.thor.habry.dummy.DummyContent.DummyItem;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -72,9 +75,10 @@ public class FeedListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		// TODO: replace with a real list adapter.
+		List<DummyItem> items = DummyContent.getInstance(getActivity().getBaseContext()).getITEMS();
 		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
 				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, DummyContent.ITEMS));
+				android.R.id.text1, items));
 	}
 
 	@Override
@@ -117,7 +121,8 @@ public class FeedListFragment extends ListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+		List<DummyItem> items = DummyContent.getInstance(getActivity().getBaseContext()).getITEMS();		
+		mCallbacks.onItemSelected(items.get(position).id);
 	}
 
 	@Override

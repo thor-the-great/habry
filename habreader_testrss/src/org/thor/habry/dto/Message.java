@@ -11,16 +11,17 @@ import java.util.List;
 
 public class Message implements Comparable<Message>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2973399474379617023L;
+	
 	private URL link;
     private String description;
     private Date date;
     private String author;
     private List<String> categories = new ArrayList<String>();
     private MessageType type;
-    
-    public List<String> getCategories() {
-		return categories;
-	}
 
 	//
 	public Message() {
@@ -38,10 +39,14 @@ public class Message implements Comparable<Message>, Serializable {
         private String title;
         public String getTitle() {
 			return title;
-		}
+		}        
 
 		public void setTitle(String title) {
 			this.title = title;
+		}		
+	    
+	    public List<String> getCategories() {
+			return categories;
 		}
 
 		public URL getLink() {
@@ -119,5 +124,11 @@ public class Message implements Comparable<Message>, Serializable {
 
 		public void setType(MessageType type) {
 			this.type = type;
+		}
+		
+		public String getMessageReference() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("MessageRef:").append(type.name()).append(",").append(author).append(",").append(title.hashCode());
+			return sb.toString();
 		}
     }

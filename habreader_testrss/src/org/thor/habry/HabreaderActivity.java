@@ -189,8 +189,7 @@ public class HabreaderActivity extends FragmentActivity {
 				mainFragmentLayout.removeViewAt(i);
 			}
 			
-			Toast myToast = Toast.makeText(rootView.getContext(), "Loading feeds",
-					Toast.LENGTH_SHORT);			
+			Toast myToast = Toast.makeText(rootView.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
 			myToast.show();
 			
 			if (contentProvider == null)
@@ -208,8 +207,7 @@ public class HabreaderActivity extends FragmentActivity {
 				mainFragmentLayout.removeViewAt(i);
 			}
 			
-			Toast myToast = Toast.makeText(v.getContext(), "Loading feeds",
-					Toast.LENGTH_SHORT);			
+			Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
 			myToast.show();
 			
 			if (contentProvider == null)

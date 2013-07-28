@@ -2,8 +2,10 @@ package org.thor.habry.uimanagement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.thor.habry.AppRuntimeContext;
+import org.thor.habry.R;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;
 import org.thor.habry.feeddetail.PostDetailSectionFragment;
@@ -75,40 +77,45 @@ public class UIMediator {
 		} else {
 			feedTitle = message.getTitle();
 		}
-		feedTitleTextview.setText(feedTitle);
-		feedTitleTextview.setTextColor(Color.DKGRAY);
+		feedTitleTextview.setText(feedTitle);		
 		feedTitleTextview.setTextSize((float) 16.0);
-		feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
+		Set<String> readedMessageRefList = AppRuntimeContext.getInstance().getReadedFeedRefList();
+		if (readedMessageRefList.contains(message.getMessageReference())) {
+			markViewAsReaded(feedTitleTextview);
+		}
+		else {
+			feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
+			feedTitleTextview.setTextColor(Color.DKGRAY);
+		}
 		feedElementContainer.addView(feedTitleTextview);
 		
 		feedTitleTextview.setOnClickListener(new OnClickListener() {	
 			
 			@Override
-			public void onClick(View v) {		
+			public void onClick(View v) {
+				//((View)v.getParent()).setBackgroundColor(Color.parseColor("#6699FF"));
+				AppRuntimeContext.getInstance().addMessageToReadedFeedRefList(message);
+				markViewAsReaded(v);
+				v.invalidate();
+				
 				((View)v.getParent()).setFadingEdgeLength(2);				
-				Toast myToast = Toast.makeText(v.getContext(), "Loading post", Toast.LENGTH_SHORT);			
-				myToast.show();
-				
-				//GetPostMainDetailsAsyncTask getFeedDetailsTask = new GetPostMainDetailsAsyncTask(mainLayout, activity);
-				//getFeedDetailsTask.execute(message);	
-				
+				Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
+				myToast.show();				
 				Intent detailIntent = new Intent(activity, PostDetail.class);
 				detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
-				activity.startActivity(detailIntent);
-				
+				activity.startActivity(detailIntent);				
 				//return true;				
 			}
+			
 		});		
-
-		//TextView authorInfo = new TextView(mainLayout.getContext());			
-		//authorInfo.setLayoutParams(layoutParams);			
-
-		//authorInfo.setText(message.getAuthor());
-		//authorInfo.setTextColor(Color.GREEN);
-		//authorInfo.setGravity(Gravity.RIGHT);
-		//authorInfo.setTextSize((float) 12.0);		
-		//feedElementContainer.addView(authorInfo);
-
+		
+		TextView messageStatus = new TextView(mainLayout.getContext());			
+		messageStatus.setLayoutParams(layoutParams);			
+		messageStatus.setText(R.string.message_list_message_status_online);
+		messageStatus.setTextColor(Color.GREEN);
+		messageStatus.setTextSize((float) 11.0);
+		feedElementContainer.addView(messageStatus);
+		
 		TextView categories = new TextView(mainLayout.getContext());			
 		categories.setLayoutParams(layoutParams);			
 		StringBuilder categorySB = new StringBuilder();
@@ -123,9 +130,17 @@ public class UIMediator {
 		categories.setText(categorySB.toString());
 		categories.setTextColor(Color.GRAY);
 		categories.setTextSize((float) 12.0);
-		//textview.setPadding(10, 1, 10, 0);			
-		//scrollView.addView(authorInfo);
 		feedElementContainer.addView(categories);
+		
+		TextView authorInfo = new TextView(mainLayout.getContext());			
+		authorInfo.setLayoutParams(layoutParams);			
+
+		authorInfo.setText(message.getAuthor());
+		authorInfo.setTextColor(Color.parseColor("#6699FF"));
+		authorInfo.setGravity(Gravity.RIGHT);
+		authorInfo.setTextSize((float) 12.0);		
+		feedElementContainer.addView(authorInfo);
+
 		
 		feedMainContainer.addView(feedElementContainer);		
 
@@ -142,6 +157,11 @@ public class UIMediator {
 		
 		FilterFeedsListener filterFeedsListener = new FilterFeedsListener(mainLayout, message, messageIndexInList);		
 		filterByCategoryWidget.setOnCheckedChangeListener(filterFeedsListener);
+	}
+	
+	private void markViewAsReaded(View v) {
+		((TextView)v).setTypeface(Typeface.DEFAULT);
+		((TextView)v).setTextColor(Color.DKGRAY);
 	}
 	
 	class FilterFeedsListener implements OnCheckedChangeListener {
