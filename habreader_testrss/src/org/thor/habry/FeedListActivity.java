@@ -41,6 +41,8 @@ public class FeedListActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_feed_list);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		AppRuntimeContext appContext = AppRuntimeContext.getInstance();
+		appContext.initDAOHelper(getBaseContext());
 
 		if (findViewById(R.id.feed_detail_container) != null) {
 			// The detail container view will be present only in the
@@ -53,10 +55,10 @@ public class FeedListActivity extends FragmentActivity implements
 			// 'activated' state when touched.
 			((FeedListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.feed_list)).setActivateOnItemClick(true);
-			AppRuntimeContext.getInstance().setAppMode(AppMode.TWO_SIDES);
+			appContext.setAppMode(AppMode.TWO_SIDES);
 		} 
 		else {
-			AppRuntimeContext.getInstance().setAppMode(AppMode.ONE_SIDE);
+			appContext.setAppMode(AppMode.ONE_SIDE);
 		}
 
 		// TODO: If exposing deep links into your app, handle intents here.
@@ -65,8 +67,7 @@ public class FeedListActivity extends FragmentActivity implements
 		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		int index = 0;
 		listView.setItemChecked(index, true);
-		// Check what fragment is currently shown, replace if needed.  
-		;
+		
 		onItemSelected(DummyContent.getInstance(getBaseContext()).getITEMS().get(0).id);		
 	}
 
@@ -109,9 +110,15 @@ public class FeedListActivity extends FragmentActivity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			//Intent detailIntent = new Intent(this, FeedDetailActivity.class);
-			Intent detailIntent = new Intent(this, HabreaderActivity.class);
-			detailIntent.putExtra(MainFeedsSectionFragment.ARG_ITEM_ID, id);
-			startActivity(detailIntent);
+			if ("3".equals(id)) {
+				Intent detailIntent = new Intent(this, SavedMessagesActivity.class);
+				detailIntent.putExtra(MainFeedsSectionFragment.ARG_ITEM_ID, id);
+				startActivity(detailIntent);
+			} else {
+				Intent detailIntent = new Intent(this, HabreaderActivity.class);
+				detailIntent.putExtra(MainFeedsSectionFragment.ARG_ITEM_ID, id);
+				startActivity(detailIntent);
+			}
 		}
 	}
 }

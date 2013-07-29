@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
+import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;
 import org.thor.habry.feeddetail.PostDetailSectionFragment;
@@ -109,6 +110,19 @@ public class UIMediator {
 			
 		});		
 		
+		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {			
+			@Override
+			public boolean onLongClick(View v) {
+				Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_saving_feed, Toast.LENGTH_SHORT);			
+				myToast.show();	
+				HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
+				daoHelper.saveOneMessage(message);
+				markViewAsReaded(v);
+				v.invalidate();
+				return true;
+			}
+		});
+		
 		TextView messageStatus = new TextView(mainLayout.getContext());			
 		messageStatus.setLayoutParams(layoutParams);			
 		messageStatus.setText(R.string.message_list_message_status_online);
@@ -161,7 +175,7 @@ public class UIMediator {
 	
 	private void markViewAsReaded(View v) {
 		((TextView)v).setTypeface(Typeface.DEFAULT);
-		((TextView)v).setTextColor(Color.DKGRAY);
+		((TextView)v).setTextColor(Color.parseColor("#888888"));
 	}
 	
 	class FilterFeedsListener implements OnCheckedChangeListener {

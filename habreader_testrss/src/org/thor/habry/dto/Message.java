@@ -53,10 +53,6 @@ public class Message implements Comparable<Message>, Serializable {
 			return link;
 		}
 
-		public void setLink(URL link) {
-			this.link = link;
-		}
-
 		public String getDescription() {
 			return description;
 		}

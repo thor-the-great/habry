@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
+
+import android.content.Context;
 
 
 public class AppRuntimeContext {
@@ -16,8 +19,10 @@ public class AppRuntimeContext {
 	private List<Message> feedList;
 	private AppMode appMode;
 	private Set<String> readedFeedRefList = new HashSet<String>();
+	private HabrySQLDAOHelper daoHelper;
 	
-	private AppRuntimeContext() {}
+	private AppRuntimeContext() {
+	}
 	
 	public static AppRuntimeContext getInstance() {
 		if (instance == null)
@@ -54,8 +59,16 @@ public class AppRuntimeContext {
 		readedFeedRefList.add(message.getMessageReference());
 	}
 	
+	public void initDAOHelper(Context context) {
+		daoHelper = new HabrySQLDAOHelper(context);
+	}
+	
+	public HabrySQLDAOHelper getDaoHelper() {
+		return daoHelper;
+	}
 
 	public enum AppMode {
 		ONE_SIDE, TWO_SIDES
 	}
+	
 }

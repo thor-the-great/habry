@@ -41,11 +41,15 @@
             </intent-filter
             -->
         </activity>
-        <activity android:name="org.thor.habry.settings.SettingsActivity"
+        <activity
+            android:name="org.thor.habry.settings.SettingsActivity"
             android:label="@string/title_activity_feed_details" >
         </activity>
+        <activity android:name="org.thor.habry.feeddetail.PostDetail" >
+        </activity>
         <activity
-            android:name="org.thor.habry.feeddetail.PostDetail">
+            android:name="org.thor.habry.SavedMessagesActivity"
+            android:label="@string/title_activity_saved_messages" >
         </activity>
     </application>
 

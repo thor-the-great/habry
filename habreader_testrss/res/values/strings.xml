@@ -18,10 +18,15 @@
     <string name="title_activity_post_detail">Детали сообщения</string>
     <string name="title_postDetail_section1">Сообщение</string>
     <string name="title_postDetail_section2">Комментарии</string>
-	<string name="status_message_loading_feed">Загружаем сообщение</string>
-	<string name="main_menu_item_habrs">Лучшие хабры</string>
-	<string name="main_menu_item_qa">Вопрос-ответ</string>
-	<string name="main_menu_item_saved">Сохраненное</string>
-	<string name="message_list_message_status_online">Онлайн</string>
-	<string name="message_list_message_status_offline">Оффлайн</string>	
+    <string name="status_message_loading_feed">Загружаем сообщение</string>
+    <string name="status_message_saving_feed">Сохраняем сообщение</string>
+    <string name="status_message_no_saved_messages">Нет сохраненных сообщений</string>
+    <string name="main_menu_item_habrs">Лучшие хабры</string>
+    <string name="main_menu_item_qa">Вопрос-ответ</string>
+    <string name="main_menu_item_saved">Сохраненное</string>
+    <string name="message_list_message_status_online">Онлайн</string>
+    <string name="message_list_message_status_offline">Оффлайн</string>
+    <string name="title_activity_saved_messages">SavedMessagesActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
