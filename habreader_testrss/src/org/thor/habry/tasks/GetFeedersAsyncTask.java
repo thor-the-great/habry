@@ -9,6 +9,7 @@ import org.thor.habry.dto.Message;
 import org.thor.habry.feedparser.FeedXmlParser;
 import org.thor.habry.feedprovider.ContentProvider;
 import org.thor.habry.uimanagement.UIMediator;
+import org.thor.habry.uimanagement.UIMediator.MessageListConfigJB;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
@@ -59,7 +60,11 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 		AppRuntimeContext.getInstance().addFeedList(result);
 		
 		UIMediator uiMediator = new UIMediator();
-		uiMediator.showFeedList(result, mainLayout, activity);		
+		MessageListConfigJB listConfig = uiMediator.new MessageListConfigJB();	
+		listConfig.setFavorFilteringEnabled(true);
+		listConfig.setReadHighlightEnabled(true);
+		listConfig.setSaveMessageEnabled(true);
+		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
 	}
 
 }

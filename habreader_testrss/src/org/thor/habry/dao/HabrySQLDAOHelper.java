@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.thor.habry.dto.Message;
+import org.thor.habry.dto.MessageType;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -101,6 +102,7 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 		List<Message> messageList = new ArrayList<Message>();
 		SQLiteDatabase db = getReadableDatabase();				
 		try {
+			//read messages
 			SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 			queryBuilder.setTables(HabryTables.SAVED_MESSAGE.name());
 			Cursor cursor = queryBuilder.query(db, null, null, null, null, null, null);
@@ -109,15 +111,37 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 				boolean hasMore = true;
 				do {
 					//String reference = cursor.getString(cursor.getColumnIndexOrThrow("REFERENCE"));
-					String title = cursor.getString(cursor.getColumnIndexOrThrow("TITLE"));		
 					Message newMessage = new Message();
-					newMessage.setTitle(title);
+					newMessage.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("TITLE")));
+					newMessage.setAuthor(cursor.getString(cursor.getColumnIndexOrThrow("AUTHOR")));
+					newMessage.setDescription(cursor.getString(cursor.getColumnIndexOrThrow("DESCRIPTION")));
+					newMessage.setLink(cursor.getString(cursor.getColumnIndexOrThrow("URL")));
+					newMessage.setType(MessageType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("TYPE"))));
 					messageList.add(newMessage);
 					hasMore = cursor.moveToNext();
 				} while (hasMore);			
 			}
+			//read categories
+			if (messageList != null && messageList.size() > 0) {
+				for (Message message : messageList) {			
+					queryBuilder = new SQLiteQueryBuilder();
+					queryBuilder.setTables(HabryTables.SAVED_MESSAGE_CATEGORY.name());
+					cursor = queryBuilder.query(db, new String[] {"CATEGORY"}, "MESSAGE_REF=?", new String[]{message.getMessageReference()}, null, null, null);
+					List<String> categories = new ArrayList<String>();
+					if (cursor.getCount() > 0) {	
+						cursor.moveToFirst();
+						boolean hasMore = true;
+						do {		
+							categories.add(cursor.getString(cursor.getColumnIndexOrThrow("CATEGORY")));							
+							hasMore = cursor.moveToNext();
+						} while (hasMore);							
+					}
+					message.getCategories().addAll(categories);
+				}
+			}
+			
 		} catch (Exception e) {
-			Log.e("habreader", "Cannot save message to DB. " + e );			
+			Log.e("habreader", "Cannot read message from DB. " + e );			
 		} 
 		return messageList;
 	}

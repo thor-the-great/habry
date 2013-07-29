@@ -1,17 +1,12 @@
 package org.thor.habry;
 
-import java.util.List;
+import org.thor.habry.dao.HabrySQLDAOHelper;
+import org.thor.habry.tasks.LoadSavedMessagesAsyncTask;
 
-import org.thor.habry.dto.Message;
-
-import android.os.Bundle;
 import android.app.Activity;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class SavedMessagesActivity extends Activity {
 
@@ -19,7 +14,7 @@ public class SavedMessagesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_saved_messages);
-		List<Message> messageList = AppRuntimeContext.getInstance().getDaoHelper().findAllMessages();
+		/*List<Message> messageList = AppRuntimeContext.getInstance().getDaoHelper().findAllMessages();
 		if(messageList == null || messageList.size() == 0) {
 			Toast.makeText(getBaseContext(), getResources().getString(R.string.status_message_no_saved_messages), Toast.LENGTH_SHORT).show();
 			
@@ -31,7 +26,11 @@ public class SavedMessagesActivity extends Activity {
 				messageTitle.setText(message.getTitle());				
 				mainView.addView(messageTitle);				
 			}
-		}
+		}*/
+		HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
+		ViewGroup mainView = (ViewGroup) findViewById(R.id.saved_messages_main_layout); 
+		LoadSavedMessagesAsyncTask loadMessagesTask = new LoadSavedMessagesAsyncTask(mainView, this);
+		loadMessagesTask.execute(daoHelper);
 	}
 
 	@Override

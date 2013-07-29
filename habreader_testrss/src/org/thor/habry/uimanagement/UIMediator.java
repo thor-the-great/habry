@@ -1,5 +1,6 @@
 package org.thor.habry.uimanagement;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -38,18 +39,18 @@ public class UIMediator {
 	int MAX_DESC_LENGTH = 150;
 	int MAX_NUMBER_OF_CATEGORIES = 3;
 
-	public void showFeedList (List<Message> result, final ViewGroup mainLayout, final Activity activity) {
+	public void showFeedList (List<Message> result, final ViewGroup mainLayout, final Activity activity, MessageListConfigJB listConfigJB) {
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
 
 		for (int i = 0; i < result.size(); i++) {
 			Message message = result.get(i);			
-			createOneFeedMessageRow(isShowPartOfFullFeed, message, mainLayout, activity, i);
+			createOneFeedMessageRow(isShowPartOfFullFeed, message, mainLayout, activity, i, listConfigJB);
 		}
 	}
 
-	private void createOneFeedMessageRow(boolean isShowPartOfFullFeed, final Message message, final ViewGroup mainLayout, final Activity activity, int messageIndexInList) {
+	private void createOneFeedMessageRow(boolean isShowPartOfFullFeed, final Message message, final ViewGroup mainLayout, final Activity activity, int messageIndexInList, MessageListConfigJB listConfigJB) {
 
 		ScrollView scrollView = new ScrollView(mainLayout.getContext());
 		//LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
@@ -59,11 +60,16 @@ public class UIMediator {
 		
 		LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 		
-		CheckBox filterByCategoryWidget = new CheckBox(mainLayout.getContext());
-		filterByCategoryWidget.setChecked(false);
-		filterByCategoryWidget.setLayoutParams(layoutParams);
-		
-		feedMainContainer.addView(filterByCategoryWidget);
+		if(listConfigJB.isFavorFilteringEnabled()) {
+			CheckBox filterByCategoryWidget = new CheckBox(mainLayout.getContext());
+			filterByCategoryWidget.setChecked(false);
+			filterByCategoryWidget.setLayoutParams(layoutParams);
+			
+			feedMainContainer.addView(filterByCategoryWidget);
+			
+			FilterFeedsListener filterFeedsListener = new FilterFeedsListener(mainLayout, message, messageIndexInList);		
+			filterByCategoryWidget.setOnCheckedChangeListener(filterFeedsListener);
+		}
 		
 		LinearLayout feedElementContainer = new LinearLayout(feedMainContainer.getContext());
 		feedElementContainer.setOrientation(LinearLayout.VERTICAL);
@@ -81,47 +87,37 @@ public class UIMediator {
 		feedTitleTextview.setText(feedTitle);		
 		feedTitleTextview.setTextSize((float) 16.0);
 		Set<String> readedMessageRefList = AppRuntimeContext.getInstance().getReadedFeedRefList();
-		if (readedMessageRefList.contains(message.getMessageReference())) {
-			markViewAsReaded(feedTitleTextview);
-		}
-		else {
+		if(listConfigJB.isReadHighlightEnabled()) {
+			if (readedMessageRefList.contains(message.getMessageReference())) {
+				markViewAsReaded(feedTitleTextview);
+			}
+			else {
+				feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
+				feedTitleTextview.setTextColor(Color.DKGRAY);
+			}
+		} else {
 			feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
 			feedTitleTextview.setTextColor(Color.DKGRAY);
 		}
 		feedElementContainer.addView(feedTitleTextview);
 		
-		feedTitleTextview.setOnClickListener(new OnClickListener() {	
-			
-			@Override
-			public void onClick(View v) {
-				//((View)v.getParent()).setBackgroundColor(Color.parseColor("#6699FF"));
-				AppRuntimeContext.getInstance().addMessageToReadedFeedRefList(message);
-				markViewAsReaded(v);
-				v.invalidate();
-				
-				((View)v.getParent()).setFadingEdgeLength(2);				
-				Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-				myToast.show();				
-				Intent detailIntent = new Intent(activity, PostDetail.class);
-				detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
-				activity.startActivity(detailIntent);				
-				//return true;				
-			}
-			
-		});		
+		MessageOnClickListener onClickListener = new MessageOnClickListener(activity, message, listConfigJB);
+		feedTitleTextview.setOnClickListener(onClickListener);		
 		
-		feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {			
-			@Override
-			public boolean onLongClick(View v) {
-				Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_saving_feed, Toast.LENGTH_SHORT);			
-				myToast.show();	
-				HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
-				daoHelper.saveOneMessage(message);
-				markViewAsReaded(v);
-				v.invalidate();
-				return true;
-			}
-		});
+		if(listConfigJB.isSaveMessageEnabled()) {
+			feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {			
+				@Override
+				public boolean onLongClick(View v) {
+					Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_saving_feed, Toast.LENGTH_SHORT);			
+					myToast.show();	
+					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
+					daoHelper.saveOneMessage(message);
+					markViewAsReaded(v);
+					v.invalidate();
+					return true;
+				}
+			});
+		}
 		
 		TextView messageStatus = new TextView(mainLayout.getContext());			
 		messageStatus.setLayoutParams(layoutParams);			
@@ -167,10 +163,7 @@ public class UIMediator {
 		scrollView.setFadingEdgeLength(1);
 		scrollView.setTag(messageIndexInList);
 		scrollView.setBackgroundColor(Color.WHITE);
-		mainLayout.addView(scrollView, scrollViewLayoutParams);
-		
-		FilterFeedsListener filterFeedsListener = new FilterFeedsListener(mainLayout, message, messageIndexInList);		
-		filterByCategoryWidget.setOnCheckedChangeListener(filterFeedsListener);
+		mainLayout.addView(scrollView, scrollViewLayoutParams);	
 	}
 	
 	private void markViewAsReaded(View v) {
@@ -232,5 +225,64 @@ public class UIMediator {
 			}
 		}
 		
+	}
+	
+	class MessageOnClickListener implements OnClickListener {	
+		
+		private Activity activity;
+		private Message message;
+		private MessageListConfigJB messageListConfig;
+		
+		MessageOnClickListener(Activity activity, Message message, MessageListConfigJB messageListConfig) {
+			this.activity = activity;
+			this.message = message;
+			this.messageListConfig = messageListConfig;
+		}
+		
+		@Override
+		public void onClick(View v) {
+			if (messageListConfig.isReadHighlightEnabled()) {			
+				//((View)v.getParent()).setBackgroundColor(Color.parseColor("#6699FF"));
+				AppRuntimeContext.getInstance().addMessageToReadedFeedRefList(message);
+				markViewAsReaded(v);
+				v.invalidate();
+			}
+			
+			((View)v.getParent()).setFadingEdgeLength(2);				
+			Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
+			myToast.show();				
+			Intent detailIntent = new Intent(activity, PostDetail.class);
+			detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
+			activity.startActivity(detailIntent);
+		}
+		
+	}
+	
+	public class MessageListConfigJB implements Serializable {
+
+		private static final long serialVersionUID = 5433594263926342591L;
+		
+		private boolean favorFilteringEnabled = true;
+		private boolean readHighlightEnabled = true;
+		private boolean saveMessageEnabled = true;
+		
+		public boolean isFavorFilteringEnabled() {
+			return favorFilteringEnabled;
+		}
+		public void setFavorFilteringEnabled(boolean favorFilteringEnabled) {
+			this.favorFilteringEnabled = favorFilteringEnabled;
+		}
+		public boolean isReadHighlightEnabled() {
+			return readHighlightEnabled;
+		}
+		public void setReadHighlightEnabled(boolean readHighlightEnabled) {
+			this.readHighlightEnabled = readHighlightEnabled;
+		}
+		public boolean isSaveMessageEnabled() {
+			return saveMessageEnabled;
+		}
+		public void setSaveMessageEnabled(boolean saveMessageEnabled) {
+			this.saveMessageEnabled = saveMessageEnabled;
+		}
 	}
 }
