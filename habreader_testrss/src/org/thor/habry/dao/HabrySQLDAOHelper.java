@@ -146,6 +146,16 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 		return messageList;
 	}
 	
+	public void deleteMessage(String messageRef) {
+ 		SQLiteDatabase db = getWritableDatabase();
+ 		try {
+ 			db.delete(HabryTables.SAVED_MESSAGE_CATEGORY.name(), "MESSAGE_REF=?", new String[]{messageRef});
+ 			db.delete(HabryTables.SAVED_MESSAGE.name(), "REFERENCE=?", new String[]{messageRef});
+ 		} catch (Exception e) {
+			Log.e("habreader", "Cannot delete message from DB. " + e );			
+		}
+ 	}
+	
 	public enum HabryTables {SAVED_MESSAGE, SAVED_MESSAGE_CATEGORY};
 
 }

@@ -64,6 +64,7 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 		listConfig.setFavorFilteringEnabled(true);
 		listConfig.setReadHighlightEnabled(true);
 		listConfig.setSaveMessageEnabled(true);
+		listConfig.setSupportDelete(false);
 		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
 	}
 

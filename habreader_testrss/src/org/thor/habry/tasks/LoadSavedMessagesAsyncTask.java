@@ -2,13 +2,9 @@ package org.thor.habry.tasks;
 
 import java.util.List;
 
-import nu.xom.Document;
-
-import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
-import org.thor.habry.feedprovider.ContentProvider;
 import org.thor.habry.uimanagement.UIMediator;
 import org.thor.habry.uimanagement.UIMediator.MessageListConfigJB;
 
@@ -44,6 +40,7 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 		listConfig.setFavorFilteringEnabled(false);
 		listConfig.setReadHighlightEnabled(false);
 		listConfig.setSaveMessageEnabled(false);
+		listConfig.setSupportDelete(true);
 		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
 	}
 }

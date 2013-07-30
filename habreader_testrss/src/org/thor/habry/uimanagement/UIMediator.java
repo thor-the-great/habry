@@ -13,6 +13,8 @@ import org.thor.habry.feeddetail.PostDetail;
 import org.thor.habry.feeddetail.PostDetailSectionFragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -117,6 +119,10 @@ public class UIMediator {
 					return true;
 				}
 			});
+		}
+		if (listConfigJB.isSupportDelete()) {
+			DeleteMessageOnLongClickListener deleteMessageOnLongClickListener = new DeleteMessageOnLongClickListener(activity, message);
+			feedTitleTextview.setOnLongClickListener(deleteMessageOnLongClickListener);			 
 		}
 		
 		TextView messageStatus = new TextView(mainLayout.getContext());			
@@ -258,6 +264,45 @@ public class UIMediator {
 		
 	}
 	
+	class DeleteMessageOnLongClickListener implements OnLongClickListener {	
+		
+		private Activity activity;
+		private Message message;
+		
+		DeleteMessageOnLongClickListener(Activity activity, Message message) {
+			this.activity = activity;
+			this.message = message;
+		}
+		
+		@Override
+		public boolean onLongClick(final View v) {					
+			new AlertDialog.Builder(activity)
+			.setIcon(android.R.drawable.ic_dialog_alert)
+			.setCancelable(false)
+			.setTitle("Closing Activity")
+			.setMessage("Are you sure you want to close this activity?")
+			.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
+					daoHelper.deleteMessage(message.getMessageReference()); 
+				}
+
+			})
+			.setNegativeButton("No", new DialogInterface.OnClickListener()
+			{
+
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					
+				}})
+			.show();
+			return true;
+		}
+	}	
+	
 	public class MessageListConfigJB implements Serializable {
 
 		private static final long serialVersionUID = 5433594263926342591L;
@@ -265,6 +310,7 @@ public class UIMediator {
 		private boolean favorFilteringEnabled = true;
 		private boolean readHighlightEnabled = true;
 		private boolean saveMessageEnabled = true;
+		private boolean supportDelete = false;
 		
 		public boolean isFavorFilteringEnabled() {
 			return favorFilteringEnabled;
@@ -283,6 +329,12 @@ public class UIMediator {
 		}
 		public void setSaveMessageEnabled(boolean saveMessageEnabled) {
 			this.saveMessageEnabled = saveMessageEnabled;
+		}
+		public boolean isSupportDelete() {
+			return supportDelete;
+		}
+		public void setSupportDelete(boolean supportDelete) {
+			this.supportDelete = supportDelete;
 		}
 	}
 }
