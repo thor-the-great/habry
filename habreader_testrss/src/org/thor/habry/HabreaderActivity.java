@@ -1,22 +1,16 @@
 package org.thor.habry;
 
-import java.util.Locale;
-
-import org.thor.habry.dummy.DummyContent;
 import org.thor.habry.feedprovider.ContentProvider;
 import org.thor.habry.settings.SettingsActivity;
 import org.thor.habry.tasks.GetFeedersAsyncTask;
 
-import org.thor.habry.R;
-
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,44 +18,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.Toast;
+//import android.support.v4.app.Fragment;
 
 public class HabreaderActivity extends FragmentActivity {
-
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
 
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
-	
-	//static String defaultHabrRssURL = "http://habrahabr.ru/rss/hubs/";
+	private static final int CONTENT_VIEW_ID = 10101010;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_habreader);
+					
+		FrameLayout frame = new FrameLayout(this);
+        frame.setId(CONTENT_VIEW_ID);
+        setContentView(frame, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
-		mSectionsPagerAdapter.setMenuSelection(getIntent().getStringExtra(MainFeedsSectionFragment.ARG_ITEM_ID));
-						
-		// Set up the ViewPager with the sections adapter.
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-		
-		
+        if (savedInstanceState == null) {
+            android.app.Fragment newFragment = new MainFeedsSectionFragment();
+            Bundle args = new Bundle();
+    		//args.putInt(MainFeedsSectionFragment.ARG_SECTION_NUMBER, position + 1);
+    		args.putString(MainFeedsSectionFragment.ARG_ITEM_ID, getIntent().getStringExtra(MainFeedsSectionFragment.ARG_ITEM_ID));
+    		newFragment.setArguments(args);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(CONTENT_VIEW_ID, newFragment).commit();
+        }
 	}
 
 	@Override
@@ -83,64 +69,7 @@ public class HabreaderActivity extends FragmentActivity {
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
-	}
-
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-		
-		String mainMenuSelection = null;
-		
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-		
-		void setMenuSelection(String mainMenuSelection) {
-			this.mainMenuSelection = mainMenuSelection;
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			Fragment fragment = null;
-			if ( position == 0 ) {				
-				fragment = new MainFeedsSectionFragment();
-				//Bundle arguments = new Bundle();				
-				//fragment.setArguments(arguments);
-			} else {
-				fragment = new DummySectionFragment();
-			}
-			Bundle args = new Bundle();
-			args.putInt(MainFeedsSectionFragment.ARG_SECTION_NUMBER, position + 1);
-			args.putString(MainFeedsSectionFragment.ARG_ITEM_ID, mainMenuSelection);
-			fragment.setArguments(args);
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			// Show 3 total pages.
-			return 3;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
-			}
-			return null;
-		}
-	}
+	}	
 
 	/**
 	 * A fragment representing a section of the app
@@ -150,7 +79,6 @@ public class HabreaderActivity extends FragmentActivity {
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
 		public static final String ARG_ITEM_ID = "item_id";
 		
 		ViewGroup mainFragmentLayout;
@@ -232,27 +160,4 @@ public class HabreaderActivity extends FragmentActivity {
 			return contentProvider;
 		}
 	}
-	
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
-	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
-
-		public DummySectionFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_habreader_dummy,	container, false);			
-			return rootView;
-		}
-	}
-
 }

@@ -4,6 +4,7 @@ import org.thor.habry.AppRuntimeContext.AppMode;
 import org.thor.habry.HabreaderActivity.MainFeedsSectionFragment;
 import org.thor.habry.dummy.DummyContent;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -100,25 +101,35 @@ public class FeedListActivity extends FragmentActivity implements
 			// fragment transaction.
 			Bundle arguments = new Bundle();
 			arguments.putString(MainFeedsSectionFragment.ARG_ITEM_ID, id);
-			MainFeedsSectionFragment fragment = new MainFeedsSectionFragment();
+			//MainFeedsSectionFragment fragment = new MainFeedsSectionFragment();
+			Fragment fragment = null;
+			
+			if ("3".equals(id)) {
+				fragment = new SavedMessagesActivity.SavedMessagesFragment();				
+			} else {
+				fragment = new MainFeedsSectionFragment();					
+			}
 			
 			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.feed_detail_container, fragment).commit();
+			//getSupportFragmentManager().beginTransaction()
+			//		.replace(R.id.feed_detail_container, fragment).commit();
+			getFragmentManager().beginTransaction().replace(R.id.feed_detail_container, fragment).commit();			
+			
+			//SavedMessagesActivity saveActivity = new SavedMessagesActivity();
+			//getFragmentManager().beginTransaction().replace(R.id.feed_detail_container, saveActivity).commit();
 
 		} else {
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			//Intent detailIntent = new Intent(this, FeedDetailActivity.class);
+			Intent detailIntent = null;
 			if ("3".equals(id)) {
-				Intent detailIntent = new Intent(this, SavedMessagesActivity.class);
-				detailIntent.putExtra(MainFeedsSectionFragment.ARG_ITEM_ID, id);
-				startActivity(detailIntent);
+				detailIntent = new Intent(this, SavedMessagesActivity.class);				
 			} else {
-				Intent detailIntent = new Intent(this, HabreaderActivity.class);
-				detailIntent.putExtra(MainFeedsSectionFragment.ARG_ITEM_ID, id);
-				startActivity(detailIntent);
+				detailIntent = new Intent(this, HabreaderActivity.class);				
 			}
+			detailIntent.putExtra(MainFeedsSectionFragment.ARG_ITEM_ID, id);
+			startActivity(detailIntent);
 		}
 	}
 }

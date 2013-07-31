@@ -3,6 +3,7 @@ package org.thor.habry.tasks;
 import java.util.List;
 
 import org.thor.habry.R;
+import org.thor.habry.SavedMessagesActivity.SavedMessagesFragment;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
 import org.thor.habry.uimanagement.UIMediator;
@@ -17,10 +18,12 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 	ViewGroup mainLayout;
 	Activity activity;
 	Exception error;
+	SavedMessagesFragment messageFragment;
 	
-	public LoadSavedMessagesAsyncTask(ViewGroup mainLayout, Activity activity) {
+	public LoadSavedMessagesAsyncTask(ViewGroup mainLayout, Activity activity, SavedMessagesFragment messageFragment) {
 		this.mainLayout = mainLayout;
 		this.activity = activity;
+		this.messageFragment = messageFragment;
 	}
 
 	@Override
@@ -41,6 +44,7 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 		listConfig.setReadHighlightEnabled(false);
 		listConfig.setSaveMessageEnabled(false);
 		listConfig.setSupportDelete(true);
+		listConfig.setSavedMessageFragment(messageFragment);
 		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
 	}
 }

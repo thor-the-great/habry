@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
-import org.thor.habry.SavedMessagesActivity;
+import org.thor.habry.SavedMessagesActivity.SavedMessagesFragment;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;
@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
@@ -125,7 +124,7 @@ public class UIMediator {
 			});
 		}
 		if (listConfigJB.isSupportDelete()) {
-			DeleteMessageOnLongClickListener deleteMessageOnLongClickListener = new DeleteMessageOnLongClickListener(activity, message);
+			DeleteMessageOnLongClickListener deleteMessageOnLongClickListener = new DeleteMessageOnLongClickListener(activity, message, listConfigJB);
 			feedTitleTextview.setOnLongClickListener(deleteMessageOnLongClickListener);			 
 		}
 		
@@ -272,10 +271,12 @@ public class UIMediator {
 		
 		private Activity activity;
 		private Message message;
+		MessageListConfigJB listConfig;
 		
-		DeleteMessageOnLongClickListener(Activity activity, Message message) {
+		DeleteMessageOnLongClickListener(Activity activity, Message message, MessageListConfigJB listConfig) {
 			this.activity = activity;
 			this.message = message;
+			this.listConfig = listConfig;
 		}
 		
 		@Override
@@ -291,10 +292,9 @@ public class UIMediator {
 				public void onClick(DialogInterface dialog, int which) {
 					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
 					daoHelper.deleteMessage(message.getMessageReference()); 
-					if (activity instanceof SavedMessagesActivity) {
-						android.os.Message updateSavedList = new android.os.Message();
-						((SavedMessagesActivity) activity).getUpdateListOfSavedMessagesHandler().dispatchMessage(updateSavedList);
-					}
+					android.os.Message updateSavedList = new android.os.Message();
+					if (listConfig.getSavedMessageFragment() != null)
+						listConfig.getSavedMessageFragment().getUpdateListOfSavedMessagesHandler().dispatchMessage(updateSavedList);
 				}
 
 			})
@@ -312,6 +312,7 @@ public class UIMediator {
 		private boolean readHighlightEnabled = true;
 		private boolean saveMessageEnabled = true;
 		private boolean supportDelete = false;
+		private SavedMessagesFragment savedMessageFragment;
 		
 		public boolean isFavorFilteringEnabled() {
 			return favorFilteringEnabled;
@@ -336,6 +337,12 @@ public class UIMediator {
 		}
 		public void setSupportDelete(boolean supportDelete) {
 			this.supportDelete = supportDelete;
+		}
+		public SavedMessagesFragment getSavedMessageFragment() {
+			return savedMessageFragment;
+		}
+		public void setSavedMessageFragment(SavedMessagesFragment savedMessageFragment) {
+			this.savedMessageFragment = savedMessageFragment;
 		}
 	}
 }
