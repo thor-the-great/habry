@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
+import org.thor.habry.SavedMessagesActivity;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;
@@ -19,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
@@ -45,6 +47,8 @@ public class UIMediator {
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
+		if(((ViewGroup)mainLayout).getChildCount() > 0)		
+			((ViewGroup)mainLayout).removeAllViews();
 
 		for (int i = 0; i < result.size(); i++) {
 			Message message = result.get(i);			
@@ -277,27 +281,24 @@ public class UIMediator {
 		@Override
 		public boolean onLongClick(final View v) {					
 			new AlertDialog.Builder(activity)
-			.setIcon(android.R.drawable.ic_dialog_alert)
-			.setCancelable(false)
-			.setTitle("Closing Activity")
-			.setMessage("Are you sure you want to close this activity?")
-			.setPositiveButton("Yes", new DialogInterface.OnClickListener()
+			//.setIcon(android.R.drawable.ic_dialog_alert)
+			.setCancelable(true)
+			//.setTitle(activity.getResources().getString(R.string.confirm_delete_saved_title))
+			.setMessage(activity.getResources().getString(R.string.confirm_delete_saved_question))
+			.setPositiveButton(activity.getResources().getString(R.string.confirm_option_yes), new DialogInterface.OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
 					daoHelper.deleteMessage(message.getMessageReference()); 
+					if (activity instanceof SavedMessagesActivity) {
+						android.os.Message updateSavedList = new android.os.Message();
+						((SavedMessagesActivity) activity).getUpdateListOfSavedMessagesHandler().dispatchMessage(updateSavedList);
+					}
 				}
 
 			})
-			.setNegativeButton("No", new DialogInterface.OnClickListener()
-			{
-
-				@Override
-				public void onClick(DialogInterface arg0, int arg1) {
-					// TODO Auto-generated method stub
-					
-				}})
+			.setNegativeButton(activity.getResources().getString(R.string.confirm_option_no), null)
 			.show();
 			return true;
 		}

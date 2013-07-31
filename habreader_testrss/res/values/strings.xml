@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Хабри</string>
     <string name="action_settings">Настройки</string>
     <string name="load_rss">Load RSS</string>
@@ -26,7 +25,9 @@
     <string name="main_menu_item_saved">Сохраненное</string>
     <string name="message_list_message_status_online">Онлайн</string>
     <string name="message_list_message_status_offline">Оффлайн</string>
-    <string name="title_activity_saved_messages">SavedMessagesActivity</string>
-    <string name="hello_world">Hello world!</string>
-
+    <string name="title_activity_saved_messages">Сохраненные сообщения</string>
+    <string name="confirm_delete_saved_title">Удаление сообщения</string>
+    <string name="confirm_delete_saved_question">Удалить сообщение?</string>
+    <string name="confirm_option_yes">Да</string>
+    <string name="confirm_option_no">Нет</string>
 </resources>
