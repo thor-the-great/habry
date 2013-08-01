@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
-import org.thor.habry.SavedMessagesActivity.SavedMessagesFragment;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;

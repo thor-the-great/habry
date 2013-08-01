@@ -146,14 +146,35 @@ public class MessageParser {
 			if (newRootElement != null) {
 				List<Element> elementList = new ArrayList<Element>();
 				currentRecursionLevel = Integer.valueOf(0);
-				searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_body", elementList);
+				searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_item", elementList);
 				if (elementList.size() > 0) {
 					for (Element commentElement : elementList) {
 						Comment newComment = new Comment();
 						currentRecursionLevel = Integer.valueOf(0);
-						Element authorElement = searchContent(commentElement, currentRecursionLevel, "a", "class", "username", false);
+						Element authorElement = searchContent(commentElement, currentRecursionLevel, "a", "class", "username", false, false);
 						if (authorElement != null) {							
 							newComment.setAuthor(authorElement.getValue());
+						}
+						Element messageText = searchContent(commentElement, currentRecursionLevel, "div", "class", "message html_format", false, false);
+						if (messageText != null) {							
+							newComment.setText(messageText.getValue());
+						}
+						Element messageId = searchContent(commentElement, currentRecursionLevel, "div", "class", "info", false, false);
+						if (messageId != null) {
+							Attribute relAttr = messageId.getAttribute("rel");
+							newComment.setId(relAttr.getValue());
+						}
+						Element parentId = searchContent(commentElement, currentRecursionLevel, "span", "class", "parent_id", false, false);
+						if (parentId != null) {
+							Attribute relAttr = parentId.getAttribute("data-parent_id");
+							if (relAttr != null) {
+								for (Comment comment : listOfComments) {
+									if (relAttr.getValue().equalsIgnoreCase(comment.getId())) {
+										comment.getChildComments().add(newComment);
+									}
+								}
+								newComment.setId(relAttr.getValue());
+							}							
 						}
 						listOfComments.add(newComment);
 					}
@@ -217,10 +238,10 @@ public class MessageParser {
 	}
 	
 	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue){		
-		return searchContent(bodyElement, currentRecursionLevel, tag, attrName, attrValue, true);
+		return searchContent(bodyElement, currentRecursionLevel, tag, attrName, attrValue, true, false);
 	}
 	
-	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, boolean simple){
+	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, boolean simple, boolean contains){
 		Element returnElement = null;
 		if (currentRecursionLevel.intValue() == MAX_RECURSION_DEEP_LEVEL) {
 			currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
@@ -233,16 +254,18 @@ public class MessageParser {
 				Element element = elements.get(i);
 				if (tag.equalsIgnoreCase(element.getLocalName())) {
 					Attribute divClassAttribute = element.getAttribute(attrName);
-					if (divClassAttribute != null && attrValue.trim().equalsIgnoreCase(divClassAttribute.getValue().trim())) {
+					if (divClassAttribute != null &&
+							((divClassAttribute.getValue().trim().equalsIgnoreCase(attrValue.trim()) && !contains ) ||
+							(divClassAttribute.getValue().trim().contains(attrValue.trim()) && contains))) {
 						returnElement = element;
 						break;
 					} else {
 						currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple);
+						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple, contains);
 					}						
 				} else if (!simple) {
 					currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-					returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple);
+					returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple, contains);
 				}
 			}
 		}
@@ -273,7 +296,7 @@ public class MessageParser {
 					}						
 				} else {
 					currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-					searchContent(element, currentRecursionLevel, tag, attrName, attrValue);
+					searchContentList(element, currentRecursionLevel, tag, attrName, attrValue, elementList);
 				}
 			}
 		}

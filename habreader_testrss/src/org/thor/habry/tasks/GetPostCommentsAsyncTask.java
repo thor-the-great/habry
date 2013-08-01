@@ -58,6 +58,7 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Docume
 		if (commentList != null) {
 			for (Comment comment : commentList) {
 				Log.d("habry", "comment.getAuthor() = " + comment.getAuthor());
+				Log.d("habry", "comment.getChild()= " + comment.getChildComments().size());
 			}
 		}
 		return document;
