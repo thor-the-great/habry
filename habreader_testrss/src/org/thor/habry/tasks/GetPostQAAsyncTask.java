@@ -3,6 +3,7 @@ package org.thor.habry.tasks;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.thor.habry.R;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
 
@@ -35,7 +36,7 @@ public class GetPostQAAsyncTask extends AsyncTask<Message, Integer, Document> {
 			webview.getSettings().setJavaScriptEnabled(true);		
 			webview.setWebViewClient(new WebViewClient() {
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-					Toast.makeText(activity, "Comments cannot be loaded! " + description, Toast.LENGTH_SHORT).show();
+					Toast.makeText(activity, activity.getResources().getString(R.string.message_details_cannot_load_comment) + " " +  description, Toast.LENGTH_SHORT).show();
 				}
 			});			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);

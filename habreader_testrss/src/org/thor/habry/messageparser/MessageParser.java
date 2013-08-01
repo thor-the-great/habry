@@ -1,9 +1,12 @@
 package org.thor.habry.messageparser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -124,6 +127,52 @@ public class MessageParser {
 		return null;
 	}
 	
+	public List<Comment> parseToComments(Message oneFeedMessage) {
+		List<Comment> listOfComments = new ArrayList<Comment>();
+		XMLReader tagsoup;
+		Element newRootElement = null;
+		try {
+			tagsoup = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+			Builder bob = new Builder(tagsoup);
+
+			Document feedDocument = bob.build(oneFeedMessage.getLink().toString());
+			Log.d("habry", "Document is parsed " + feedDocument.getChildCount());
+
+			Element htmlElement = feedDocument.getRootElement();
+
+			Element bodyElement = htmlElement.getChildElements().get(1);
+			Integer currentRecursionLevel = Integer.valueOf(0);
+			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "comments_list");
+			if (newRootElement != null) {
+				List<Element> elementList = new ArrayList<Element>();
+				currentRecursionLevel = Integer.valueOf(0);
+				searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_body", elementList);
+				if (elementList.size() > 0) {
+					for (Element commentElement : elementList) {
+						Comment newComment = new Comment();
+						currentRecursionLevel = Integer.valueOf(0);
+						Element authorElement = searchContent(commentElement, currentRecursionLevel, "a", "class", "username", false);
+						if (authorElement != null) {							
+							newComment.setAuthor(authorElement.getValue());
+						}
+						listOfComments.add(newComment);
+					}
+				}
+			}
+
+		} catch (SAXException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (ValidityException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (ParsingException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		} catch (IOException e) {
+			Log.e("habry", "MessageParser. Exception is " + e);
+		}		
+		
+		return listOfComments;
+	}
+	
 	public Document parseQAToDocument(Message oneFeedMessage) {
 		XMLReader tagsoup;
 		Element newRootElement = null;
@@ -167,7 +216,11 @@ public class MessageParser {
 		return null;
 	}
 	
-	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue){
+	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue){		
+		return searchContent(bodyElement, currentRecursionLevel, tag, attrName, attrValue, true);
+	}
+	
+	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, boolean simple){
 		Element returnElement = null;
 		if (currentRecursionLevel.intValue() == MAX_RECURSION_DEEP_LEVEL) {
 			currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
@@ -185,13 +238,47 @@ public class MessageParser {
 						break;
 					} else {
 						currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue);
+						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple);
 					}						
+				} else if (!simple) {
+					currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
+					returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple);
 				}
 			}
 		}
 		currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
 		return returnElement;
+	}
+	
+	private void searchContentList(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, List<Element> elementList){		
+		//Element returnElement = null;
+		if (currentRecursionLevel.intValue() == MAX_RECURSION_DEEP_LEVEL) {
+			currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
+			//return returnElement;
+			return;
+		}
+		Elements elements = bodyElement.getChildElements();
+		
+		if (elements != null && elements.size() > 0) {
+			for (int i = 0; (i < elements.size()); i ++) {
+				Element element = elements.get(i);
+				if (tag.equalsIgnoreCase(element.getLocalName())) {
+					Attribute divClassAttribute = element.getAttribute(attrName);
+					if (divClassAttribute != null && attrValue.trim().equalsIgnoreCase(divClassAttribute.getValue().trim())) {
+						elementList.add(element);
+						//break;
+					} else {
+						currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
+						searchContentList(element, currentRecursionLevel, tag, attrName, attrValue, elementList);
+					}						
+				} else {
+					currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
+					searchContent(element, currentRecursionLevel, tag, attrName, attrValue);
+				}
+			}
+		}
+		currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
+		return;
 	}
 	
 	private void doPostProcessingForContent(Element documentRootElement, int imgWidth) {

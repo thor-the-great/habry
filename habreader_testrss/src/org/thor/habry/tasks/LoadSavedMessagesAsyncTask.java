@@ -44,7 +44,7 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 		listConfig.setReadHighlightEnabled(false);
 		listConfig.setSaveMessageEnabled(false);
 		listConfig.setSupportDelete(true);
-		listConfig.setSavedMessageFragment(messageFragment);
+		listConfig.setMessageHandler(messageFragment.getUpdateListOfSavedMessagesHandler());
 		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
 	}
 }

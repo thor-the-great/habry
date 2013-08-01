@@ -30,4 +30,6 @@
     <string name="confirm_delete_saved_question">Удалить сообщение?</string>
     <string name="confirm_option_yes">Да</string>
     <string name="confirm_option_no">Нет</string>
+    <string name="message_details_cannot_load_post">Не могу загрузить сообщение</string>
+    <string name="message_details_cannot_load_comment">Не могу загрузить комментарии</string>    
 </resources>

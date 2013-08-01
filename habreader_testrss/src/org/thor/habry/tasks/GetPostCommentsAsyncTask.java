@@ -1,14 +1,18 @@
 package org.thor.habry.tasks;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.thor.habry.R;
+import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
 
 import nu.xom.Document;
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
@@ -35,7 +39,7 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Docume
 			webview.getSettings().setJavaScriptEnabled(true);		
 			webview.setWebViewClient(new WebViewClient() {
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-					Toast.makeText(activity, "Comments cannot be loaded! " + description, Toast.LENGTH_SHORT).show();
+					Toast.makeText(activity, activity.getResources().getString(R.string.message_details_cannot_load_post) + " " +  description, Toast.LENGTH_SHORT).show();
 				}
 			});			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
@@ -49,6 +53,13 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Docume
 		Map<String, Object> documentParams = new HashMap<String, Object>(); 
 		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
 		Document document = MessageParser.getInstance(documentParams).parseCommentsToDocument(feedMessage);		
+		List<Comment> commentList = MessageParser.getInstance(documentParams).parseToComments(feedMessage);
+		Log.d("habry", "comments!!!");
+		if (commentList != null) {
+			for (Comment comment : commentList) {
+				Log.d("habry", "comment.getAuthor() = " + comment.getAuthor());
+			}
+		}
 		return document;
 	}	
 

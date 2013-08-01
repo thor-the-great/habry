@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
@@ -293,8 +294,8 @@ public class UIMediator {
 					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
 					daoHelper.deleteMessage(message.getMessageReference()); 
 					android.os.Message updateSavedList = new android.os.Message();
-					if (listConfig.getSavedMessageFragment() != null)
-						listConfig.getSavedMessageFragment().getUpdateListOfSavedMessagesHandler().dispatchMessage(updateSavedList);
+					if (listConfig.getMessageHandler() != null)
+						listConfig.getMessageHandler().dispatchMessage(updateSavedList);
 				}
 
 			})
@@ -312,7 +313,7 @@ public class UIMediator {
 		private boolean readHighlightEnabled = true;
 		private boolean saveMessageEnabled = true;
 		private boolean supportDelete = false;
-		private SavedMessagesFragment savedMessageFragment;
+		private Handler messageHandler;
 		
 		public boolean isFavorFilteringEnabled() {
 			return favorFilteringEnabled;
@@ -338,11 +339,12 @@ public class UIMediator {
 		public void setSupportDelete(boolean supportDelete) {
 			this.supportDelete = supportDelete;
 		}
-		public SavedMessagesFragment getSavedMessageFragment() {
-			return savedMessageFragment;
+		public Handler getMessageHandler() {
+			return messageHandler;
 		}
-		public void setSavedMessageFragment(SavedMessagesFragment savedMessageFragment) {
-			this.savedMessageFragment = savedMessageFragment;
+		public void setMessageHandler(Handler messageHandler) {
+			this.messageHandler = messageHandler;
 		}
+		
 	}
 }

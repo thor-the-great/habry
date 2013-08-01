@@ -3,6 +3,7 @@ package org.thor.habry.tasks;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.thor.habry.R;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
 
@@ -35,7 +36,7 @@ public class GetPostMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 			webview.getSettings().setJavaScriptEnabled(true);		
 			webview.setWebViewClient(new WebViewClient() {
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-					Toast.makeText(activity, "Post cannot be loaded! " + description, Toast.LENGTH_SHORT).show();
+					Toast.makeText(activity, activity.getResources().getString(R.string.message_details_cannot_load_post) + " " +  description, Toast.LENGTH_SHORT).show();
 				}
 			});			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
