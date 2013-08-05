@@ -146,37 +146,10 @@ public class MessageParser {
 			if (newRootElement != null) {
 				List<Element> elementList = new ArrayList<Element>();
 				currentRecursionLevel = Integer.valueOf(0);
-				searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_item", elementList);
+				searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_item", elementList, MAX_RECURSION_DEEP_LEVEL);
 				if (elementList.size() > 0) {
 					for (Element commentElement : elementList) {
-						Comment newComment = new Comment();
-						currentRecursionLevel = Integer.valueOf(0);
-						Element authorElement = searchContent(commentElement, currentRecursionLevel, "a", "class", "username", false, false);
-						if (authorElement != null) {							
-							newComment.setAuthor(authorElement.getValue());
-						}
-						Element messageText = searchContent(commentElement, currentRecursionLevel, "div", "class", "message html_format", false, false);
-						if (messageText != null) {							
-							newComment.setText(messageText.getValue());
-						}
-						Element messageId = searchContent(commentElement, currentRecursionLevel, "div", "class", "info", false, false);
-						if (messageId != null) {
-							Attribute relAttr = messageId.getAttribute("rel");
-							newComment.setId(relAttr.getValue());
-						}
-						Element parentId = searchContent(commentElement, currentRecursionLevel, "span", "class", "parent_id", false, false);
-						if (parentId != null) {
-							Attribute relAttr = parentId.getAttribute("data-parent_id");
-							if (relAttr != null) {
-								for (Comment comment : listOfComments) {
-									if (relAttr.getValue().equalsIgnoreCase(comment.getId())) {
-										comment.getChildComments().add(newComment);
-									}
-								}
-								newComment.setId(relAttr.getValue());
-							}							
-						}
-						listOfComments.add(newComment);
+						handleCommentElement(listOfComments, commentElement, null);							
 					}
 				}
 			}
@@ -192,6 +165,59 @@ public class MessageParser {
 		}		
 		
 		return listOfComments;
+	}
+
+	private void handleCommentElement(List<Comment> listOfComments, Element commentElement, Comment currentParent) {
+		Integer currentRecursionLevel;
+		Comment newComment = new Comment();
+		currentRecursionLevel = Integer.valueOf(0);
+		Element authorElement = searchContent(commentElement, currentRecursionLevel, "a", "class", "username", false, false);
+		if (authorElement != null) {							
+			newComment.setAuthor(authorElement.getValue());
+		}
+		Element messageText = searchContent(commentElement, currentRecursionLevel, "div", "class", "message html_format", false, false);
+		if (messageText != null) {							
+			newComment.setText(messageText.getValue());
+		}
+		Element messageId = searchContent(commentElement, currentRecursionLevel, "div", "class", "info", false, false);
+		if (messageId != null) {
+			Attribute relAttr = messageId.getAttribute("rel");
+			newComment.setId(relAttr.getValue());
+			Log.d("hanry", "comment id = " + newComment.getId());
+		}		
+		Element parentId = searchContent(commentElement, currentRecursionLevel, "span", "class", "parent_id", false, false);
+		if (parentId != null) {
+			Attribute relAttr = parentId.getAttribute("data-parent_id");
+			if (relAttr != null) {
+				//add to root collection if there is no parents
+				if ("0".equalsIgnoreCase(relAttr.getValue())) {
+					listOfComments.add(newComment);
+				}
+				//if no then parent has to handle child. Parent must be set to the method
+				else {
+					if (currentParent != null) {
+						currentParent.getChildComments().add(newComment);
+					}
+				}
+				
+				Element replyCommentElement = searchContent(commentElement, currentRecursionLevel, "div", "class", "reply_comments", 2);
+				if(replyCommentElement != null && replyCommentElement.getChildCount() > 0) {
+					/*Elements childOfReply = replyCommentElement.getChildElements();
+					for (int j =0; j < childOfReply.size(); j++) {
+						Element commentItemFromReply = childOfReply.get(j);
+						if (commentElement)
+					}*/
+					Integer currentRecursionLevel1 = Integer.valueOf(0);
+					List<Element> elementList = new ArrayList<Element>();
+					searchContentList(replyCommentElement, currentRecursionLevel1, "div", "class", "comment_item", elementList, 2);
+					if (elementList.size() > 0) {
+						for (Element element : elementList) {
+							handleCommentElement(listOfComments, element, newComment);
+						}
+					}
+				}								
+			}							
+		}
 	}
 	
 	public Document parseQAToDocument(Message oneFeedMessage) {
@@ -241,9 +267,19 @@ public class MessageParser {
 		return searchContent(bodyElement, currentRecursionLevel, tag, attrName, attrValue, true, false);
 	}
 	
+	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, int maxRecursionDeepLevel){		
+		return searchContent(bodyElement, currentRecursionLevel, tag, attrName, attrValue, true, false, maxRecursionDeepLevel);
+	}
+	
 	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, boolean simple, boolean contains){
+		return searchContent(bodyElement, currentRecursionLevel, tag, attrName, attrValue, simple, contains, 0);
+	}
+	
+	private Element searchContent(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, boolean simple, boolean contains, int maxRecursionDeepLevel){
 		Element returnElement = null;
-		if (currentRecursionLevel.intValue() == MAX_RECURSION_DEEP_LEVEL) {
+		if (maxRecursionDeepLevel == 0)
+			maxRecursionDeepLevel = MAX_RECURSION_DEEP_LEVEL;
+		if (currentRecursionLevel.intValue() == maxRecursionDeepLevel) {
 			currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
 			return returnElement;
 		}
@@ -261,11 +297,11 @@ public class MessageParser {
 						break;
 					} else {
 						currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple, contains);
+						returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple, contains, maxRecursionDeepLevel);
 					}						
 				} else if (!simple) {
 					currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-					returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple, contains);
+					returnElement = searchContent(element, currentRecursionLevel, tag, attrName, attrValue, simple, contains, maxRecursionDeepLevel);
 				}
 			}
 		}
@@ -273,9 +309,10 @@ public class MessageParser {
 		return returnElement;
 	}
 	
-	private void searchContentList(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, List<Element> elementList){		
-		//Element returnElement = null;
-		if (currentRecursionLevel.intValue() == MAX_RECURSION_DEEP_LEVEL) {
+	private void searchContentList(Element bodyElement, Integer currentRecursionLevel, String tag, String attrName, String attrValue, List<Element> elementList, int maxRecursionDeepLevel){		
+		if (maxRecursionDeepLevel == 0)
+			maxRecursionDeepLevel = MAX_RECURSION_DEEP_LEVEL;
+		if (currentRecursionLevel.intValue() == maxRecursionDeepLevel) {
 			currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() - 1);
 			//return returnElement;
 			return;
@@ -292,11 +329,11 @@ public class MessageParser {
 						//break;
 					} else {
 						currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-						searchContentList(element, currentRecursionLevel, tag, attrName, attrValue, elementList);
+						searchContentList(element, currentRecursionLevel, tag, attrName, attrValue, elementList , maxRecursionDeepLevel);
 					}						
 				} else {
 					currentRecursionLevel = Integer.valueOf(currentRecursionLevel.intValue() + 1);
-					searchContentList(element, currentRecursionLevel, tag, attrName, attrValue, elementList);
+					searchContentList(element, currentRecursionLevel, tag, attrName, attrValue, elementList, maxRecursionDeepLevel);
 				}
 			}
 		}

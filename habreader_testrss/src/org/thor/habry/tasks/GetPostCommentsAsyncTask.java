@@ -8,6 +8,7 @@ import org.thor.habry.R;
 import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
+import org.thor.habry.uimanagement.UIMediator;
 
 import nu.xom.Document;
 import android.app.Activity;
@@ -20,7 +21,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 
-public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Document> {
+public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, List<Comment>> {
 	
 	ViewGroup mainLayout;
 	Activity activity;
@@ -31,9 +32,9 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Docume
 		this.activity = activity;
 	}
 	@Override
-	protected void onPostExecute(Document result) {
+	protected void onPostExecute(List<Comment> result) {
 		if (result != null) {									
-			WebView webview = new WebView(activity);
+			/*WebView webview = new WebView(activity);
 			mainLayout.addView(webview);
 			//activity.setContentView(webview);
 			webview.getSettings().setJavaScriptEnabled(true);		
@@ -43,12 +44,14 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Docume
 				}
 			});			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
-			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);*/
+			UIMediator uiManager = new UIMediator();
+			uiManager.showCommentList(result, mainLayout, activity);
 		}
 	}
 	
 	@Override
-	protected Document doInBackground(Message... feeds) {
+	protected List<Comment> doInBackground(Message... feeds) {
 		Message feedMessage = feeds[0];			
 		Map<String, Object> documentParams = new HashMap<String, Object>(); 
 		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
@@ -61,7 +64,7 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, Docume
 				Log.d("habry", "comment.getChild()= " + comment.getChildComments().size());
 			}
 		}
-		return document;
+		return commentList;
 	}	
 
 }

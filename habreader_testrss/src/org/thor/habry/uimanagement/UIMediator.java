@@ -8,6 +8,7 @@ import java.util.Set;
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
 import org.thor.habry.dao.HabrySQLDAOHelper;
+import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;
 import org.thor.habry.feeddetail.PostDetailSectionFragment;
@@ -40,6 +41,7 @@ public class UIMediator {
 
 	int MAX_TITLE_LENGTH = 500;
 	int MAX_DESC_LENGTH = 150;
+	int MAX_COMMENT_LENGTH = 2000;
 	int MAX_NUMBER_OF_CATEGORIES = 3;
 
 	public void showFeedList (List<Message> result, final ViewGroup mainLayout, final Activity activity, MessageListConfigJB listConfigJB) {
@@ -178,6 +180,83 @@ public class UIMediator {
 	private void markViewAsReaded(View v) {
 		((TextView)v).setTypeface(Typeface.DEFAULT);
 		((TextView)v).setTextColor(Color.parseColor("#888888"));
+	}
+	
+	public void showCommentList(List<Comment> result, final ViewGroup mainLayout, final Activity activity) {
+		
+		//SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+		//boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
+		if(((ViewGroup)mainLayout).getChildCount() > 0)		
+			((ViewGroup)mainLayout).removeAllViews();
+		
+		int level = 0;
+		for (int i = 0; i < result.size(); i++) {
+			Comment comment = result.get(i);			
+			createOneCommentRow(comment, mainLayout, activity, i*100, level );			
+		}
+	}
+	
+	private void createOneCommentRow(final Comment comment, final ViewGroup mainLayout, final Activity activity, int messageIndexInList, int commentLevel) {
+
+		ScrollView scrollView = new ScrollView(mainLayout.getContext());
+		//LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
+		//scrollView.setLayoutParams(layoutParams);
+		LinearLayout feedMainContainer = new LinearLayout(scrollView.getContext());
+		feedMainContainer.setOrientation(LinearLayout.HORIZONTAL);
+		
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+		layoutParams.setMargins(5, 2, 5, 2);
+		
+		LinearLayout feedElementContainer = new LinearLayout(feedMainContainer.getContext());
+		feedElementContainer.setOrientation(LinearLayout.VERTICAL);
+
+		TextView commentTextview = new TextView(feedElementContainer.getContext());
+		
+		commentTextview.setLayoutParams(layoutParams);			
+		int actualTitleLength = comment.getText() == null ? 0 : comment.getText().length();
+		String feedTitle = "";
+		if (actualTitleLength > MAX_COMMENT_LENGTH ) {
+			feedTitle = comment.getText().substring(0, MAX_COMMENT_LENGTH) + "...";
+		} else {
+			feedTitle = comment.getText();
+		}
+		commentTextview.setText(feedTitle);		
+		commentTextview.setTextSize((float) 16.0);
+		commentTextview.setTypeface(Typeface.DEFAULT_BOLD);
+		commentTextview.setTextColor(Color.DKGRAY);
+		
+		feedElementContainer.addView(commentTextview);
+		
+		TextView authorInfo = new TextView(mainLayout.getContext());			
+		authorInfo.setLayoutParams(layoutParams);			
+
+		authorInfo.setText(comment.getAuthor());
+		authorInfo.setTextColor(Color.parseColor("#6699FF"));
+		authorInfo.setGravity(Gravity.RIGHT);
+		authorInfo.setTextSize((float) 12.0);		
+		feedElementContainer.addView(authorInfo);
+
+		
+		feedMainContainer.addView(feedElementContainer);		
+
+		LinearLayout.LayoutParams scrollViewLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		int leftMargin = 10 * commentLevel + 1; 
+		scrollViewLayoutParams.setMargins(leftMargin, 5, 1, 5);
+		scrollView.addView(feedMainContainer);		
+
+
+		scrollView.setVerticalFadingEdgeEnabled(true);
+		scrollView.setFadingEdgeLength(1);
+		scrollView.setTag(messageIndexInList);
+		scrollView.setBackgroundColor(Color.WHITE);
+		mainLayout.addView(scrollView, scrollViewLayoutParams);	
+		
+		List<Comment> childComments = comment.getChildComments();
+		if (childComments.size() > 0) {
+			for (Comment childComment : childComments) {
+				createOneCommentRow(childComment, mainLayout, activity, messageIndexInList++, commentLevel+1);
+			}
+		}
 	}
 	
 	class FilterFeedsListener implements OnCheckedChangeListener {
