@@ -183,20 +183,17 @@ public class UIMediator {
 	}
 	
 	public void showCommentList(List<Comment> result, final ViewGroup mainLayout, final Activity activity) {
-		
-		//SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-		//boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
 		if(((ViewGroup)mainLayout).getChildCount() > 0)		
 			((ViewGroup)mainLayout).removeAllViews();
 		
 		int level = 0;
 		for (int i = 0; i < result.size(); i++) {
 			Comment comment = result.get(i);			
-			createOneCommentRow(comment, mainLayout, activity, i*100, level );			
+			createOneCommentRow(comment, mainLayout, activity, comment.getId(), level );			
 		}
 	}
 	
-	private void createOneCommentRow(final Comment comment, final ViewGroup mainLayout, final Activity activity, int messageIndexInList, int commentLevel) {
+	private void createOneCommentRow(final Comment comment, final ViewGroup mainLayout, final Activity activity, String messageIndexInList, int commentLevel) {
 
 		ScrollView scrollView = new ScrollView(mainLayout.getContext());
 		//LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
@@ -221,8 +218,8 @@ public class UIMediator {
 			feedTitle = comment.getText();
 		}
 		commentTextview.setText(feedTitle);		
-		commentTextview.setTextSize((float) 16.0);
-		commentTextview.setTypeface(Typeface.DEFAULT_BOLD);
+		commentTextview.setTextSize((float) 14.0);
+		commentTextview.setTypeface(Typeface.DEFAULT);
 		commentTextview.setTextColor(Color.DKGRAY);
 		
 		feedElementContainer.addView(commentTextview);
@@ -254,7 +251,7 @@ public class UIMediator {
 		List<Comment> childComments = comment.getChildComments();
 		if (childComments.size() > 0) {
 			for (Comment childComment : childComments) {
-				createOneCommentRow(childComment, mainLayout, activity, messageIndexInList++, commentLevel+1);
+				createOneCommentRow(childComment, mainLayout, activity, childComment.getId(), commentLevel+1);
 			}
 		}
 	}

@@ -2,7 +2,6 @@ package org.thor.habry;
 
 import org.thor.habry.AppRuntimeContext.AppMode;
 import org.thor.habry.HabreaderActivity.MainFeedsSectionFragment;
-import org.thor.habry.dummy.DummyContent;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -69,7 +68,7 @@ public class FeedListActivity extends FragmentActivity implements
 		int index = 0;
 		listView.setItemChecked(index, true);
 		
-		onItemSelected(DummyContent.getInstance(getBaseContext()).getITEMS().get(0).id);		
+		onItemSelected(MainListMenuContent.getInstance(getBaseContext()).getItemList().get(0).id);		
 	}
 
 	@Override

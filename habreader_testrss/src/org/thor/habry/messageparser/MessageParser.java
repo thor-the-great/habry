@@ -176,8 +176,13 @@ public class MessageParser {
 			newComment.setAuthor(authorElement.getValue());
 		}
 		Element messageText = searchContent(commentElement, currentRecursionLevel, "div", "class", "message html_format", false, false);
-		if (messageText != null) {							
-			newComment.setText(messageText.getValue());
+		if (messageText != null) {		
+			StringBuilder sb = new StringBuilder();
+			sb.append(messageText.getValue());
+			if (sb.length() > 0 ) {
+				sb.deleteCharAt(0);
+			}
+			newComment.setText(sb.toString());
 		}
 		Element messageId = searchContent(commentElement, currentRecursionLevel, "div", "class", "info", false, false);
 		if (messageId != null) {
