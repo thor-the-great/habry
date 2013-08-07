@@ -29,8 +29,8 @@ public class PostQASectionFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(
-				R.layout.fragment_post_detail_dummy, container, false);
-		View mainLayout = rootView.findViewById(R.id.post_detail_container_layout);
+				R.layout.fragment_post_detail_comment, container, false);
+		View mainLayout = rootView.findViewById(R.id.post_detail_comment_main_layout);
 		
 		Message postMessage = (Message) getArguments().getSerializable(POST_DETAIL_MESSAGE);
 		GetPostQAAsyncTask getFeedDetailsTask = new GetPostQAAsyncTask((ViewGroup) mainLayout, this.getActivity());

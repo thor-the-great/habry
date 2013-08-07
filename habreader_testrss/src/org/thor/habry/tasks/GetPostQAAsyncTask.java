@@ -1,11 +1,16 @@
 package org.thor.habry.tasks;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.thor.habry.R;
+import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
+import org.thor.habry.messageparser.MessageParser.ReplyParsing;
+import org.thor.habry.messageparser.MessageParser.ParsingStrategy;
+import org.thor.habry.uimanagement.UIMediator;
 
 import nu.xom.Document;
 import android.app.Activity;
@@ -17,7 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 
-public class GetPostQAAsyncTask extends AsyncTask<Message, Integer, Document> {
+public class GetPostQAAsyncTask extends AsyncTask<Message, Integer, List<Comment>> {
 	
 	ViewGroup mainLayout;
 	Activity activity;
@@ -28,9 +33,9 @@ public class GetPostQAAsyncTask extends AsyncTask<Message, Integer, Document> {
 		this.activity = activity;
 	}
 	@Override
-	protected void onPostExecute(Document result) {
+	protected void onPostExecute(List<Comment> result) {
 		if (result != null) {									
-			WebView webview = new WebView(activity);
+			/*WebView webview = new WebView(activity);
 			mainLayout.addView(webview);
 			//activity.setContentView(webview);
 			webview.getSettings().setJavaScriptEnabled(true);		
@@ -40,17 +45,21 @@ public class GetPostQAAsyncTask extends AsyncTask<Message, Integer, Document> {
 				}
 			});			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
-			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);*/
+			UIMediator uiManager = new UIMediator();
+			uiManager.showCommentList(result, mainLayout, activity);
 		}
 	}
 	
 	@Override
-	protected Document doInBackground(Message... feeds) {
+	protected List<Comment> doInBackground(Message... feeds) {
 		Message feedMessage = feeds[0];			
 		Map<String, Object> documentParams = new HashMap<String, Object>(); 
 		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
-		Document document = MessageParser.getInstance(documentParams).parseQAToDocument(feedMessage);		
-		return document;
+		//Document document = MessageParser.getInstance(documentParams).parseQAToDocument(feedMessage);	
+		ParsingStrategy parsingStrategy = new ReplyParsing();
+		List<Comment> commentList = MessageParser.getInstance(documentParams).parseToComments(feedMessage, parsingStrategy);
+		return commentList;
 	}	
 
 }

@@ -71,10 +71,7 @@ public class MessageParser {
 			Element html = new Element("html");
 			Element body = new Element("body");
 			newRootElement.detach();
-			
-			//Integer maxWidth = (Integer) messageParameters.get("MAX_DISPLAY_WIDTH");			
-			//doPostProcessingForContent(newRootElement, maxWidth.intValue());
-			
+		
 			body.appendChild(newRootElement);
 			html.appendChild(body);		
 			Document feedDetailsDocument = new Document(html);
@@ -127,7 +124,7 @@ public class MessageParser {
 		return null;
 	}
 	
-	public List<Comment> parseToComments(Message oneFeedMessage) {
+	public List<Comment> parseToComments(Message oneFeedMessage, ParsingStrategy parsingStrategy) {
 		List<Comment> listOfComments = new ArrayList<Comment>();
 		XMLReader tagsoup;
 		Element newRootElement = null;
@@ -142,14 +139,18 @@ public class MessageParser {
 
 			Element bodyElement = htmlElement.getChildElements().get(1);
 			Integer currentRecursionLevel = Integer.valueOf(0);
-			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "comments_list");
+			String[] paramsForList = parsingStrategy.getParamsForList();
+			//newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "comments_list");
+			newRootElement = searchContent(bodyElement, currentRecursionLevel, paramsForList[0], paramsForList[1], paramsForList[2]);
 			if (newRootElement != null) {
 				List<Element> elementList = new ArrayList<Element>();
 				currentRecursionLevel = Integer.valueOf(0);
-				searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_item", elementList, MAX_RECURSION_DEEP_LEVEL);
+				//searchContentList(newRootElement, currentRecursionLevel, "div", "class", "comment_item", elementList, MAX_RECURSION_DEEP_LEVEL);
+				String[] paramsForItem = parsingStrategy.getParamsForItem();
+				searchContentList(newRootElement, currentRecursionLevel, paramsForItem[0], paramsForItem[1], paramsForItem[2], elementList, MAX_RECURSION_DEEP_LEVEL);
 				if (elementList.size() > 0) {
 					for (Element commentElement : elementList) {
-						handleCommentElement(listOfComments, commentElement, null);							
+						handleCommentElement(listOfComments, commentElement, null, parsingStrategy);							
 					}
 				}
 			}
@@ -167,7 +168,7 @@ public class MessageParser {
 		return listOfComments;
 	}
 
-	private void handleCommentElement(List<Comment> listOfComments, Element commentElement, Comment currentParent) {
+	private void handleCommentElement(List<Comment> listOfComments, Element commentElement, Comment currentParent, ParsingStrategy parsingStrategy) {
 		Integer currentRecursionLevel;
 		Comment newComment = new Comment();
 		currentRecursionLevel = Integer.valueOf(0);
@@ -204,20 +205,18 @@ public class MessageParser {
 						currentParent.getChildComments().add(newComment);
 					}
 				}
-				
-				Element replyCommentElement = searchContent(commentElement, currentRecursionLevel, "div", "class", "reply_comments", 2);
+				String[] paramsForReplyItems = parsingStrategy.getParamsForReplyItems();
+				//Element replyCommentElement = searchContent(commentElement, currentRecursionLevel, "div", "class", "reply_comments", 2);
+				Element replyCommentElement = searchContent(commentElement, currentRecursionLevel, paramsForReplyItems[0], paramsForReplyItems[1], paramsForReplyItems[2], 2);
 				if(replyCommentElement != null && replyCommentElement.getChildCount() > 0) {
-					/*Elements childOfReply = replyCommentElement.getChildElements();
-					for (int j =0; j < childOfReply.size(); j++) {
-						Element commentItemFromReply = childOfReply.get(j);
-						if (commentElement)
-					}*/
 					Integer currentRecursionLevel1 = Integer.valueOf(0);
 					List<Element> elementList = new ArrayList<Element>();
-					searchContentList(replyCommentElement, currentRecursionLevel1, "div", "class", "comment_item", elementList, 2);
+					String[] paramsForItem = parsingStrategy.getParamsForItem();
+					searchContentList(replyCommentElement, currentRecursionLevel1, paramsForItem[0], paramsForItem[1], paramsForItem[2], elementList, 2);
+					//searchContentList(replyCommentElement, currentRecursionLevel1, "div", "class", "comment_item", elementList, 2);
 					if (elementList.size() > 0) {
 						for (Element element : elementList) {
-							handleCommentElement(listOfComments, element, newComment);
+							handleCommentElement(listOfComments, element, newComment, parsingStrategy);
 						}
 					}
 				}								
@@ -369,5 +368,55 @@ public class MessageParser {
 				doPostProcessingForContent(element, imgWidth);
 			}
 		}
+	}
+	
+	public static abstract class ParsingStrategy {
+		abstract String[] getParamsForList();
+		abstract String[] getParamsForItem();
+		abstract String[] getParamsForReplyItems();
+	}
+	
+	public static class CommentParsing extends ParsingStrategy {
+		static String[] paramsForList = new String[]{"div", "class", "comments_list"};
+		static String[] paramsForItem = new String[]{"div", "class", "comment_item"};
+		static String[] paramsForReplyItems = new String[]{"div", "class", "reply_comments"};
+
+		@Override
+		String[] getParamsForList() {
+			return paramsForList;
+		}
+
+		@Override
+		String[] getParamsForItem() {
+			return paramsForItem;
+		}
+
+		@Override
+		String[] getParamsForReplyItems() {
+			return paramsForReplyItems;
+		}
+		
+	}
+	
+	public static class ReplyParsing extends ParsingStrategy {
+		static String[] paramsForList = new String[]{"div", "id", "answers"};
+		static String[] paramsForItem = new String[]{"div", "class", "answer"};
+		static String[] paramsForReplyItems = new String[]{"div", "class", "reply_comments"};
+
+		@Override
+		String[] getParamsForList() {
+			return paramsForList;
+		}
+
+		@Override
+		String[] getParamsForItem() {
+			return paramsForItem;
+		}
+
+		@Override
+		String[] getParamsForReplyItems() {
+			return paramsForReplyItems;
+		}
+		
 	}
 }

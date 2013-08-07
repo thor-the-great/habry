@@ -4,21 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.thor.habry.R;
 import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
+import org.thor.habry.messageparser.MessageParser.CommentParsing;
+import org.thor.habry.messageparser.MessageParser.ParsingStrategy;
 import org.thor.habry.uimanagement.UIMediator;
 
-import nu.xom.Document;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ViewGroup;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 
 public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, List<Comment>> {
@@ -33,18 +29,7 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, List<C
 	}
 	@Override
 	protected void onPostExecute(List<Comment> result) {
-		if (result != null) {									
-			/*WebView webview = new WebView(activity);
-			mainLayout.addView(webview);
-			//activity.setContentView(webview);
-			webview.getSettings().setJavaScriptEnabled(true);		
-			webview.setWebViewClient(new WebViewClient() {
-				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-					Toast.makeText(activity, activity.getResources().getString(R.string.message_details_cannot_load_post) + " " +  description, Toast.LENGTH_SHORT).show();
-				}
-			});			
-			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
-			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);*/
+		if (result != null) {		
 			UIMediator uiManager = new UIMediator();
 			uiManager.showCommentList(result, mainLayout, activity);
 		}
@@ -55,8 +40,9 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, List<C
 		Message feedMessage = feeds[0];			
 		Map<String, Object> documentParams = new HashMap<String, Object>(); 
 		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
-		Document document = MessageParser.getInstance(documentParams).parseCommentsToDocument(feedMessage);		
-		List<Comment> commentList = MessageParser.getInstance(documentParams).parseToComments(feedMessage);
+		//Document document = MessageParser.getInstance(documentParams).parseCommentsToDocument(feedMessage);	
+		ParsingStrategy parsingStrategy = new CommentParsing();
+		List<Comment> commentList = MessageParser.getInstance(documentParams).parseToComments(feedMessage, parsingStrategy);
 		Log.d("habry", "comments!!!");
 		if (commentList != null) {
 			for (Comment comment : commentList) {
