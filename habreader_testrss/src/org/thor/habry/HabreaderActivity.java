@@ -6,6 +6,7 @@ import org.thor.habry.tasks.GetFeedersAsyncTask;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -117,12 +118,15 @@ public class HabreaderActivity extends FragmentActivity {
 				mainFragmentLayout.removeViewAt(i);
 			}
 			
-			Toast myToast = Toast.makeText(rootView.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-			myToast.show();
+			//Toast myToast = Toast.makeText(rootView.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
+			//myToast.show();
+			ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
+					this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
+					true, false, null);
 			
 			if (contentProvider == null)
 				contentProvider = getContentProvider(null);			
-			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(contentProvider);	
+			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity(), pd).execute(contentProvider);	
 			
 			return rootView;
 		}
@@ -135,13 +139,16 @@ public class HabreaderActivity extends FragmentActivity {
 				mainFragmentLayout.removeViewAt(i);
 			}
 			
-			Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-			myToast.show();
+			//Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
+			//myToast.show();
+			ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
+					this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
+					true, false, null);
 			
 			if (contentProvider == null)
 				contentProvider = getContentProvider(null);				
 			//ViewGroup mainFragmentLayout = (ViewGroup) v.findViewById(R.id.fragmentMainLayout);
-			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity()).execute(contentProvider);			
+			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity(), pd).execute(contentProvider);			
 		}
 		
 		private ContentProvider getContentProvider(String index) {

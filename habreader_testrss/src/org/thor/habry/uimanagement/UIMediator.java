@@ -334,8 +334,8 @@ public class UIMediator {
 			}
 			
 			((View)v.getParent()).setFadingEdgeLength(2);				
-			Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-			myToast.show();				
+			//Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
+			//myToast.show();				
 			Intent detailIntent = new Intent(activity, PostDetail.class);
 			detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
 			activity.startActivity(detailIntent);

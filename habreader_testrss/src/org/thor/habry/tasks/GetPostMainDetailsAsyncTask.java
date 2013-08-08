@@ -9,6 +9,7 @@ import org.thor.habry.messageparser.MessageParser;
 
 import nu.xom.Document;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
@@ -22,13 +23,16 @@ public class GetPostMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 	ViewGroup mainLayout;
 	Activity activity;
 	Exception error;
+	ProgressDialog pd;
 	
-	public GetPostMainDetailsAsyncTask(ViewGroup mainLayout, Activity activity) {
+	public GetPostMainDetailsAsyncTask(ViewGroup mainLayout, Activity activity, ProgressDialog pd) {
 		this.mainLayout = mainLayout;
 		this.activity = activity;
+		this.pd = pd;
 	}
 	@Override
 	protected void onPostExecute(Document result) {
+		pd.dismiss();
 		if (result != null) {									
 			WebView webview = new WebView(activity);
 			mainLayout.addView(webview);

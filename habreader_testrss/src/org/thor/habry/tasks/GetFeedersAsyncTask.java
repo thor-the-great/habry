@@ -13,6 +13,7 @@ import org.thor.habry.uimanagement.UIMediator.MessageListConfigJB;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ViewGroup;
@@ -23,10 +24,12 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 	ViewGroup mainLayout;
 	Activity activity;
 	Exception error;
+	ProgressDialog pd;
 	
-	public GetFeedersAsyncTask(ViewGroup mainLayout, Activity activity) {
+	public GetFeedersAsyncTask(ViewGroup mainLayout, Activity activity, ProgressDialog pd) {
 		this.mainLayout = mainLayout;
 		this.activity = activity;
+		this.pd = pd;
 	}
 
 	@Override
@@ -50,6 +53,7 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 
 	@Override
 	protected void onPostExecute(List<Message> result) {
+		pd.dismiss();
 		if (error != null) {
 			Toast myToast = Toast.makeText(mainLayout.getContext(), "" + error.getMessage(),
 					Toast.LENGTH_LONG);			

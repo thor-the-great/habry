@@ -192,7 +192,7 @@ public class MessageParser {
 			Log.d("hanry", "comment id = " + newComment.getId());
 		}		
 		Element parentId = searchContent(commentElement, currentRecursionLevel, "span", "class", "parent_id", false, false);
-		if (parentId != null) {
+		if (parsingStrategy.isChildHandled() && parentId != null) {
 			Attribute relAttr = parentId.getAttribute("data-parent_id");
 			if (relAttr != null) {
 				//add to root collection if there is no parents
@@ -221,6 +221,8 @@ public class MessageParser {
 					}
 				}								
 			}							
+		} else if (!parsingStrategy.isChildHandled()) {
+			listOfComments.add(newComment);
 		}
 	}
 	
@@ -345,7 +347,7 @@ public class MessageParser {
 		return;
 	}
 	
-	private void doPostProcessingForContent(Element documentRootElement, int imgWidth) {
+	/*private void doPostProcessingForContent(Element documentRootElement, int imgWidth) {
 		Elements elements = documentRootElement.getChildElements();		
 		if (elements != null && elements.size() > 0) {
 			for (int i = 0; i < elements.size(); i ++) {
@@ -368,12 +370,13 @@ public class MessageParser {
 				doPostProcessingForContent(element, imgWidth);
 			}
 		}
-	}
+	}*/
 	
 	public static abstract class ParsingStrategy {
 		abstract String[] getParamsForList();
 		abstract String[] getParamsForItem();
 		abstract String[] getParamsForReplyItems();
+		abstract boolean isChildHandled();
 	}
 	
 	public static class CommentParsing extends ParsingStrategy {
@@ -395,11 +398,16 @@ public class MessageParser {
 		String[] getParamsForReplyItems() {
 			return paramsForReplyItems;
 		}
+
+		@Override
+		boolean isChildHandled() {
+			return true;
+		}
 		
 	}
 	
 	public static class ReplyParsing extends ParsingStrategy {
-		static String[] paramsForList = new String[]{"div", "id", "answers"};
+		static String[] paramsForList = new String[]{"div", "class", "answers"};
 		static String[] paramsForItem = new String[]{"div", "class", "answer"};
 		static String[] paramsForReplyItems = new String[]{"div", "class", "reply_comments"};
 
@@ -416,6 +424,11 @@ public class MessageParser {
 		@Override
 		String[] getParamsForReplyItems() {
 			return paramsForReplyItems;
+		}
+
+		@Override
+		boolean isChildHandled() {
+			return false;
 		}
 		
 	}
