@@ -6,15 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.thor.habry.dto.Comment;
-import org.thor.habry.dto.Message;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
-
-import android.util.Log;
-
-
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -23,6 +14,14 @@ import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
+import org.thor.habry.dto.Comment;
+import org.thor.habry.dto.Message;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import android.util.Log;
+
 public class MessageParser {
 	
 	final static int MAX_RECURSION_DEEP_LEVEL = 5;
@@ -30,7 +29,8 @@ public class MessageParser {
 	private static MessageParser instance;
 	private Map<String, Object> messageParameters = new HashMap<String, Object>();
 	
-	private MessageParser() {		
+	private MessageParser() {
+		
 	}
 	
 	public static MessageParser getInstance(Map<String, Object> params) {
@@ -180,9 +180,7 @@ public class MessageParser {
 		if (messageText != null) {		
 			StringBuilder sb = new StringBuilder();
 			sb.append(messageText.getValue());
-			if (sb.length() > 0 ) {
-				sb.deleteCharAt(0);
-			}
+			makeNiceFormatString(sb);
 			newComment.setText(sb.toString());
 		}
 		Element messageId = searchContent(commentElement, currentRecursionLevel, "div", "class", "info", false, false);
@@ -223,6 +221,34 @@ public class MessageParser {
 			}							
 		} else if (!parsingStrategy.isChildHandled()) {
 			listOfComments.add(newComment);
+		}
+	}
+
+	private void makeNiceFormatString(StringBuilder sb) {
+		if (sb.length() > 0 ) {
+			boolean isInvalidChar = true;
+			while (isInvalidChar && sb.length() > 0) {
+				char firstChar = sb.charAt(0);
+				if (Character.CONTROL == Character.getType(firstChar)) {
+					sb.deleteCharAt(0);
+				}
+				else {
+					isInvalidChar = false;
+				}
+			}				
+		} 
+		if (sb.length() > 0 ) {
+			boolean isInvalidChar = true;
+			while (isInvalidChar && sb.length() > 0) {
+				int sbSize = sb.length();
+				char firstChar = sb.charAt(sbSize - 1);
+				if (Character.CONTROL == Character.getType(firstChar)) {
+					sb.deleteCharAt(sbSize - 1);
+				}
+				else {
+					isInvalidChar = false;
+				}
+			}				
 		}
 	}
 	
