@@ -1,6 +1,7 @@
 package org.thor.habry;
 
 import org.thor.habry.HabreaderActivity.MainFeedsSectionFragment;
+import org.thor.habry.dao.HabryDAOInterface;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.tasks.LoadSavedMessagesAsyncTask;
 
@@ -81,7 +82,7 @@ public class SavedMessagesActivity extends Activity {
 		}
 		
 		private void loadSavedMessages() {
-			HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
+			HabryDAOInterface daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
 			ViewGroup mainView = (ViewGroup) rootView.findViewById(R.id.saved_messages_main_layout); 
 			LoadSavedMessagesAsyncTask loadMessagesTask = new LoadSavedMessagesAsyncTask(mainView, this.getActivity(), this);
 			loadMessagesTask.execute(daoHelper);

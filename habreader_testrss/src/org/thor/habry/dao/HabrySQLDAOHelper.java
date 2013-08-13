@@ -1,5 +1,10 @@
 package org.thor.habry.dao;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +19,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
-public class HabrySQLDAOHelper extends SQLiteOpenHelper {
+public class HabrySQLDAOHelper extends SQLiteOpenHelper implements HabryDAOInterface {
 	
-	 private static final int DATABASE_VERSION = 1;
+	 private static final int DATABASE_VERSION = 2;
 	 private static final String DB_NAME = "habreader";
 	 private static String SAVED_MESSAGE_TABLE_CREATE;
 	 private static String SAVED_MESSAGE_CATEGORY_TABLE_CREATE;
+	 private static String SAVED_MESSAGE_CONTENT_TABLE_CREATE;
 	
 	public HabrySQLDAOHelper(Context context) {
 		super(context, DB_NAME, null, DATABASE_VERSION);
@@ -43,6 +49,11 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 			.append(" CATEGORY TEXT, ")
 			.append(" MESSAGE_REF TEXT );");
 		SAVED_MESSAGE_CATEGORY_TABLE_CREATE = sb.toString();
+		sb = new StringBuilder();
+		sb.append("CREATE TABLE ").append(HabryTables.SAVED_MESSAGE_CONTENT).append(" (")
+			.append(" MESSAGE_REF TEXT, ")
+			.append(" CONTENT TEXT );");
+		SAVED_MESSAGE_CONTENT_TABLE_CREATE = sb.toString();
 	}
 
 
@@ -51,6 +62,7 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 		db.beginTransaction();
 		db.execSQL(SAVED_MESSAGE_TABLE_CREATE);
 		db.execSQL(SAVED_MESSAGE_CATEGORY_TABLE_CREATE);
+		db.execSQL(SAVED_MESSAGE_CONTENT_TABLE_CREATE);
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
@@ -58,11 +70,43 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
-		
+		db.execSQL("DROP TABLE IF EXISTS " + HabryTables.SAVED_MESSAGE );
+        db.execSQL("DROP TABLE IF EXISTS " + HabryTables.SAVED_MESSAGE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + HabryTables.SAVED_MESSAGE_CONTENT);
+        onCreate(db);
 	}
 	
 	public void saveOneMessage(Message message) {
+		
+		URLConnection urlConnection = null;
+		BufferedReader in = null;
+		StringBuilder messageHtmlBuilder = new StringBuilder();
+		try {		
+			urlConnection = message.getLink().openConnection();
+					
+			in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+			
+			String inputLine;
+			while ((inputLine = in.readLine()) != null) {
+				messageHtmlBuilder.append(inputLine);
+			}		            
+			in.close();
+			
+		} catch (MalformedURLException e) {
+			Log.e("habreader error", e.toString());
+		} catch (IOException e) {
+			Log.e("habreader error", e.toString());
+		}
+		finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					Log.e("habreader error", e.toString());
+				}
+			}
+		}
+		
 		SQLiteDatabase db = getWritableDatabase();	
 		db.beginTransaction();	
 		try {
@@ -89,6 +133,11 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 				long nowDate = System.currentTimeMillis();
 				messageCV.put("SAVED_DATETIME", nowDate);
 				db.insert(HabryTables.SAVED_MESSAGE.name(), null, messageCV);
+				
+				ContentValues contentCV = new ContentValues();
+				contentCV.put("MESSAGE_REF", message.getMessageReference());
+				contentCV.put("CONTENT", messageHtmlBuilder.toString());
+				db.insert(HabryTables.SAVED_MESSAGE_CONTENT.name(), null, contentCV);
 			}
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
@@ -117,6 +166,7 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 					newMessage.setDescription(cursor.getString(cursor.getColumnIndexOrThrow("DESCRIPTION")));
 					newMessage.setLink(cursor.getString(cursor.getColumnIndexOrThrow("URL")));
 					newMessage.setType(MessageType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("TYPE"))));
+					newMessage.setOnline(false);
 					messageList.add(newMessage);
 					hasMore = cursor.moveToNext();
 				} while (hasMore);			
@@ -146,6 +196,24 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 		return messageList;
 	}
 	
+	public String readMessageContentByRef(String messageRef) {
+		String content = "";
+		SQLiteDatabase db = getReadableDatabase();				
+		try {
+			SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+			queryBuilder.setTables(HabryTables.SAVED_MESSAGE.name() + "," + HabryTables.SAVED_MESSAGE_CONTENT);
+			Cursor cursor = queryBuilder.query(db, new String[]{"CONTENT"}, "MESSAGE_REF=?", new String[]{messageRef}, null, null, null);
+			if (cursor.getCount() > 0) {	
+				cursor.moveToFirst();
+				content = cursor.getString(cursor.getColumnIndexOrThrow("CONTENT"));							
+			}	
+			
+		} catch (Exception e) {
+			Log.e("habreader", "Cannot read message content from DB. " + e );			
+		} 
+		return content;
+	}
+	
 	public void deleteMessage(String messageRef) {
  		SQLiteDatabase db = getWritableDatabase();
  		try {
@@ -156,6 +224,34 @@ public class HabrySQLDAOHelper extends SQLiteOpenHelper {
 		}
  	}
 	
-	public enum HabryTables {SAVED_MESSAGE, SAVED_MESSAGE_CATEGORY};
+	public enum HabryTables {SAVED_MESSAGE, SAVED_MESSAGE_CATEGORY, SAVED_MESSAGE_CONTENT}
+
+	@Override
+	public List<String> findSavedMessageRefByType(String type) {
+		List<String> messageRefList = new ArrayList<String>();
+		SQLiteDatabase db = getReadableDatabase();				
+		try {
+			SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+			queryBuilder.setTables(HabryTables.SAVED_MESSAGE.name());
+			Cursor cursor = null;
+			if (type == null || "".equalsIgnoreCase(type)) {
+				cursor = queryBuilder.query(db, null, null, new String[]{type}, null, null, null);
+			}
+			else {
+				cursor = queryBuilder.query(db, new String[]{"REFERENCE"}, "TYPE=?", new String[]{type}, null, null, null);
+			}
+			if (cursor.getCount() > 0) {	
+				cursor.moveToFirst();
+				boolean hasMore = true;
+				do {
+					messageRefList.add(cursor.getString(cursor.getColumnIndexOrThrow("REFERENCE")));
+					hasMore = cursor.moveToNext();
+				} while (hasMore);			
+			}			
+		} catch (Exception e) {
+			Log.e("habreader", "Cannot read message from DB. " + e );			
+		} 
+		return messageRefList;
+	};
 
 }

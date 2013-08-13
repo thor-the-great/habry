@@ -99,7 +99,6 @@ public class PostDetail extends FragmentActivity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.action_settings:
-	            //newGame();
 	        	Intent myIntent = new Intent(this, SettingsActivity.class);
 				startActivity(myIntent);
 	            return true;	        

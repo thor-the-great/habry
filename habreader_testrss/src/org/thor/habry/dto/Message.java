@@ -22,6 +22,7 @@ public class Message implements Comparable<Message>, Serializable {
     private String author;
     private List<String> categories = new ArrayList<String>();
     private MessageType type;
+    private boolean isOnline = true;
 
 	//
 	public Message() {
@@ -126,5 +127,13 @@ public class Message implements Comparable<Message>, Serializable {
 			StringBuilder sb = new StringBuilder();
 			sb.append("MessageRef:").append(type.name()).append(",").append(author).append(",").append(title.hashCode());
 			return sb.toString();
+		}
+
+		public boolean isOnline() {
+			return isOnline;
+		}
+
+		public void setOnline(boolean isOnline) {
+			this.isOnline = isOnline;
 		}
     }

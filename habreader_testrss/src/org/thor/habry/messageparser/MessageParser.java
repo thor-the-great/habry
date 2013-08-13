@@ -1,6 +1,9 @@
 package org.thor.habry.messageparser;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +17,7 @@ import nu.xom.Elements;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
+import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.xml.sax.SAXException;
@@ -47,12 +51,17 @@ public class MessageParser {
 		try {
 			tagsoup = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
 			Builder bob = new Builder(tagsoup);
-
-			Document feedDocument = bob.build(oneFeedMessage.getLink().toString());
+			InputStream is = null;
+			if (oneFeedMessage.isOnline()) {
+				URLConnection urlConnection = oneFeedMessage.getLink().openConnection();
+				is = urlConnection.getInputStream();			
+			} else {
+				String messageContent = AppRuntimeContext.getInstance().getDaoHelper().readMessageContentByRef(oneFeedMessage.getMessageReference());
+				is = new ByteArrayInputStream(messageContent.getBytes("UTF-8"));
+			}			
+			Document feedDocument = bob.build(is);
 			Log.d("habry", "Document is parsed " + feedDocument.getChildCount());
-
 			Element htmlElement = feedDocument.getRootElement();
-
 			Element bodyElement = htmlElement.getChildElements().get(1);
 			Integer currentRecursionLevel = Integer.valueOf(0);
 			newRootElement = searchContent(bodyElement, currentRecursionLevel, "div", "class", "content html_format");

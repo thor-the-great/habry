@@ -42,7 +42,8 @@ public class GetPostMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 					Toast.makeText(activity, activity.getResources().getString(R.string.message_details_cannot_load_post) + " " +  description, Toast.LENGTH_SHORT).show();
 				}
-			});			
+			});
+			
 			webview.loadDataWithBaseURL("", result.toXML(), "text/html", "UTF-8", null);
 			webview.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		}

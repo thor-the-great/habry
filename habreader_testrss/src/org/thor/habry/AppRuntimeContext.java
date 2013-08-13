@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.thor.habry.dao.HabryDAOInterface;
 import org.thor.habry.dao.HabrySQLDAOHelper;
 import org.thor.habry.dto.Message;
 
@@ -63,7 +64,7 @@ public class AppRuntimeContext {
 		daoHelper = new HabrySQLDAOHelper(context);
 	}
 	
-	public HabrySQLDAOHelper getDaoHelper() {
+	public HabryDAOInterface getDaoHelper() {
 		return daoHelper;
 	}
 

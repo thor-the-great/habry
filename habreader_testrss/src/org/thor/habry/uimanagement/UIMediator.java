@@ -7,14 +7,16 @@ import java.util.Set;
 
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
-import org.thor.habry.dao.HabrySQLDAOHelper;
+import org.thor.habry.dao.HabryDAOInterface;
 import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.feeddetail.PostDetail;
 import org.thor.habry.feeddetail.PostDetailSectionFragment;
+import org.thor.habry.tasks.SaveMessageAsyncTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,12 +41,13 @@ import android.widget.Toast;
 
 public class UIMediator {
 
+	static final String _COLOR_SAVED_OFFLINE = "#FF9933";
 	int MAX_TITLE_LENGTH = 500;
 	int MAX_DESC_LENGTH = 150;
 	int MAX_COMMENT_LENGTH = 2000;
 	int MAX_NUMBER_OF_CATEGORIES = 3;
 
-	public void showFeedList (List<Message> result, final ViewGroup mainLayout, final Activity activity, MessageListConfigJB listConfigJB) {
+	public void showFeedList (List<Message> result, final ViewGroup mainLayout, final Activity activity, MessageListConfigJB listConfigJB, List<String> savedMessageRefList) {
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean isShowPartOfFullFeed = sharedPref.getBoolean("setting_isShowPartOfFullFeed", false);
@@ -53,11 +56,11 @@ public class UIMediator {
 
 		for (int i = 0; i < result.size(); i++) {
 			Message message = result.get(i);			
-			createOneFeedMessageRow(isShowPartOfFullFeed, message, mainLayout, activity, i, listConfigJB);
+			createOneFeedMessageRow(isShowPartOfFullFeed, message, mainLayout, activity, i, listConfigJB, savedMessageRefList);
 		}
 	}
 
-	private void createOneFeedMessageRow(boolean isShowPartOfFullFeed, final Message message, final ViewGroup mainLayout, final Activity activity, int messageIndexInList, MessageListConfigJB listConfigJB) {
+	private void createOneFeedMessageRow(boolean isShowPartOfFullFeed, final Message message, final ViewGroup mainLayout, final Activity activity, int messageIndexInList, MessageListConfigJB listConfigJB, List<String> savedMessageRefList) {
 
 		ScrollView scrollView = new ScrollView(mainLayout.getContext());
 		//LayoutParams layoutParams = new LayoutParams( LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
@@ -95,7 +98,8 @@ public class UIMediator {
 		feedTitleTextview.setTextSize((float) 16.0);
 		Set<String> readedMessageRefList = AppRuntimeContext.getInstance().getReadedFeedRefList();
 		if(listConfigJB.isReadHighlightEnabled()) {
-			if (readedMessageRefList.contains(message.getMessageReference())) {
+			if (readedMessageRefList.contains(message.getMessageReference()) 
+					|| savedMessageRefList.contains(message.getMessageReference())) {
 				markViewAsReaded(feedTitleTextview);
 			}
 			else {
@@ -103,8 +107,9 @@ public class UIMediator {
 				feedTitleTextview.setTextColor(Color.DKGRAY);
 			}
 		} else {
-			feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
-			feedTitleTextview.setTextColor(Color.DKGRAY);
+			//feedTitleTextview.setTypeface(Typeface.DEFAULT_BOLD);
+			//feedTitleTextview.setTextColor(Color.DKGRAY);
+			markViewAsReaded(feedTitleTextview);
 		}
 		feedElementContainer.addView(feedTitleTextview);
 		
@@ -114,11 +119,13 @@ public class UIMediator {
 		if(listConfigJB.isSaveMessageEnabled()) {
 			feedTitleTextview.setOnLongClickListener(new OnLongClickListener() {			
 				@Override
-				public boolean onLongClick(View v) {
-					Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_saving_feed, Toast.LENGTH_SHORT);			
-					myToast.show();	
-					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
-					daoHelper.saveOneMessage(message);
+				public boolean onLongClick(View v) {			
+					ProgressDialog pd = ProgressDialog.show(activity, null, 
+							activity.getResources().getString(R.string.status_message_saving_feed), 
+							true, false, null);
+					
+					SaveMessageAsyncTask saveMessageTask = new SaveMessageAsyncTask(mainLayout, activity, pd);
+					saveMessageTask.execute(new Message[]{message});
 					markViewAsReaded(v);
 					v.invalidate();
 					return true;
@@ -131,10 +138,24 @@ public class UIMediator {
 		}
 		
 		TextView messageStatus = new TextView(mainLayout.getContext());			
-		messageStatus.setLayoutParams(layoutParams);			
-		messageStatus.setText(R.string.message_list_message_status_online);
-		messageStatus.setTextColor(Color.GREEN);
+		messageStatus.setLayoutParams(layoutParams);		
 		messageStatus.setTextSize((float) 11.0);
+		if (message.isOnline()) {
+			boolean isSaved = false;
+			if (savedMessageRefList != null && savedMessageRefList.size() > 0) {
+				isSaved = savedMessageRefList.contains(message.getMessageReference());
+			}
+			if (isSaved) {
+				messageStatus.setText(R.string.message_list_message_status_offline);
+				messageStatus.setTextColor(Color.parseColor(_COLOR_SAVED_OFFLINE));
+			} else {
+				messageStatus.setText(R.string.message_list_message_status_online);
+				messageStatus.setTextColor(Color.GREEN);
+			}
+		} else {
+			messageStatus.setText(R.string.message_list_message_status_offline);
+			messageStatus.setTextColor(Color.parseColor(_COLOR_SAVED_OFFLINE));
+		}
 		feedElementContainer.addView(messageStatus);
 		
 		TextView categories = new TextView(mainLayout.getContext());			
@@ -331,11 +352,8 @@ public class UIMediator {
 				AppRuntimeContext.getInstance().addMessageToReadedFeedRefList(message);
 				markViewAsReaded(v);
 				v.invalidate();
-			}
-			
-			((View)v.getParent()).setFadingEdgeLength(2);				
-			//Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-			//myToast.show();				
+			}			
+			((View)v.getParent()).setFadingEdgeLength(2);							
 			Intent detailIntent = new Intent(activity, PostDetail.class);
 			detailIntent.putExtra(PostDetailSectionFragment.POST_DETAIL_MESSAGE, message);
 			activity.startActivity(detailIntent);
@@ -366,7 +384,7 @@ public class UIMediator {
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					HabrySQLDAOHelper daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
+					HabryDAOInterface daoHelper = AppRuntimeContext.getInstance().getDaoHelper();
 					daoHelper.deleteMessage(message.getMessageReference()); 
 					android.os.Message updateSavedList = new android.os.Message();
 					if (listConfig.getMessageHandler() != null)

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.dto.Message;
+import org.thor.habry.dto.MessageType;
 import org.thor.habry.feedparser.FeedXmlParser;
 import org.thor.habry.feedprovider.ContentProvider;
 import org.thor.habry.uimanagement.UIMediator;
@@ -61,7 +62,10 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 			error = null;
 		}
 		
-		AppRuntimeContext.getInstance().addFeedList(result);
+		AppRuntimeContext appContext = AppRuntimeContext.getInstance();
+		appContext.addFeedList(result);
+		
+		List<String> savedMessageRef = appContext.getDaoHelper().findSavedMessageRefByType(MessageType.POST.name());
 		
 		UIMediator uiMediator = new UIMediator();
 		MessageListConfigJB listConfig = uiMediator.new MessageListConfigJB();	
@@ -69,7 +73,7 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 		listConfig.setReadHighlightEnabled(true);
 		listConfig.setSaveMessageEnabled(true);
 		listConfig.setSupportDelete(false);
-		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
+		uiMediator.showFeedList(result, mainLayout, activity, listConfig, savedMessageRef);		
 	}
 
 }

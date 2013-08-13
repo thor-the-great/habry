@@ -60,7 +60,6 @@ public class FeedListActivity extends FragmentActivity implements
 		else {
 			appContext.setAppMode(AppMode.ONE_SIDE);
 		}
-
 		// TODO: If exposing deep links into your app, handle intents here.
 		FeedListFragment feedListFragment = (FeedListFragment) getSupportFragmentManager().findFragmentById(R.id.feed_list);
 		ListView listView = feedListFragment.getListView();
@@ -107,20 +106,13 @@ public class FeedListActivity extends FragmentActivity implements
 				fragment = new SavedMessagesActivity.SavedMessagesFragment();				
 			} else {
 				fragment = new MainFeedsSectionFragment();					
-			}
-			
+			}			
 			fragment.setArguments(arguments);
-			//getSupportFragmentManager().beginTransaction()
-			//		.replace(R.id.feed_detail_container, fragment).commit();
-			getFragmentManager().beginTransaction().replace(R.id.feed_detail_container, fragment).commit();			
-			
-			//SavedMessagesActivity saveActivity = new SavedMessagesActivity();
-			//getFragmentManager().beginTransaction().replace(R.id.feed_detail_container, saveActivity).commit();
+			getFragmentManager().beginTransaction().replace(R.id.feed_detail_container, fragment).commit();				
 
 		} else {
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
-			//Intent detailIntent = new Intent(this, FeedDetailActivity.class);
 			Intent detailIntent = null;
 			if ("3".equals(id)) {
 				detailIntent = new Intent(this, SavedMessagesActivity.class);				

@@ -2,11 +2,8 @@
 <resources>
     <string name="app_name">Хабри</string>
     <string name="action_settings">Настройки</string>
-    <string name="load_rss">Load RSS</string>
     <string name="title_activity_habreader">Хабри</string>
     <string name="title_section1">Сообщения</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="setting_isUseTestContentProvider">Use test data</string>
     <string name="setting_isUseTestContentProvider_summ">Use local test data instead of network request</string>
     <string name="setting_isShowPartOfFullFeed">Show news text</string>
@@ -24,7 +21,7 @@
     <string name="main_menu_item_qa">Вопрос-ответ</string>
     <string name="main_menu_item_saved">Сохраненное</string>
     <string name="message_list_message_status_online">Онлайн</string>
-    <string name="message_list_message_status_offline">Оффлайн</string>
+    <string name="message_list_message_status_offline">Сохраненное</string>
     <string name="title_activity_saved_messages">Сохраненные сообщения</string>
     <string name="confirm_delete_saved_title">Удаление сообщения</string>
     <string name="confirm_delete_saved_question">Удалить сообщение?</string>

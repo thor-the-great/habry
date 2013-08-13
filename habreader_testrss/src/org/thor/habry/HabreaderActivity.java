@@ -21,8 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
-import android.widget.Toast;
-//import android.support.v4.app.Fragment;
 
 public class HabreaderActivity extends FragmentActivity {
 
@@ -103,23 +101,14 @@ public class HabreaderActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_habreader_dummy,
-					container, false);
-			//TextView dummyTextView = (TextView) rootView
-			//		.findViewById(R.id.section_label);
-			//dummyTextView.setText(Integer.toString(getArguments().getInt(
-			//		ARG_SECTION_NUMBER)));
-			//ViewGroup mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentMainLayout);
-			//new GetFeedersAsyncTask(mainFragmentLayout).execute(defaultHabrRssURL);
+					container, false);			
 			this.mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentFeedLayout);;
 						
 			int childCount = mainFragmentLayout.getChildCount();
-			for (int i = childCount - 1; i >=1; i--) {
-				//View nextChildView = mainFragmentLayout.getChildAt(i);
+			for (int i = childCount - 1; i >=1; i--) {				
 				mainFragmentLayout.removeViewAt(i);
-			}
+			}			
 			
-			//Toast myToast = Toast.makeText(rootView.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-			//myToast.show();
 			ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
 					this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
 					true, false, null);
@@ -138,9 +127,6 @@ public class HabreaderActivity extends FragmentActivity {
 				//View nextChildView = mainFragmentLayout.getChildAt(i);
 				mainFragmentLayout.removeViewAt(i);
 			}
-			
-			//Toast myToast = Toast.makeText(v.getContext(), R.string.status_message_loading_feed, Toast.LENGTH_SHORT);			
-			//myToast.show();
 			ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
 					this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
 					true, false, null);

@@ -1,10 +1,11 @@
 package org.thor.habry.tasks;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.thor.habry.R;
 import org.thor.habry.SavedMessagesActivity.SavedMessagesFragment;
-import org.thor.habry.dao.HabrySQLDAOHelper;
+import org.thor.habry.dao.HabryDAOInterface;
 import org.thor.habry.dto.Message;
 import org.thor.habry.uimanagement.UIMediator;
 import org.thor.habry.uimanagement.UIMediator.MessageListConfigJB;
@@ -14,7 +15,7 @@ import android.os.AsyncTask;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Integer, List<Message>> {
+public class LoadSavedMessagesAsyncTask extends AsyncTask<HabryDAOInterface, Integer, List<Message>> {
 	ViewGroup mainLayout;
 	Activity activity;
 	Exception error;
@@ -27,8 +28,8 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 	}
 
 	@Override
-	protected List<Message> doInBackground(HabrySQLDAOHelper... arg0) {
-		HabrySQLDAOHelper daoHelper = arg0[0];
+	protected List<Message> doInBackground(HabryDAOInterface... arg0) {
+		HabryDAOInterface daoHelper = arg0[0];
 		List<Message> messageList = daoHelper.findAllMessages();
 		return messageList;
 	}
@@ -37,7 +38,11 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 	protected void onPostExecute(List<Message> result) {
 		if(result == null || result.size() == 0) {
 			Toast.makeText(activity, activity.getResources().getString(R.string.status_message_no_saved_messages), Toast.LENGTH_SHORT).show();			
-		}		
+		}	
+		
+		//AppRuntimeContext appContext = AppRuntimeContext.getInstance();		
+		//List<String> savedMessageRef = appContext.getDaoHelper().findSavedMessageRefByType(null);
+		
 		UIMediator uiMediator = new UIMediator();
 		MessageListConfigJB listConfig = uiMediator.new MessageListConfigJB();	
 		listConfig.setFavorFilteringEnabled(false);
@@ -45,6 +50,6 @@ public class LoadSavedMessagesAsyncTask extends AsyncTask<HabrySQLDAOHelper, Int
 		listConfig.setSaveMessageEnabled(false);
 		listConfig.setSupportDelete(true);
 		listConfig.setMessageHandler(messageFragment.getUpdateListOfSavedMessagesHandler());
-		uiMediator.showFeedList(result, mainLayout, activity, listConfig);		
+		uiMediator.showFeedList(result, mainLayout, activity, listConfig, Collections.<String> emptyList());		
 	}
 }
