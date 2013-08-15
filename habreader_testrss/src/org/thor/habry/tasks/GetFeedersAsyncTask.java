@@ -34,7 +34,9 @@ public class GetFeedersAsyncTask extends AsyncTask<ContentProvider, Integer, Lis
 	}
 
 	@Override
-	protected List<Message> doInBackground(ContentProvider ... providers) {		
+	protected List<Message> doInBackground(ContentProvider ... providers) {	
+		
+		//activity.getLastNonConfigurationInstance();
 		
 		ContentProvider contentProvider = providers[0];
 		 

@@ -1,8 +1,14 @@
 package org.thor.habry;
 
+import java.util.List;
+
+import org.thor.habry.dto.Message;
+import org.thor.habry.dto.MessageType;
 import org.thor.habry.feedprovider.ContentProvider;
 import org.thor.habry.settings.SettingsActivity;
 import org.thor.habry.tasks.GetFeedersAsyncTask;
+import org.thor.habry.uimanagement.UIMediator;
+import org.thor.habry.uimanagement.UIMediator.MessageListConfigJB;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -29,6 +35,7 @@ public class HabreaderActivity extends FragmentActivity {
 	 */
 	ViewPager mViewPager;
 	private static final int CONTENT_VIEW_ID = 10101010;
+	private static final String FRAGMENT_ID = "HabreaderActivity_FRAGMENT_ID";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +45,23 @@ public class HabreaderActivity extends FragmentActivity {
         frame.setId(CONTENT_VIEW_ID);
         setContentView(frame, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-        if (savedInstanceState == null) {
-            android.app.Fragment newFragment = new MainFeedsSectionFragment();
-            Bundle args = new Bundle();
-    		//args.putInt(MainFeedsSectionFragment.ARG_SECTION_NUMBER, position + 1);
-    		args.putString(MainFeedsSectionFragment.ARG_ITEM_ID, getIntent().getStringExtra(MainFeedsSectionFragment.ARG_ITEM_ID));
-    		newFragment.setArguments(args);
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(CONTENT_VIEW_ID, newFragment).commit();
-        }
+        //if (savedInstanceState == null) {
+            
+    		Fragment contentFragment = getFragmentManager().findFragmentByTag(FRAGMENT_ID);
+    		if (contentFragment == null) {
+    			MainFeedsSectionFragment newFragment = new MainFeedsSectionFragment();
+                Bundle args = new Bundle();
+        		//args.putInt(MainFeedsSectionFragment.ARG_SECTION_NUMBER, position + 1);
+        		args.putString(MainFeedsSectionFragment.ARG_ITEM_ID, getIntent().getStringExtra(MainFeedsSectionFragment.ARG_ITEM_ID));
+        		newFragment.setArguments(args);
+    			FragmentTransaction ft = getFragmentManager().beginTransaction();
+    			ft.add(CONTENT_VIEW_ID, newFragment, FRAGMENT_ID).commit();
+    		} else {
+    			if (contentFragment instanceof MainFeedsSectionFragment) {
+    				((MainFeedsSectionFragment)contentFragment).readData = false;
+    			}
+    		}
+        //}
 	}
 
 	@Override
@@ -80,11 +95,13 @@ public class HabreaderActivity extends FragmentActivity {
 		 */
 		public static final String ARG_ITEM_ID = "item_id";
 		
-		ViewGroup mainFragmentLayout;
-		
+		ViewGroup mainFragmentLayout;		
 		ContentProvider contentProvider = null;
+		boolean readData = false;
 
 		public MainFeedsSectionFragment() {
+			this.setRetainInstance(true);
+			readData = true;
 		}
 		
 		@Override
@@ -100,6 +117,7 @@ public class HabreaderActivity extends FragmentActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			
 			View rootView = inflater.inflate(R.layout.fragment_habreader_dummy,
 					container, false);			
 			this.mainFragmentLayout = (ViewGroup) rootView.findViewById(R.id.fragmentFeedLayout);;
@@ -108,15 +126,27 @@ public class HabreaderActivity extends FragmentActivity {
 			for (int i = childCount - 1; i >=1; i--) {				
 				mainFragmentLayout.removeViewAt(i);
 			}			
-			
-			ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
-					this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
-					true, false, null);
-			
-			if (contentProvider == null)
-				contentProvider = getContentProvider(null);			
-			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity(), pd).execute(contentProvider);	
-			
+			if (readData) {
+				ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
+						this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
+						true, false, null);
+				
+				if (contentProvider == null)
+					contentProvider = getContentProvider(null);	
+				new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity(), pd).execute(contentProvider);	
+			} else {
+				List<Message> result = AppRuntimeContext.getInstance().getFeedList();
+				
+				List<String> savedMessageRef = AppRuntimeContext.getInstance().getDaoHelper().findSavedMessageRefByType(MessageType.POST.name());
+				
+				UIMediator uiMediator = new UIMediator();
+				MessageListConfigJB listConfig = uiMediator.new MessageListConfigJB();	
+				listConfig.setFavorFilteringEnabled(true);
+				listConfig.setReadHighlightEnabled(true);
+				listConfig.setSaveMessageEnabled(true);
+				listConfig.setSupportDelete(false);
+				uiMediator.showFeedList(result, mainFragmentLayout, getActivity(), listConfig, savedMessageRef);		
+			}
 			return rootView;
 		}
 
@@ -133,9 +163,8 @@ public class HabreaderActivity extends FragmentActivity {
 			
 			if (contentProvider == null)
 				contentProvider = getContentProvider(null);				
-			//ViewGroup mainFragmentLayout = (ViewGroup) v.findViewById(R.id.fragmentMainLayout);
-			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity(), pd).execute(contentProvider);			
-		}
+			new GetFeedersAsyncTask(mainFragmentLayout, super.getActivity(), pd).execute(contentProvider);
+		}		
 		
 		private ContentProvider getContentProvider(String index) {
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(super.getActivity());
@@ -153,4 +182,5 @@ public class HabreaderActivity extends FragmentActivity {
 			return contentProvider;
 		}
 	}
+
 }
