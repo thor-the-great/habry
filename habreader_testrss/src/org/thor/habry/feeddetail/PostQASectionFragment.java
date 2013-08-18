@@ -1,9 +1,11 @@
 package org.thor.habry.feeddetail;
 
+import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
 import org.thor.habry.dto.Message;
 import org.thor.habry.tasks.GetPostQAAsyncTask;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,9 +34,10 @@ public class PostQASectionFragment extends Fragment {
 				R.layout.fragment_post_detail_comment, container, false);
 		View mainLayout = rootView.findViewById(R.id.post_detail_comment_main_layout);
 		
-		Message postMessage = (Message) getArguments().getSerializable(POST_DETAIL_MESSAGE);
+		Message postMessage = (Message) getArguments().getSerializable(POST_DETAIL_MESSAGE);		 
 		GetPostQAAsyncTask getFeedDetailsTask = new GetPostQAAsyncTask((ViewGroup) mainLayout, this.getActivity());
 		getFeedDetailsTask.execute(postMessage);
+		
 		return rootView;
 	}
 }

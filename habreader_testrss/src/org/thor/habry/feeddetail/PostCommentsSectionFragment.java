@@ -2,12 +2,15 @@ package org.thor.habry.feeddetail;
 
 import org.thor.habry.dto.Message;
 import org.thor.habry.tasks.GetPostCommentsAsyncTask;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
 
 /**

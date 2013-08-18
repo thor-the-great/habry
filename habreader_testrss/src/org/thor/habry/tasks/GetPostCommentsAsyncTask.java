@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
@@ -37,18 +38,13 @@ public class GetPostCommentsAsyncTask extends AsyncTask<Message, Integer, List<C
 	
 	@Override
 	protected List<Comment> doInBackground(Message... feeds) {
-		Message feedMessage = feeds[0];			
-		Map<String, Object> documentParams = new HashMap<String, Object>(); 
-		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
-		//Document document = MessageParser.getInstance(documentParams).parseCommentsToDocument(feedMessage);	
-		ParsingStrategy parsingStrategy = new CommentParsing();
-		List<Comment> commentList = MessageParser.getInstance(documentParams).parseToComments(feedMessage, parsingStrategy);
-		Log.d("habry", "comments!!!");
-		if (commentList != null) {
-			for (Comment comment : commentList) {
-				Log.d("habry", "comment.getAuthor() = " + comment.getAuthor());
-				Log.d("habry", "comment.getChild()= " + comment.getChildComments().size());
-			}
+		List<Comment> commentList = AppRuntimeContext.getInstance().getCommentReplyList();
+		if (commentList == null || commentList.size() == 0) {
+			Message feedMessage = feeds[0];			
+			Map<String, Object> documentParams = new HashMap<String, Object>(); 
+			ParsingStrategy parsingStrategy = new CommentParsing();
+			commentList = MessageParser.getInstance(documentParams).parseToComments(feedMessage, parsingStrategy);
+			AppRuntimeContext.getInstance().addCommentReplyList(commentList);
 		}
 		return commentList;
 	}	

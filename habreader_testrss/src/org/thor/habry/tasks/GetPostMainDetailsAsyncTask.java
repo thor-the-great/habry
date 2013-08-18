@@ -3,6 +3,7 @@ package org.thor.habry.tasks;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
 import org.thor.habry.dto.Message;
 import org.thor.habry.messageparser.MessageParser;
@@ -32,11 +33,12 @@ public class GetPostMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 	}
 	@Override
 	protected void onPostExecute(Document result) {
-		pd.dismiss();
+		if (pd != null) {
+			pd.dismiss();
+		}
 		if (result != null) {									
 			WebView webview = new WebView(activity);
 			mainLayout.addView(webview);
-			//activity.setContentView(webview);
 			webview.getSettings().setJavaScriptEnabled(true);		
 			webview.setWebViewClient(new WebViewClient() {
 				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -51,11 +53,14 @@ public class GetPostMainDetailsAsyncTask extends AsyncTask<Message, Integer, Doc
 	
 	@Override
 	protected Document doInBackground(Message... feeds) {
-		Message feedMessage = feeds[0];			
-		Map<String, Object> documentParams = new HashMap<String, Object>(); 
-		//documentParams.put("MAX_DISPLAY_WIDTH", Integer.valueOf(sizePoint.x));
-		Document document = MessageParser.getInstance(documentParams).parsePostToDocument(feedMessage);		
-		return document;
+		Document resultDocument = AppRuntimeContext.getInstance().getParsedDocumentForOneMessage();
+		if (resultDocument == null) {
+			Message feedMessage = feeds[0];			
+			Map<String, Object> documentParams = new HashMap<String, Object>(); 
+			resultDocument = MessageParser.getInstance(documentParams).parsePostToDocument(feedMessage);		
+			AppRuntimeContext.getInstance().setParsedDocumentForOneMessage(resultDocument);
+		} 
+		return resultDocument;
 	}	
 
 }

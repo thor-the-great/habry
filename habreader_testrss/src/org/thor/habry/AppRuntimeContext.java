@@ -6,8 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nu.xom.Document;
+
 import org.thor.habry.dao.HabryDAOInterface;
 import org.thor.habry.dao.HabrySQLDAOHelper;
+import org.thor.habry.dto.Comment;
 import org.thor.habry.dto.Message;
 
 import android.content.Context;
@@ -18,9 +21,11 @@ public class AppRuntimeContext {
 	private static AppRuntimeContext instance;
 	
 	private List<Message> feedList;
+	private List<Comment> commentReplyList;
 	private AppMode appMode;
 	private Set<String> readedFeedRefList = new HashSet<String>();
 	private HabrySQLDAOHelper daoHelper;
+	private Document parsedDocumentForOneMessage;
 	
 	private AppRuntimeContext() {
 	}
@@ -41,6 +46,18 @@ public class AppRuntimeContext {
 	public List<Message> getFeedList() {
 		return Collections.unmodifiableList(feedList);
 	}	
+	
+	public void addCommentReplyList(List<Comment> commentReplyList) {
+		if (this.commentReplyList == null)
+			this.commentReplyList = new ArrayList<Comment>();		
+		this.commentReplyList.clear();
+		if (commentReplyList != null)
+			this.commentReplyList.addAll(commentReplyList);
+	}
+	
+	public List<Comment> getCommentReplyList() {
+		return Collections.unmodifiableList(this.commentReplyList);
+	}
 
 	public AppMode getAppMode() {
 		return appMode;
@@ -70,6 +87,14 @@ public class AppRuntimeContext {
 
 	public enum AppMode {
 		ONE_SIDE, TWO_SIDES
+	}
+
+	public Document getParsedDocumentForOneMessage() {
+		return parsedDocumentForOneMessage;
+	}
+
+	public void setParsedDocumentForOneMessage(Document parsedDocumentForOneMessage) {
+		this.parsedDocumentForOneMessage = parsedDocumentForOneMessage;
 	}
 	
 }

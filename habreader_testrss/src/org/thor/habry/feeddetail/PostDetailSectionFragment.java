@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.thor.habry.AppRuntimeContext;
 import org.thor.habry.R;
 
 /**
@@ -23,8 +24,10 @@ public class PostDetailSectionFragment extends Fragment {
 	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
 	public static final String POST_DETAIL_MESSAGE = "post_detail_message";
+	private boolean isInitiatedOutside = false;
 
 	public PostDetailSectionFragment() {
+		isInitiatedOutside = true;
 	}
 
 	@Override
@@ -32,15 +35,14 @@ public class PostDetailSectionFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(
 				R.layout.fragment_post_detail_dummy, container, false);
-		View mainLayout = rootView.findViewById(R.id.post_detail_container_layout);
-		//TextView dummyTextView = (TextView) rootView
-		//		.findViewById(R.id.section_label);
-		//dummyTextView.setText(Integer.toString(getArguments().getInt(
-		//		ARG_SECTION_NUMBER)));
+		View mainLayout = rootView.findViewById(R.id.post_detail_container_layout);		
 		Message postMessage = (Message) getArguments().getSerializable(POST_DETAIL_MESSAGE);
-		ProgressDialog pd = ProgressDialog.show(this.getActivity(), null, 
+		ProgressDialog pd = null;
+		if (AppRuntimeContext.getInstance().getParsedDocumentForOneMessage() == null) {
+			pd = ProgressDialog.show(this.getActivity(), null, 
 				this.getActivity().getResources().getString(R.string.status_message_loading_feed), 
 				true, false, null);
+		} 
 		GetPostMainDetailsAsyncTask getFeedDetailsTask = new GetPostMainDetailsAsyncTask((ViewGroup) mainLayout, this.getActivity(), pd);
 		getFeedDetailsTask.execute(postMessage);
 		return rootView;
